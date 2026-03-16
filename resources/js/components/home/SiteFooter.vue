@@ -1,17 +1,23 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import type { NavLink } from '@/composables/useScrollTracking';
 
-defineProps<{
+withDefaults(defineProps<{
     navLinks: NavLink[];
-    scrollToSection: (id: string) => void;
-}>();
+    scrollToSection?: (id: string) => void;
+    subpage?: boolean;
+}>(), {
+    subpage: false,
+});
 </script>
 
 <template>
     <footer class="site-footer">
         <div class="footer-inner">
             <div>
-                <div class="footer-brand">Harry <span>Skoler</span></div>
+                <component :is="subpage ? Link : 'div'" :href="subpage ? '/' : undefined" class="footer-brand">
+                    Harry <span>Skoler</span>
+                </component>
                 <div class="footer-tagline">Jazz Clarinetist · Berklee College of Music</div>
             </div>
             <div class="footer-rep">
@@ -20,7 +26,13 @@ defineProps<{
             </div>
             <ul class="footer-nav">
                 <li v-for="link in navLinks" :key="link.id">
-                    <a :href="'#' + link.id" @click.prevent="scrollToSection(link.id)">{{ link.label }}</a>
+                    <component
+                        :is="subpage ? Link : 'a'"
+                        :href="subpage ? `/#${link.id}` : `#${link.id}`"
+                        @click.prevent="!subpage && scrollToSection?.(link.id)"
+                    >
+                        {{ link.label }}
+                    </component>
                 </li>
             </ul>
             <div class="footer-copy">
@@ -57,6 +69,8 @@ defineProps<{
     text-transform: uppercase;
     color: var(--white);
     margin-bottom: 0.5rem;
+    text-decoration: none;
+    display: block;
 }
 .footer-brand span { color: var(--red); }
 

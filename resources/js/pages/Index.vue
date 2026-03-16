@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useScrollTracking } from '@/composables/useScrollTracking';
 import SiteNav from '@/components/home/SiteNav.vue';
@@ -10,6 +11,7 @@ import MusicSection from '@/components/home/MusicSection.vue';
 import ReviewsSection from '@/components/home/ReviewsSection.vue';
 import NewsSection from '@/components/home/NewsSection.vue';
 import RadioSection from '@/components/home/RadioSection.vue';
+import PressSection from '@/components/home/PressSection.vue';
 import GallerySection from '@/components/home/GallerySection.vue';
 import EventsSection from '@/components/home/EventsSection.vue';
 import SiteFooter from '@/components/home/SiteFooter.vue';
@@ -17,14 +19,27 @@ import '../../css/home.css';
 
 const navLinks = [
     { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'music', label: 'Music' },
-    { id: 'reviews', label: 'Reviews' },
+    { id: 'radio', label: 'Radio Airplay' },
     { id: 'news', label: 'News' },
-    { id: 'radio', label: 'Radio' },
+    { id: 'reviews', label: 'Reviews' },
+    { id: 'press', label: 'Press' },
+    { id: 'music', label: 'Music' },
     { id: 'gallery', label: 'Gallery' },
+    { id: 'about', label: 'About' },
     { id: 'events', label: 'Events' },
 ];
+
+const themePalette = ['section-red-accent', 'section-deep', 'section-dark', 'section-green'];
+
+const sectionThemes = computed(() => {
+    const map: Record<string, string> = {};
+    navLinks
+        .filter(l => l.id !== 'home')
+        .forEach((link, i) => {
+            map[link.id] = themePalette[i % themePalette.length];
+        });
+    return map;
+});
 
 const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
 </script>
@@ -49,14 +64,14 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
         />
 
         <HeroSlider :scroll-y="scrollY" />
-        <ListenStrip />
-        <AboutSection />
-        <MusicSection />
-        <ReviewsSection />
-        <NewsSection />
-        <RadioSection />
-        <GallerySection />
-        <EventsSection />
+        <RadioSection :theme="sectionThemes.radio" />
+        <NewsSection :theme="sectionThemes.news" />
+        <ReviewsSection :theme="sectionThemes.reviews" />
+        <PressSection :theme="sectionThemes.press" />
+        <MusicSection :theme="sectionThemes.music" />
+        <GallerySection :theme="sectionThemes.gallery" />
+        <AboutSection :theme="sectionThemes.about" />
+        <EventsSection :theme="sectionThemes.events" />
 
         <SiteFooter
             :nav-links="navLinks"

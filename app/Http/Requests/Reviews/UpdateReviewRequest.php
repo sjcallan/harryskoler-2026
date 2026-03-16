@@ -14,6 +14,7 @@ class UpdateReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'album_slug' => ['required', 'string', 'max:255'],
             'excerpt' => ['required', 'string', 'max:1000'],
             'body' => ['required', 'string'],
             'author' => ['nullable', 'string', 'max:255'],

@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { TiptapEditor } from '@/components/ui/tiptap-editor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import {
@@ -206,7 +206,13 @@ async function deleteNews() {
 
 function formatDate(dateStr: string): string {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+}
+
+function stripHtml(html: string): string {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
 }
 
 onMounted(fetchNews);
@@ -324,7 +330,7 @@ onMounted(fetchNews);
                             </div>
                         </div>
                         <p class="text-muted-foreground mt-1 line-clamp-2 text-xs">
-                            {{ item.body }}
+                            {{ stripHtml(item.body) }}
                         </p>
                     </div>
                 </div>
@@ -334,7 +340,7 @@ onMounted(fetchNews);
 
     <!-- Create / Edit dialog -->
     <Dialog :open="showForm" @update:open="showForm = $event">
-        <DialogContent class="sm:max-w-xl">
+        <DialogContent class="sm:max-w-2xl">
             <DialogHeader>
                 <DialogTitle>
                     {{ editingItem ? 'Edit News Entry' : 'New News Entry' }}
@@ -362,12 +368,10 @@ onMounted(fetchNews);
                 </div>
 
                 <div class="space-y-2">
-                    <Label for="news-body">Body</Label>
-                    <Textarea
-                        id="news-body"
+                    <Label>Body</Label>
+                    <TiptapEditor
                         v-model="form.body"
                         placeholder="Write the news entry content..."
-                        class="min-h-[120px]"
                     />
                     <p v-if="errors.body" class="text-destructive text-xs">{{ errors.body[0] }}</p>
                 </div>

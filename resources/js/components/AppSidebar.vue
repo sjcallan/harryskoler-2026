@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Newspaper, Radio, Star } from 'lucide-vue-next';
+import { LayoutGrid, Newspaper, Radio, Star, FileText, MessageSquareQuote } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -37,6 +37,16 @@ const mainNavItems: NavItem[] = [
         title: 'Radio Airplay',
         href: '/radio-airplay',
         icon: Radio,
+    },
+    {
+        title: 'Press',
+        href: '/press',
+        icon: FileText,
+    },
+    {
+        title: 'Quotes',
+        href: '/quotes',
+        icon: MessageSquareQuote,
     },
 ];
 

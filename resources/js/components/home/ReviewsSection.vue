@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
+
 interface ReviewItem {
     id: number;
     excerpt: string;
@@ -33,7 +35,7 @@ onMounted(fetchReviews);
 </script>
 
 <template>
-    <section id="reviews" class="section section-dark">
+    <section id="reviews" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Critical Acclaim</span>
             <h2 class="section-title">Reviews</h2>

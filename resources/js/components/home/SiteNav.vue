@@ -1,30 +1,52 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 import type { NavLink } from '@/composables/useScrollTracking';
 
-defineProps<{
+const props = withDefaults(defineProps<{
     scrollY: number;
-    activeSection: string;
+    activeSection?: string;
     navLinks: NavLink[];
-    scrollToSection: (id: string) => void;
-}>();
+    scrollToSection?: (id: string) => void;
+    subpage?: boolean;
+}>(), {
+    activeSection: '',
+    subpage: false,
+});
 
 const mobileOpen = ref(false);
+
+function handleNavClick(id: string) {
+    mobileOpen.value = false;
+    if (!props.subpage && props.scrollToSection) {
+        props.scrollToSection(id);
+    }
+}
 </script>
 
 <template>
-    <nav class="site-nav" :class="{ scrolled: scrollY > 80 }">
-        <a href="#home" class="nav-logo" @click.prevent="scrollToSection('home')">Harry <span>Skoler</span></a>
+    <nav class="site-nav" :class="{ scrolled: subpage || scrollY > 80 }">
+        <component
+            :is="subpage ? Link : 'a'"
+            :href="subpage ? '/' : '#home'"
+            class="nav-logo"
+            @click.prevent="!subpage && scrollToSection?.('home')"
+        >
+            Harry <span>Skoler</span>
+        </component>
         <button class="mobile-toggle" :class="{ open: mobileOpen }" @click="mobileOpen = !mobileOpen">
             <span></span><span></span><span></span>
         </button>
         <ul class="nav-links" :class="{ 'mobile-open': mobileOpen }">
             <li v-for="link in navLinks" :key="link.id">
-                <a :href="'#' + link.id"
-                   :class="{ active: activeSection === link.id }"
-                   @click.prevent="scrollToSection(link.id); mobileOpen = false">
+                <component
+                    :is="subpage ? Link : 'a'"
+                    :href="subpage ? `/#${link.id}` : `#${link.id}`"
+                    :class="{ active: !subpage && activeSection === link.id }"
+                    @click.prevent="handleNavClick(link.id)"
+                >
                     {{ link.label }}
-                </a>
+                </component>
             </li>
         </ul>
     </nav>
@@ -92,13 +114,13 @@ const mobileOpen = ref(false);
     left: 0;
     width: 0%;
     height: 1px;
-    background: var(--red);
+    background: var(--white);
     transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { width: 100%; }
-.nav-links a.active { color: var(--red-bright); }
+.nav-links a.active { color: var(--white); }
 .nav-links a.active::after { width: 100%; }
 
 .mobile-toggle {

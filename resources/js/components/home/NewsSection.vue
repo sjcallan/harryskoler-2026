@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-deep' });
+
 interface NewsItem {
     id: number;
     title: string;
@@ -15,7 +17,7 @@ const loading = ref(true);
 
 function formatDate(dateStr: string): string {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
 }
 
 async function fetchNews() {
@@ -33,7 +35,7 @@ onMounted(fetchNews);
 </script>
 
 <template>
-    <section id="news" class="section section-deep">
+    <section id="news" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Latest</span>
             <h2 class="section-title">News</h2>
@@ -73,7 +75,7 @@ onMounted(fetchNews);
                 <div class="news-card-body">
                     <span class="news-date">{{ formatDate(item.date) }}</span>
                     <h3>{{ item.title }}</h3>
-                    <p>{{ item.body }}</p>
+                    <div class="news-body" v-html="item.body"></div>
                 </div>
             </a>
         </div>
@@ -132,7 +134,7 @@ onMounted(fetchNews);
     font-size: 0.7rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--red);
+    color: rgba(232, 224, 214, 0.85);
     margin-bottom: 0.8rem;
     display: block;
 }
@@ -147,11 +149,68 @@ onMounted(fetchNews);
     letter-spacing: 0.02em;
 }
 
-.news-card p {
+.news-card p,
+.news-body {
     font-size: 0.9rem;
     line-height: 1.7;
     color: rgba(232, 224, 214, 0.7);
     font-weight: 300;
+}
+
+.news-body :deep(p) {
+    margin-bottom: 0.4em;
+}
+
+.news-body :deep(p:last-child) {
+    margin-bottom: 0;
+}
+
+.news-body :deep(a) {
+    color: var(--red, #b8282e);
+    text-decoration: underline;
+}
+
+.news-body :deep(ul),
+.news-body :deep(ol) {
+    padding-left: 1.4em;
+    margin-bottom: 0.4em;
+}
+
+.news-body :deep(ul) {
+    list-style: disc;
+}
+
+.news-body :deep(ol) {
+    list-style: decimal;
+}
+
+.news-body :deep(blockquote) {
+    border-left: 3px solid rgba(232, 224, 214, 0.2);
+    padding-left: 0.75em;
+    margin-left: 0;
+    margin-bottom: 0.4em;
+    font-style: italic;
+}
+
+.news-body :deep(strong) {
+    font-weight: 500;
+    color: rgba(232, 224, 214, 0.85);
+}
+
+.news-body :deep(h2),
+.news-body :deep(h3) {
+    color: var(--white, #fff);
+    font-weight: 500;
+    margin-top: 0.5em;
+    margin-bottom: 0.3em;
+}
+
+.news-body :deep(h2) {
+    font-size: 1.1rem;
+}
+
+.news-body :deep(h3) {
+    font-size: 1rem;
 }
 
 .news-empty {

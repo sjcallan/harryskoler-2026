@@ -1,29 +1,40 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-green' });
+
 const albums = [
-    { title: 'Echoes', cover: 'https://harryskoler.com/images/albums/red-brick-hill-md.png', label: 'Coming Soon' },
-    { title: 'Red Brick Hill', cover: 'https://harryskoler.com/images/albums/red-brick-hill-md.png', label: 'Sunnyside Records · 2024' },
-    { title: 'Living In Sound', cover: 'https://harryskoler.com/images/albums/living-in-sound-md.jpg', label: 'Sunnyside Records · 2022' },
-    { title: 'Two Ones', cover: 'https://harryskoler.com/images/albums/two-ones-md.jpg', label: 'Soliloquy Records' },
-    { title: 'A Work of Heart', cover: 'https://harryskoler.com/images/albums/a-work-of-heart-md.jpg', label: 'Brownstone Recordings' },
-    { title: 'Reflections', cover: 'https://harryskoler.com/images/albums/reflections-md.jpg', label: 'A Tribute to Benny Goodman' },
+    { title: 'Echoes', slug: 'echoes', cover: '/assets/images/albums/echoes.png', label: 'Red Brick Hill · 2025' },
+    { title: 'Red Brick Hill', slug: 'red-brick-hill', cover: '/assets/images/albums/red-brick-hill-md.png', label: 'Sunnyside Records · 2024' },
+    { title: 'Living In Sound', slug: 'living-in-sound', cover: '/assets/images/albums/living-in-sound-md.jpg', label: 'Sunnyside Records · 2022' },
+    { title: 'Two Ones', slug: 'two-ones', cover: '/assets/images/albums/two-ones-md.jpg', label: 'Soliloquy Records' },
+    { title: 'A Work of Heart', slug: 'work-of-heart', cover: '/assets/images/albums/a-work-of-heart-md.jpg', label: 'Brownstone Recordings' },
+    { title: 'Reflections', slug: 'reflections', cover: '/assets/images/albums/reflections-md.jpg', label: 'A Tribute to Benny Goodman' },
+    { title: 'Conversations', slug: 'conversations', cover: '/assets/images/albums/conversations-md.jpg', label: 'Brownstone Recordings · 1995' },
 ];
 </script>
 
 <template>
-    <section id="music" class="section section-green">
+    <section id="music" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Discography</span>
             <h2 class="section-title">Music</h2>
             <div class="section-divider"></div>
         </div>
         <div class="albums-grid reveal">
-            <div :class="['album-card', { 'album-featured': index === 0 }]" v-for="(album, index) in albums" :key="album.title">
+            <component
+                :is="album.slug ? Link : 'div'"
+                v-for="(album, index) in albums"
+                :key="album.title"
+                :href="album.slug ? `/album/${album.slug}` : undefined"
+                :class="['album-card', { 'album-featured': index === 0 }]"
+            >
                 <img :src="album.cover" :alt="album.title" loading="lazy">
                 <div class="album-info">
                     <h3>{{ album.title }}</h3>
                     <span>{{ album.label }}</span>
                 </div>
-            </div>
+            </component>
         </div>
     </section>
 </template>
@@ -43,6 +54,8 @@ const albums = [
     overflow: hidden;
     aspect-ratio: 1;
     background: var(--green-dark);
+    text-decoration: none;
+    display: block;
 }
 
 .album-card img {

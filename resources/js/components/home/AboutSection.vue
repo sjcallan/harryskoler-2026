@@ -1,5 +1,9 @@
+<script setup lang="ts">
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
+</script>
+
 <template>
-    <section id="about" class="section section-dark">
+    <section id="about" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Biography</span>
             <h2 class="section-title">About Harry</h2>
@@ -17,17 +21,18 @@
                 <p>Endorsements include Buffet Crampon and Vandoren. He lives in Bradford, MA with his wife Joanne.</p>
                 <div class="endorsements">
                     <a href="https://vandoren.fr/en/artistes-vandoren/skoler-harry/" target="_blank">
-                        <img src="https://harryskoler.com/images/logos/vandoren-logo.svg" alt="Vandoren" class="endorsement-logo">
+                        <img src="/assets/images/logos/vandoren-logo.svg" alt="Vandoren" class="endorsement-logo">
                     </a>
                     <a href="http://www.buffet-crampon.com/en/artist/harry-skoler/" target="_blank">
-                        <img src="https://harryskoler.com/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
+                        <img src="/assets/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
                     </a>
                 </div>
             </div>
             <div class="about-sidebar reveal">
                 <div class="about-image-stack">
-                    <img src="https://harryskoler.com/images/about/side-image-1.jpg" alt="Harry Skoler" class="about-img">
-                    <img src="https://harryskoler.com/images/about/side-image-2.jpg" alt="Harry Skoler performing" class="about-img">
+                    <img src="/assets/images/about/side-image-1.jpg" alt="Harry Skoler" class="about-img about-img-1">
+                    <img src="/assets/images/about/side-image-2.jpg" alt="Harry Skoler performing" class="about-img about-img-2">
+                    <img src="/assets/images/about/side-image-3.jpg" alt="Harry Skoler" class="about-img about-img-3">
                 </div>
             </div>
         </div>
@@ -80,19 +85,47 @@
 
 .about-image-stack {
     position: relative;
-    height: 500px;
+    height: 720px;
 }
 
 .about-img {
-    width: 85%;
+    width: 220px;
     height: 300px;
     object-fit: cover;
+    object-position: center 15%;
     position: absolute;
-    border: 2px solid rgba(184, 40, 46, 0.3);
+    border: 5px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.about-img:nth-child(1) { top: 0; left: 0; z-index: 3; }
-.about-img:nth-child(2) { top: 80px; left: 15%; z-index: 2; opacity: 0.7; }
+.about-img:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.about-img-1 {
+    top: 0;
+    left: 0;
+    z-index: 3;
+    transform: rotate(-4deg);
+}
+.about-img-1:hover { transform: rotate(-4deg) scale(1.03); }
+
+.about-img-2 {
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%) rotate(3deg);
+    z-index: 2;
+}
+.about-img-2:hover { transform: translateX(-50%) rotate(3deg) scale(1.03); }
+
+.about-img-3 {
+    top: 400px;
+    left: 10px;
+    z-index: 1;
+    transform: rotate(-2.5deg);
+}
+.about-img-3:hover { transform: rotate(-2.5deg) scale(1.03); }
 
 .endorsements {
     display: flex;
@@ -104,7 +137,7 @@
 }
 
 .endorsement-logo {
-    height: 40px;
+    height: 70px;
     opacity: 0.6;
     filter: brightness(0) invert(1);
     transition: opacity 0.3s;
@@ -113,5 +146,26 @@
 
 @media (max-width: 900px) {
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+    .about-image-stack {
+        height: 620px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .about-img {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        width: 200px;
+        height: 270px;
+    }
+
+    .about-img-2 {
+        transform: rotate(3deg);
+    }
+    .about-img-2:hover { transform: rotate(3deg) scale(1.03); }
 }
 </style>

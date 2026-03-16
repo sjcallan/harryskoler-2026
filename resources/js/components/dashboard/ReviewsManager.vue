@@ -14,6 +14,13 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Search,
     Plus,
     Pencil,
@@ -22,10 +29,26 @@ import {
     Quote,
     AlertCircle,
     GripVertical,
+    Disc3,
 } from 'lucide-vue-next';
+
+const albumOptions: { slug: string; title: string }[] = [
+    { slug: 'echoes', title: 'Echoes' },
+    { slug: 'red-brick-hill', title: 'Red Brick Hill' },
+    { slug: 'living-in-sound', title: 'Living In Sound' },
+    { slug: 'two-ones', title: 'Two Ones' },
+    { slug: 'work-of-heart', title: 'A Work of Heart' },
+    { slug: 'reflections', title: 'Reflections on the Art of Swing' },
+    { slug: 'conversations', title: 'Conversations in the Language of Jazz' },
+];
+
+const albumTitleMap: Record<string, string> = Object.fromEntries(
+    albumOptions.map((a) => [a.slug, a.title]),
+);
 
 interface ReviewItem {
     id: number;
+    album_slug: string;
     excerpt: string;
     body: string;
     author: string | null;
@@ -39,6 +62,7 @@ interface ReviewItem {
 const reviews = ref<ReviewItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const albumFilter = ref('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -50,6 +74,7 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error'>('success');
 
 const form = ref({
+    album_slug: '',
     excerpt: '',
     body: '',
     author: '',
@@ -59,15 +84,24 @@ const form = ref({
 });
 
 const filteredReviews = computed(() => {
-    if (!searchQuery.value) return reviews.value;
-    const q = searchQuery.value.toLowerCase();
-    return reviews.value.filter(
-        (item) =>
-            item.excerpt.toLowerCase().includes(q) ||
-            item.body.toLowerCase().includes(q) ||
-            (item.author?.toLowerCase().includes(q) ?? false) ||
-            item.publication.toLowerCase().includes(q),
-    );
+    let result = reviews.value;
+
+    if (albumFilter.value && albumFilter.value !== 'all') {
+        result = result.filter((item) => item.album_slug === albumFilter.value);
+    }
+
+    if (searchQuery.value) {
+        const q = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (item) =>
+                item.excerpt.toLowerCase().includes(q) ||
+                item.body.toLowerCase().includes(q) ||
+                (item.author?.toLowerCase().includes(q) ?? false) ||
+                item.publication.toLowerCase().includes(q),
+        );
+    }
+
+    return result;
 });
 
 function getCsrfToken(): string {
@@ -96,7 +130,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { excerpt: '', body: '', author: '', publication: '', source_url: '', sort_order: 0 };
+    form.value = { album_slug: '', excerpt: '', body: '', author: '', publication: '', source_url: '', sort_order: 0 };
     showForm.value = true;
 }
 
@@ -104,6 +138,7 @@ function openEditForm(item: ReviewItem) {
     editingItem.value = item;
     errors.value = {};
     form.value = {
+        album_slug: item.album_slug,
         excerpt: item.excerpt,
         body: item.body,
         author: item.author ?? '',
@@ -124,6 +159,7 @@ async function saveReview() {
     errors.value = {};
 
     const payload: Record<string, string | number> = {
+        album_slug: form.value.album_slug,
         excerpt: form.value.excerpt,
         body: form.value.body,
         publication: form.value.publication,
@@ -222,14 +258,30 @@ onMounted(fetchReviews);
                 {{ flashMessage }}
             </div>
 
-            <!-- Search -->
-            <div class="relative">
-                <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-                <Input
-                    v-model="searchQuery"
-                    placeholder="Search reviews..."
-                    class="pl-9"
-                />
+            <!-- Search & Album Filter -->
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="relative flex-1">
+                    <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                    <Input
+                        v-model="searchQuery"
+                        placeholder="Search reviews..."
+                        class="pl-9"
+                    />
+                </div>
+                <Select v-model="albumFilter">
+                    <SelectTrigger class="w-full sm:w-[260px]">
+                        <div class="flex items-center gap-2">
+                            <Disc3 class="text-muted-foreground size-3.5 shrink-0" />
+                            <SelectValue placeholder="All Albums" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Albums</SelectItem>
+                        <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                            {{ a.title }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <!-- Loading -->
@@ -244,6 +296,7 @@ onMounted(fetchReviews);
             >
                 <Quote class="size-10 opacity-40" />
                 <p v-if="searchQuery">No results for "{{ searchQuery }}"</p>
+                <p v-else-if="albumFilter !== 'all'">No reviews for this album yet.</p>
                 <p v-else>No reviews yet. Add your first one.</p>
             </div>
 
@@ -265,7 +318,14 @@ onMounted(fetchReviews);
                                 <p class="line-clamp-2 text-sm italic leading-relaxed">
                                     "{{ item.excerpt }}"
                                 </p>
-                                <p class="text-muted-foreground mt-1.5 text-xs">
+                                <p class="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                                    <span
+                                        v-if="item.album_slug"
+                                        class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                                    >
+                                        <Disc3 class="size-2.5" />
+                                        {{ albumTitleMap[item.album_slug] ?? item.album_slug }}
+                                    </span>
                                     <span v-if="item.author" class="text-foreground font-medium">{{ item.author }}</span>
                                     <span v-if="item.author"> &mdash; </span>
                                     <span class="text-primary font-medium">{{ item.publication }}</span>
@@ -315,6 +375,21 @@ onMounted(fetchReviews);
             </DialogHeader>
 
             <form @submit.prevent="saveReview" class="space-y-4">
+                <div class="space-y-2">
+                    <Label for="review-album">Album</Label>
+                    <Select v-model="form.album_slug">
+                        <SelectTrigger id="review-album">
+                            <SelectValue placeholder="Select an album..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                                {{ a.title }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <Label for="review-publication">Publication</Label>

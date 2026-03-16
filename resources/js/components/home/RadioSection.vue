@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-red-accent' });
+
 interface RadioAirplayItem {
     id: number;
     rank: number;
@@ -26,7 +28,7 @@ onMounted(fetchRadioAirplays);
 </script>
 
 <template>
-    <section id="radio" class="section section-red-accent">
+    <section id="radio" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Charts</span>
             <h2 class="section-title">Radio Airplay</h2>

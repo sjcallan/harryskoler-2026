@@ -1,5 +1,9 @@
+<script setup lang="ts">
+withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
+</script>
+
 <template>
-    <section id="events" class="section section-dark">
+    <section id="events" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Live</span>
             <h2 class="section-title">Events</h2>
