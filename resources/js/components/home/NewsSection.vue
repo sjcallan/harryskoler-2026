@@ -92,13 +92,15 @@ onMounted(fetchNews);
 }
 
 .news-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
     overflow: hidden;
     transition: all 0.4s;
     text-decoration: none;
-    color: inherit;
+    color: #1a1a1a;
     display: block;
+    border-radius: 2px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 .news-card--linked {
@@ -108,6 +110,7 @@ onMounted(fetchNews);
 .news-card:hover {
     border-color: rgba(184, 40, 46, 0.3);
     transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 
 .news-card-image {
@@ -134,7 +137,7 @@ onMounted(fetchNews);
     font-size: 0.7rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: rgba(232, 224, 214, 0.85);
+    color: #888;
     margin-bottom: 0.8rem;
     display: block;
 }
@@ -144,7 +147,7 @@ onMounted(fetchNews);
     font-weight: 500;
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
-    color: var(--white);
+    color: #1a1a1a;
     line-height: 1.4;
     letter-spacing: 0.02em;
 }
@@ -153,7 +156,7 @@ onMounted(fetchNews);
 .news-body {
     font-size: 0.9rem;
     line-height: 1.7;
-    color: rgba(232, 224, 214, 0.7);
+    color: #444;
     font-weight: 300;
 }
 
@@ -185,7 +188,7 @@ onMounted(fetchNews);
 }
 
 .news-body :deep(blockquote) {
-    border-left: 3px solid rgba(232, 224, 214, 0.2);
+    border-left: 3px solid rgba(0, 0, 0, 0.15);
     padding-left: 0.75em;
     margin-left: 0;
     margin-bottom: 0.4em;
@@ -194,12 +197,12 @@ onMounted(fetchNews);
 
 .news-body :deep(strong) {
     font-weight: 500;
-    color: rgba(232, 224, 214, 0.85);
+    color: #1a1a1a;
 }
 
 .news-body :deep(h2),
 .news-body :deep(h3) {
-    color: var(--white, #fff);
+    color: #1a1a1a;
     font-weight: 500;
     margin-top: 0.5em;
     margin-bottom: 0.3em;
@@ -223,10 +226,12 @@ onMounted(fetchNews);
 /* Skeleton loading */
 .news-skeleton {
     pointer-events: none;
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.08);
 }
 
 .skeleton-shimmer {
-    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
     height: 220px;
@@ -235,7 +240,7 @@ onMounted(fetchNews);
 .skeleton-line {
     height: 0.7rem;
     border-radius: 4px;
-    background: rgba(255,255,255,0.06);
+    background: #eee;
     margin-bottom: 0.8rem;
 }
 
