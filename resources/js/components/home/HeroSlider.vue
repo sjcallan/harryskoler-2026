@@ -621,7 +621,7 @@ onUnmounted(() => {
 
 .slider-dots {
     position: absolute;
-    bottom: calc(90px + 1.5rem);
+    bottom: calc(160px + 1.5rem);
     left: 50%;
     transform: translateX(-50%);
     z-index: 20;

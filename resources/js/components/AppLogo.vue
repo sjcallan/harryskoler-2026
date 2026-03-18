@@ -3,9 +3,10 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 </script>
 
 <template>
-    <div class="ml-1 grid flex-1 text-left text-sm">
-        <span class="mb-0.5 truncate leading-tight font-semibold"
-            >HarrySkoler.com</span
+    <div class="flex items-center gap-2">
+        <AppLogoIcon class="size-7 fill-current" />
+        <span class="truncate text-sm leading-tight font-semibold tracking-tight"
+            >Harry Skoler</span
         >
     </div>
 </template>

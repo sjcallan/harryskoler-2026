@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('radio-airplay', 'admin/RadioAirplay')->name('radio-airplay');
     Route::inertia('press', 'admin/Press')->name('press');
     Route::inertia('quotes', 'admin/Quotes')->name('quotes');
+    Route::inertia('users', 'admin/Users')->name('users');
 });
 
 require __DIR__.'/settings.php';

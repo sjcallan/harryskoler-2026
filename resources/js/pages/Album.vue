@@ -20,7 +20,7 @@ interface Album {
     bandcampUrl?: string;
     appleMusicUrl?: string;
     artwork?: string;
-    story?: { heading: string; paragraphs: string[] };
+    story?: { heading?: string; paragraphs?: string[]; sections?: { subheading: string; paragraphs: string[] }[] };
 }
 
 const albums: Album[] = [
@@ -46,6 +46,33 @@ const albums: Album[] = [
         description: [],
         spotifyEmbed: '',
         artwork: 'Illustration and layout by Julian Montague',
+        story: {
+            sections: [
+                {
+                    subheading: 'Teddy Wilson',
+                    paragraphs: [
+                        'When I was fourteen I saw Teddy Wilson in Upstate New York. This was the first time I heard live jazz.',
+                        'He was playing in a tiny restaurant with bass.',
+                        'I was seated at a table next to the piano, just a few feet from him, his left hand playing stride a few inches from me.',
+                        'Nobody was listening, all loudly talking. I was amazed by his playing, and was silent.',
+                        'After each solo, I applauded, aghast that I might have been the only one applauding, or one of few.',
+                        'After I applauded, each and every time, he turned his head towards me and said "Thank You."',
+                        'That one concert changed my life. The next morning, as I delivered my newspapers, in my cloth bag that held the papers, was the cassette player that played the music I had heard the night before. Streets were silent and people were asleep in their homes.',
+                        'Stompin \'At The Savoy played out of my newspaper bag the entire route.',
+                        'I still have the tape.',
+                    ],
+                },
+                {
+                    subheading: 'Rahsaan Roland Kirk',
+                    paragraphs: [
+                        'In 1975 I saw Rahsaan Roland Kirk at the Jazz Workshop in Boston. If you got there early, you could sit in the front row, and for 3 1/2 dollars, you could watch all three sets. Sometimes you were able to talk to the musicians.',
+                        'On this night, I arrived early to find Rahsaan Roland Kirk practicing one of the early electronic wind instruments, which I know now was a Lyricon. It was a metal tube connected to an amp, and I\'d never seen anything like it. I approached him, and asked if it was some kind of an electric saxophone.',
+                        'He started screaming "I don\'t play electric saxophone!!! I play natural saxophone!!! I play natural saxophone!!!"',
+                        'I was horrified, and felt so badly that I offended him!',
+                    ],
+                },
+            ],
+        },
     },
     {
         slug: 'red-brick-hill',
@@ -377,14 +404,22 @@ onUnmounted(() => {
                 </div>
             </section>
 
-            <!-- Story (Red Brick Hill) -->
+            <!-- Story -->
             <section v-if="album.story" id="album-story" class="album-story-section">
                 <div class="story-inner">
-                    <h2 class="story-heading">{{ album.story.heading }}</h2>
-                    <div class="story-divider"></div>
-                    <div class="story-body">
+                    <h2 v-if="album.story.heading" class="story-heading">{{ album.story.heading }}</h2>
+                    <div v-if="album.story.heading" class="story-divider"></div>
+                    <div v-if="album.story.paragraphs" class="story-body">
                         <p v-for="(p, i) in album.story.paragraphs" :key="i">{{ p }}</p>
                     </div>
+                    <template v-if="album.story.sections">
+                        <div v-for="(section, si) in album.story.sections" :key="si" class="story-section">
+                            <h3 class="story-subheading">{{ section.subheading }}</h3>
+                            <div class="story-body">
+                                <p v-for="(p, pi) in section.paragraphs" :key="pi">{{ p }}</p>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </section>
 
@@ -679,6 +714,27 @@ onUnmounted(() => {
     height: 2px;
     background: var(--red);
     margin: 1.5rem auto 3rem;
+}
+
+.story-section {
+    margin-bottom: 3.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.story-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.story-subheading {
+    font-family: 'AkzidenzGroteskPro', 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.02em;
 }
 
 .story-body p {

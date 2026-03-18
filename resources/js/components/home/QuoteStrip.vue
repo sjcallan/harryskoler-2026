@@ -100,7 +100,8 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     padding: 1.8rem 3rem;
-    min-height: 90px;
+    height: 160px;
+    overflow: hidden;
     position: relative;
     z-index: 5;
 }
@@ -155,7 +156,7 @@ onUnmounted(() => {
 @media (max-width: 600px) {
     .quote-strip {
         padding: 1.4rem 1.5rem;
-        min-height: 80px;
+        height: 140px;
     }
 }
 </style>
