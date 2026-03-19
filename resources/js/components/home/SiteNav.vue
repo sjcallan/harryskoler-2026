@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import SignatureLogo from '@/components/SignatureLogo.vue';
 import type { NavLink } from '@/composables/useScrollTracking';
 
 const props = withDefaults(defineProps<{
@@ -41,7 +42,7 @@ function handleNavClick(event: Event, id: string) {
             class="nav-logo"
             @click="handleLogoClick"
         >
-            Harry <span>Skoler</span>
+            <SignatureLogo width="160" color="#ffffff" />
         </component>
         <button class="mobile-toggle" :class="{ open: mobileOpen }" @click="mobileOpen = !mobileOpen">
             <span></span><span></span><span></span>
@@ -85,17 +86,15 @@ function handleNavClick(event: Event, id: string) {
 }
 
 .nav-logo {
-    font-family: 'AkzidenzGroteskPro', 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--white);
+    display: flex;
+    align-items: center;
     text-decoration: none;
     transition: opacity 0.3s;
+    margin: 0 0 -1rem 0;
+    position: relative;
+    z-index: 1;
 }
 .nav-logo:hover { opacity: 0.8; }
-.nav-logo span { color: var(--red); }
 
 .nav-links {
     display: flex;

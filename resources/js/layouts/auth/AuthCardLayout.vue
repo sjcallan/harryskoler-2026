@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import SignatureLogo from '@/components/SignatureLogo.vue';
 import {
     Card,
     CardContent,
@@ -23,12 +23,9 @@ defineProps<{
         <div class="relative z-10 flex w-full max-w-md flex-col gap-6">
             <Link
                 :href="home()"
-                class="flex flex-col items-center gap-2 self-center font-medium transition-opacity hover:opacity-80"
+                class="flex flex-col items-center self-center font-medium transition-opacity hover:opacity-80"
             >
-                <AppLogoIcon class="size-10 text-[#c9a96e]" />
-                <span class="font-['Playfair_Display',Georgia,serif] text-lg tracking-wide text-foreground">
-                    Harry Skoler
-                </span>
+                <SignatureLogo width="200" color="#c9a96e" />
             </Link>
 
             <div class="flex flex-col gap-6">

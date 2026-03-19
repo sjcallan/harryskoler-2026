@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import SignatureLogo from '@/components/SignatureLogo.vue';
 import { home } from '@/routes';
 
 defineProps<{
@@ -18,12 +18,9 @@ defineProps<{
                 <div class="flex flex-col items-center gap-5">
                     <Link
                         :href="home()"
-                        class="flex flex-col items-center gap-3 font-medium transition-opacity hover:opacity-80"
+                        class="flex flex-col items-center font-medium transition-opacity hover:opacity-80"
                     >
-                        <AppLogoIcon class="size-10 text-[#c9a96e]" />
-                        <span class="font-['Playfair_Display',Georgia,serif] text-lg tracking-wide text-foreground">
-                            Harry Skoler
-                        </span>
+                        <SignatureLogo width="200" color="#c9a96e" />
                     </Link>
                     <div class="mx-auto h-px w-12 bg-[#B8282E]"></div>
                     <div class="space-y-2 text-center">

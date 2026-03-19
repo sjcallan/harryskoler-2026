@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
+import SignatureLogo from '@/components/SignatureLogo.vue';
 </script>
 
 <template>
-    <div class="flex items-center gap-2">
-        <AppLogoIcon class="size-7 fill-current" />
-        <span class="truncate text-sm leading-tight font-semibold tracking-tight"
-            >Harry Skoler</span
-        >
+    <div class="flex items-center">
+        <SignatureLogo width="120" color="currentColor" />
     </div>
 </template>
