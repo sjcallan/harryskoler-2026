@@ -14,13 +14,13 @@ interface ReviewItem {
 }
 
 const albumFilters = [
-    { slug: 'echoes', title: 'Echoes', cover: '/assets/images/albums/echoes.png' },
-    { slug: 'red-brick-hill', title: 'Red Brick Hill', cover: '/assets/images/albums/red-brick-hill-md.png' },
-    { slug: 'living-in-sound', title: 'Living In Sound', cover: '/assets/images/albums/living-in-sound-md.jpg' },
-    { slug: 'two-ones', title: 'Two Ones', cover: '/assets/images/albums/two-ones-md.jpg' },
-    { slug: 'work-of-heart', title: 'A Work of Heart', cover: '/assets/images/albums/a-work-of-heart-md.jpg' },
-    { slug: 'reflections', title: 'Reflections', cover: '/assets/images/albums/reflections-md.jpg' },
-    { slug: 'conversations', title: 'Conversations', cover: '/assets/images/albums/conversations-md.jpg' },
+    { slug: 'echoes', title: 'Echoes', cover: '/images/albums/echoes.png' },
+    { slug: 'red-brick-hill', title: 'Red Brick Hill', cover: '/images/albums/red-brick-hill-md.png' },
+    { slug: 'living-in-sound', title: 'Living In Sound', cover: '/images/albums/living-in-sound-md.jpg' },
+    { slug: 'two-ones', title: 'Two Ones', cover: '/images/albums/two-ones-md.jpg' },
+    { slug: 'work-of-heart', title: 'A Work of Heart', cover: '/images/albums/a-work-of-heart-md.jpg' },
+    { slug: 'reflections', title: 'Reflections', cover: '/images/albums/reflections-md.jpg' },
+    { slug: 'conversations', title: 'Conversations', cover: '/images/albums/conversations-md.jpg' },
 ];
 
 const reviews = ref<ReviewItem[]>([]);

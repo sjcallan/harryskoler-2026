@@ -4,13 +4,13 @@ import { Link } from '@inertiajs/vue3';
 withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-green' });
 
 const albums = [
-    { title: 'Echoes', slug: 'echoes', cover: '/assets/images/albums/echoes.png', label: 'Red Brick Hill · 2025' },
-    { title: 'Red Brick Hill', slug: 'red-brick-hill', cover: '/assets/images/albums/red-brick-hill-md.png', label: 'Sunnyside Records · 2024' },
-    { title: 'Living In Sound', slug: 'living-in-sound', cover: '/assets/images/albums/living-in-sound-md.jpg', label: 'Sunnyside Records · 2022' },
-    { title: 'Two Ones', slug: 'two-ones', cover: '/assets/images/albums/two-ones-md.jpg', label: 'Soliloquy Records' },
-    { title: 'A Work of Heart', slug: 'work-of-heart', cover: '/assets/images/albums/a-work-of-heart-md.jpg', label: 'Brownstone Recordings' },
-    { title: 'Reflections', slug: 'reflections', cover: '/assets/images/albums/reflections-md.jpg', label: 'A Tribute to Benny Goodman' },
-    { title: 'Conversations', slug: 'conversations', cover: '/assets/images/albums/conversations-md.jpg', label: 'Brownstone Recordings · 1995' },
+    { title: 'Echoes', slug: 'echoes', cover: '/images/albums/echoes.png', label: 'Red Brick Hill · 2025' },
+    { title: 'Red Brick Hill', slug: 'red-brick-hill', cover: '/images/albums/red-brick-hill-md.png', label: 'Sunnyside Records · 2024' },
+    { title: 'Living In Sound', slug: 'living-in-sound', cover: '/images/albums/living-in-sound-md.jpg', label: 'Sunnyside Records · 2022' },
+    { title: 'Two Ones', slug: 'two-ones', cover: '/images/albums/two-ones-md.jpg', label: 'Soliloquy Records' },
+    { title: 'A Work of Heart', slug: 'work-of-heart', cover: '/images/albums/a-work-of-heart-md.jpg', label: 'Brownstone Recordings' },
+    { title: 'Reflections', slug: 'reflections', cover: '/images/albums/reflections-md.jpg', label: 'A Tribute to Benny Goodman' },
+    { title: 'Conversations', slug: 'conversations', cover: '/images/albums/conversations-md.jpg', label: 'Brownstone Recordings · 1995' },
 ];
 </script>
 

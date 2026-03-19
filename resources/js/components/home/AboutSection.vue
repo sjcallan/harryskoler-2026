@@ -21,18 +21,18 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
                 <p>Endorsements include Buffet Crampon and Vandoren. He lives in Bradford, MA with his wife Joanne.</p>
                 <div class="endorsements">
                     <a href="https://vandoren.fr/en/artistes-vandoren/skoler-harry/" target="_blank">
-                        <img src="/assets/images/logos/vandoren-logo.svg" alt="Vandoren" class="endorsement-logo">
+                        <img src="/images/logos/vandoren-logo.svg" alt="Vandoren" class="endorsement-logo">
                     </a>
                     <a href="http://www.buffet-crampon.com/en/artist/harry-skoler/" target="_blank">
-                        <img src="/assets/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
+                        <img src="/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
                     </a>
                 </div>
             </div>
             <div class="about-sidebar reveal">
                 <div class="about-image-stack">
-                    <img src="/assets/images/about/side-image-1.jpg" alt="Harry Skoler" class="about-img about-img-1">
-                    <img src="/assets/images/about/side-image-2.jpg" alt="Harry Skoler performing" class="about-img about-img-2">
-                    <img src="/assets/images/about/side-image-3.jpg" alt="Harry Skoler" class="about-img about-img-3">
+                    <img src="/images/about/side-image-1.jpg" alt="Harry Skoler" class="about-img about-img-1">
+                    <img src="/images/about/side-image-2.jpg" alt="Harry Skoler performing" class="about-img about-img-2">
+                    <img src="/images/about/side-image-3.jpg" alt="Harry Skoler" class="about-img about-img-3">
                 </div>
             </div>
         </div>

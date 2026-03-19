@@ -56,7 +56,7 @@ onUnmounted(() => {
                     </div>
                     <div class="hero-content hero-content--album">
                         <div class="album-cover-wrap">
-                            <img src="/assets/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" />
+                            <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" />
                         </div>
                         <div class="hero-cta-row hero-cta-row--echoes">
                             <a href="https://harryskoler.bandcamp.com/" target="_blank" class="cta-btn cta-btn--echoes">Bandcamp</a>
@@ -72,7 +72,7 @@ onUnmounted(() => {
                         <div class="rbh-cover-side">
                             <div class="rbh-cover-wrap">
                                 <a href="https://harryskoler.bandcamp.com/album/red-brick-hill" target="_blank">
-                                    <img src="/assets/images/albums/red-brick-hill-md.png" alt="Red Brick Hill" class="rbh-cover" />
+                                    <img src="/images/albums/red-brick-hill-md.png" alt="Red Brick Hill" class="rbh-cover" />
                                 </a>
                             </div>
                         </div>
@@ -98,7 +98,7 @@ onUnmounted(() => {
                             <ul class="rbh-icons">
                                 <li>
                                     <a href="https://www.sunnysiderecords.com/" target="_blank" aria-label="Sunnyside Records">
-                                        <img src="/assets/images/logos/sunnyside-logo-white.png" alt="Sunnyside Records" class="rbh-sunnyside-logo" />
+                                        <img src="/images/logos/sunnyside-logo-white.png" alt="Sunnyside Records" class="rbh-sunnyside-logo" />
                                     </a>
                                 </li>
                                 <li>
@@ -140,7 +140,7 @@ onUnmounted(() => {
                         </div>
                         <div class="lis-album-wrap">
                             <a href="https://harryskoler.bandcamp.com/album/living-in-sound-the-music-of-charles-mingus" target="_blank">
-                                <img src="/assets/images/albums/living-in-sound-md.jpg" alt="Living In Sound" class="lis-album-cover" />
+                                <img src="/images/albums/living-in-sound-md.jpg" alt="Living In Sound" class="lis-album-cover" />
                             </a>
                         </div>
                         <ul class="lis-icons">
@@ -275,7 +275,7 @@ onUnmounted(() => {
 .rbh-bg {
     position: absolute;
     inset: 0;
-    background: url('/assets/images/homepage-slider/rbh/background.png') center/cover no-repeat;
+    background: url('/images/homepage-slider/rbh/background.png') center/cover no-repeat;
     z-index: 0;
 }
 
@@ -419,7 +419,7 @@ onUnmounted(() => {
 .lis-bg {
     position: absolute;
     inset: 0;
-    background: url('/assets/images/homepage-slider/living-in-sound.jpg') center/cover no-repeat;
+    background: url('/images/homepage-slider/living-in-sound.jpg') center/cover no-repeat;
     z-index: 0;
 }
 

@@ -30,7 +30,7 @@ const albums: Album[] = [
         year: '2025',
         label: 'Red Brick Hill',
         catalogNumber: 'RBH 2131',
-        cover: '/assets/images/albums/echoes.png',
+        cover: '/images/albums/echoes.png',
         tracks: [
             'Evocation*', 'Study in Orange', 'JW, Michelangelo & the 40 Cent Burger',
             'Everything\'s Cool, Everything\'s Cool!', 'Marian', 'Reminiscence*',
@@ -174,7 +174,7 @@ const albums: Album[] = [
         year: '2024',
         label: 'Sunnyside Records',
         catalogNumber: 'SSC 1748',
-        cover: '/assets/images/albums/red-brick-hill-md.png',
+        cover: '/images/albums/red-brick-hill-md.png',
         tracks: [
             'Last Star, Last Night (prologue)', 'NanCee', 'ascent', 'blue, mostly',
             'abyss', 'Last Star, Last Night', 'AppleHands', 'Beneath Bequeath',
@@ -217,7 +217,7 @@ const albums: Album[] = [
         year: '2022',
         label: 'Sunnyside Records',
         catalogNumber: 'SSC 1665',
-        cover: '/assets/images/albums/living-in-sound-md.jpg',
+        cover: '/images/albums/living-in-sound-md.jpg',
         tracks: [
             'Goodbye Pork Pie Hat', 'Peggy\'s Blue Skylight', 'Duke Ellington\'s Sound of Life',
             'Remember Rockefeller at Attica', 'Newcomer', 'Moves',
@@ -245,7 +245,7 @@ const albums: Album[] = [
         title: 'Two Ones',
         year: '2009',
         label: 'Soliloquy Records',
-        cover: '/assets/images/albums/two-ones-md.jpg',
+        cover: '/images/albums/two-ones-md.jpg',
         tracks: [
             'Leaves of Autumn', 'Two as One', 'Alpine Sunset', 'Joyful Sorrow',
             'Giorgio\'s Theme', 'Piazzolla', 'Silent Serenity', 'Dad\'s Clarinet*',
@@ -269,7 +269,7 @@ const albums: Album[] = [
         title: 'A Work of Heart',
         year: '2000',
         label: 'Brownstone Recordings',
-        cover: '/assets/images/albums/a-work-of-heart-md.jpg',
+        cover: '/images/albums/a-work-of-heart-md.jpg',
         tracks: [
             'How Am I To Know', 'Coisa Feita', 'Don\'t Ever Go Away',
             'Portrait Of Daniel', 'Estate', 'Ev\'ry Time We Say Goodbye',
@@ -306,7 +306,7 @@ const albums: Album[] = [
         subtitle: 'A Tribute to Benny Goodman',
         year: '1996',
         label: 'Brownstone Recordings',
-        cover: '/assets/images/albums/reflections-md.jpg',
+        cover: '/images/albums/reflections-md.jpg',
         tracks: [
             'Topsy', 'Don\'t Be That Way', 'Undecided', 'Benny',
             'After You\'ve Gone', 'Rose Room', 'Handful of Keys', 'A Smooth One',
@@ -329,7 +329,7 @@ const albums: Album[] = [
         title: 'Conversations in the Language of Jazz',
         year: '1995',
         label: 'Brownstone Recordings',
-        cover: '/assets/images/albums/conversations-md.jpg',
+        cover: '/images/albums/conversations-md.jpg',
         tracks: [
             'If I Had You', 'Stompin\' at the Savoy', 'Memories of You',
             'The Shining Sea', 'Somewhere', 'Sweet Lorraine', 'The Sweetest Sounds',

@@ -12,42 +12,42 @@ interface GalleryImage {
 
 const galleryImages: GalleryImage[] = [
     {
-        src: '/assets/images/media/thumbnails/wayland/harry-skoler-wayland-ma-1.jpg',
-        full: '/assets/images/media/full/wayland/harry-skoler-wayland-ma-1.jpg',
+        src: '/images/media/thumbnails/wayland/harry-skoler-wayland-ma-1.jpg',
+        full: '/images/media/full/wayland/harry-skoler-wayland-ma-1.jpg',
         caption: 'Wayland, MA 2023',
         credit: 'Photo by Jean-Pierre Ducondi',
     },
     {
-        src: '/assets/images/about/side-image-3.jpg',
-        full: '/assets/images/about/side-image-3.jpg',
+        src: '/images/about/side-image-3.jpg',
+        full: '/images/about/side-image-3.jpg',
         caption: 'Harry Skoler',
     },
     {
-        src: '/assets/images/media/thumbnails/wayland/harry-skoler-wayland-ma-2.jpg',
-        full: '/assets/images/media/full/wayland/harry-skoler-wayland-ma-2.jpg',
+        src: '/images/media/thumbnails/wayland/harry-skoler-wayland-ma-2.jpg',
+        full: '/images/media/full/wayland/harry-skoler-wayland-ma-2.jpg',
         caption: 'Wayland, MA 2023',
         credit: 'Photo by Jean-Pierre Ducondi',
     },
     {
-        src: '/assets/images/cartoon.jpg',
-        full: '/assets/images/cartoon.jpg',
+        src: '/images/cartoon.jpg',
+        full: '/images/cartoon.jpg',
         caption: "How Harry's life was influenced by Charles Mingus",
         credit: 'Artwork by Dave Chisholm',
     },
     {
-        src: '/assets/images/media/thumbnails/wayland/harry-skoler-wayland-ma-3.jpg',
-        full: '/assets/images/media/full/wayland/harry-skoler-wayland-ma-3.jpg',
+        src: '/images/media/thumbnails/wayland/harry-skoler-wayland-ma-3.jpg',
+        full: '/images/media/full/wayland/harry-skoler-wayland-ma-3.jpg',
         caption: 'Wayland, MA 2023',
         credit: 'Photo by Jean-Pierre Ducondi',
     },
     {
-        src: '/assets/images/events/arts-wayland-4-6-25.png',
-        full: '/assets/images/events/arts-wayland-4-6-25.png',
+        src: '/images/events/arts-wayland-4-6-25.png',
+        full: '/images/events/arts-wayland-4-6-25.png',
         caption: 'Arts Wayland 2025',
     },
     {
-        src: '/assets/images/about/side-image-1.jpg',
-        full: '/assets/images/about/side-image-1.jpg',
+        src: '/images/about/side-image-1.jpg',
+        full: '/images/about/side-image-1.jpg',
         caption: 'Harry Skoler',
     },
 ];
