@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import SiteNav from '@/components/home/SiteNav.vue';
 import SiteFooter from '@/components/home/SiteFooter.vue';
+import ScrollToTop from '@/components/home/ScrollToTop.vue';
 import '../../css/home.css';
 
 const navLinks = [
@@ -47,5 +48,7 @@ onUnmounted(() => {
             :nav-links="navLinks"
             :subpage="true"
         />
+
+        <ScrollToTop />
     </div>
 </template>

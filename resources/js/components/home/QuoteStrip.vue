@@ -16,6 +16,8 @@ const loaded = ref(false);
 let shuffled: number[] = [];
 let shufflePos = 0;
 let cycleTimer: ReturnType<typeof setTimeout> | null = null;
+const history: number[] = [];
+let historyPos = -1;
 
 function buildShuffledOrder() {
     shuffled = quotes.value.map((_, i) => i);
@@ -37,16 +39,45 @@ function nextRandomIndex(): number {
     return shuffled[shufflePos++];
 }
 
-function showNext() {
-    visible.value = false;
-
-    setTimeout(() => {
-        currentIndex.value = nextRandomIndex();
-        visible.value = true;
-
-        cycleTimer = setTimeout(showNext, 8000);
-    }, 600);
+function resetCycleTimer() {
+    if (cycleTimer) clearTimeout(cycleTimer);
+    cycleTimer = setTimeout(showNext, 8000);
 }
+
+function transitionTo(index: number) {
+    visible.value = false;
+    setTimeout(() => {
+        currentIndex.value = index;
+        visible.value = true;
+        resetCycleTimer();
+    }, 400);
+}
+
+function showNext() {
+    const idx = nextRandomIndex();
+    history.splice(historyPos + 1);
+    history.push(idx);
+    historyPos = history.length - 1;
+    transitionTo(idx);
+}
+
+function goNext() {
+    if (historyPos < history.length - 1) {
+        historyPos++;
+        transitionTo(history[historyPos]);
+    } else {
+        showNext();
+    }
+}
+
+function goPrev() {
+    if (historyPos > 0) {
+        historyPos--;
+        transitionTo(history[historyPos]);
+    }
+}
+
+const canGoPrev = computed(() => historyPos > 0);
 
 const currentQuote = computed(() => {
     if (currentIndex.value < 0 || !quotes.value.length) return null;
@@ -61,7 +92,10 @@ async function fetchQuotes() {
             quotes.value = data;
             loaded.value = true;
             buildShuffledOrder();
-            currentIndex.value = nextRandomIndex();
+            const firstIdx = nextRandomIndex();
+            history.push(firstIdx);
+            historyPos = 0;
+            currentIndex.value = firstIdx;
             setTimeout(() => { visible.value = true; }, 100);
             cycleTimer = setTimeout(showNext, 8000);
         }
@@ -79,6 +113,18 @@ onUnmounted(() => {
 
 <template>
     <div class="quote-strip" v-if="loaded">
+        <button
+            class="quote-arrow quote-arrow--left"
+            :class="{ 'quote-arrow--disabled': !canGoPrev }"
+            :disabled="!canGoPrev"
+            @click="goPrev"
+            aria-label="Previous quote"
+        >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M13 4L7 10L13 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
         <div class="quote-inner" :class="{ 'quote-visible': visible }">
             <template v-if="currentQuote">
                 <p class="quote-text" v-html="'&ldquo;' + currentQuote.quote + '&rdquo;'"></p>
@@ -89,6 +135,16 @@ onUnmounted(() => {
                 </p>
             </template>
         </div>
+
+        <button
+            class="quote-arrow quote-arrow--right"
+            @click="goNext"
+            aria-label="Next quote"
+        >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
     </div>
 </template>
 
@@ -100,10 +156,35 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     padding: 1.8rem 3rem;
-    height: 160px;
-    overflow: hidden;
+    min-height: 160px;
     position: relative;
     z-index: 5;
+}
+
+.quote-arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(232, 224, 214, 0.08);
+    color: rgba(232, 224, 214, 0.5);
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+.quote-arrow:hover {
+    background: rgba(232, 224, 214, 0.15);
+    color: rgba(232, 224, 214, 0.85);
+}
+
+.quote-arrow--disabled {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
 }
 
 .quote-inner {
@@ -113,6 +194,9 @@ onUnmounted(() => {
     transform: translateY(6px);
     transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
                 transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    padding: 0 1.5rem;
+    flex: 1;
+    min-width: 0;
 }
 
 .quote-inner.quote-visible {
@@ -155,8 +239,22 @@ onUnmounted(() => {
 
 @media (max-width: 600px) {
     .quote-strip {
-        padding: 1.4rem 1.5rem;
-        height: 140px;
+        padding: 1.4rem 1rem;
+        min-height: 140px;
+    }
+
+    .quote-arrow {
+        width: 30px;
+        height: 30px;
+    }
+
+    .quote-arrow svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .quote-inner {
+        padding: 0 0.75rem;
     }
 }
 </style>

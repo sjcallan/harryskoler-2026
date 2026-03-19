@@ -40,9 +40,10 @@
     background: var(--black);
     color: var(--white);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-html {
+html, body {
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--red) var(--green-dark);

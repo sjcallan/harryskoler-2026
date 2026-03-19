@@ -678,24 +678,37 @@ onUnmounted(() => {
    ============================== */
 
 @media (max-width: 900px) {
+    .hero-content { padding: 0 4rem; }
     .rbh-layout {
         flex-direction: column;
         gap: 2rem;
         text-align: center;
+        width: 100%;
+        padding: 0 4rem;
+        box-sizing: border-box;
     }
     .rbh-cover { width: clamp(200px, 50vw, 300px); }
     .rbh-story { max-width: 100%; }
     .rbh-icons { justify-content: center; }
+    .lis-content {
+        width: 100%;
+        padding-left: 4rem;
+        padding-right: 4rem;
+        box-sizing: border-box;
+    }
     .slider-arrow { width: 42px; height: 42px; }
     .slider-arrow--prev { left: 1rem; }
     .slider-arrow--next { right: 1rem; }
 }
 
 @media (max-width: 600px) {
-    .rbh-layout { gap: 1.5rem; }
+    .hero-content { padding: 0 3.5rem; }
+    .rbh-layout { gap: 1.5rem; padding: 0 3.5rem; }
     .rbh-cover { width: 220px; }
-    .rbh-promo { font-size: 0.9rem; }
+    .rbh-promo { display: none; }
+    .lis-content { padding-left: 3.5rem; padding-right: 3.5rem; }
     .lis-promo { font-size: 1rem; }
     .lis-album-cover { width: 130px; }
+    .hero-cta-row { flex-direction: column; align-items: center; gap: 0.8rem; }
 }
 </style>

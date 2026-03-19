@@ -15,6 +15,7 @@ import PressSection from '@/components/home/PressSection.vue';
 import GallerySection from '@/components/home/GallerySection.vue';
 import EventsSection from '@/components/home/EventsSection.vue';
 import SiteFooter from '@/components/home/SiteFooter.vue';
+import ScrollToTop from '@/components/home/ScrollToTop.vue';
 import '../../css/home.css';
 
 const navLinks = [
@@ -77,5 +78,7 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
             :nav-links="navLinks"
             :scroll-to-section="scrollToSection"
         />
+
+        <ScrollToTop />
     </div>
 </template>
