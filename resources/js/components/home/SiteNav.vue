@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import SignatureLogo from '@/components/SignatureLogo.vue';
+import SignatureAnimation from '@/components/SignatureAnimation.vue';
 import type { NavLink } from '@/composables/useScrollTracking';
 
 const props = withDefaults(defineProps<{
@@ -42,7 +42,7 @@ function handleNavClick(event: Event, id: string) {
             class="nav-logo"
             @click="handleLogoClick"
         >
-            <SignatureLogo width="160" color="#ffffff" />
+            <SignatureAnimation width="160" color="#ffffff" :speed="3" />
         </component>
         <button class="mobile-toggle" :class="{ open: mobileOpen }" @click="mobileOpen = !mobileOpen">
             <span></span><span></span><span></span>
