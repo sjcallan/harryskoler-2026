@@ -41,6 +41,11 @@ const galleryImages: GalleryImage[] = [
         credit: 'Photo by Jean-Pierre Ducondi',
     },
     {
+        src: '/assets/images/events/arts-wayland-4-6-25.png',
+        full: '/assets/images/events/arts-wayland-4-6-25.png',
+        caption: 'Arts Wayland 2025',
+    },
+    {
         src: '/assets/images/about/side-image-1.jpg',
         full: '/assets/images/about/side-image-1.jpg',
         caption: 'Harry Skoler',

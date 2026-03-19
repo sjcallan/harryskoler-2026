@@ -6,12 +6,13 @@ import '../../css/home.css';
 
 const navLinks = [
     { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'music', label: 'Music' },
-    { id: 'reviews', label: 'Reviews' },
+    { id: 'radio', label: 'Radio Airplay' },
     { id: 'news', label: 'News' },
-    { id: 'radio', label: 'Radio' },
+    { id: 'reviews', label: 'Reviews' },
+    { id: 'press', label: 'Press' },
+    { id: 'music', label: 'Music' },
     { id: 'gallery', label: 'Gallery' },
+    { id: 'about', label: 'About' },
     { id: 'events', label: 'Events' },
 ];
 

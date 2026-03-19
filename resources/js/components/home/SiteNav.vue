@@ -16,9 +16,18 @@ const props = withDefaults(defineProps<{
 
 const mobileOpen = ref(false);
 
-function handleNavClick(id: string) {
+function handleLogoClick(event: Event) {
+    if (!props.subpage) {
+        event.preventDefault();
+        props.scrollToSection?.('home');
+    }
+    mobileOpen.value = false;
+}
+
+function handleNavClick(event: Event, id: string) {
     mobileOpen.value = false;
     if (!props.subpage && props.scrollToSection) {
+        event.preventDefault();
         props.scrollToSection(id);
     }
 }
@@ -30,7 +39,7 @@ function handleNavClick(id: string) {
             :is="subpage ? Link : 'a'"
             :href="subpage ? '/' : '#home'"
             class="nav-logo"
-            @click.prevent="!subpage && scrollToSection?.('home')"
+            @click="handleLogoClick"
         >
             Harry <span>Skoler</span>
         </component>
@@ -43,7 +52,7 @@ function handleNavClick(id: string) {
                     :is="subpage ? Link : 'a'"
                     :href="subpage ? `/#${link.id}` : `#${link.id}`"
                     :class="{ active: !subpage && activeSection === link.id }"
-                    @click.prevent="handleNavClick(link.id)"
+                    @click="handleNavClick($event, link.id)"
                 >
                     {{ link.label }}
                 </component>

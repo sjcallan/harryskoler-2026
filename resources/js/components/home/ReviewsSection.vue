@@ -208,6 +208,28 @@ onMounted(fetchReviews);
 .reviews-container {
     max-width: 900px;
     margin: 0 auto;
+    max-height: 620px;
+    overflow-y: auto;
+    padding-right: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+.reviews-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.reviews-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.reviews-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.25);
 }
 
 .review-item {
