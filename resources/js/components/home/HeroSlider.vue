@@ -56,7 +56,7 @@ onUnmounted(() => {
                     </div>
                     <div class="hero-content hero-content--album">
                         <div class="album-cover-wrap">
-                            <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" />
+                            <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" loading="eager" fetchpriority="high" />
                         </div>
                         <div class="hero-cta-row hero-cta-row--echoes">
                             <a href="https://harryskoler.bandcamp.com/" target="_blank" class="cta-btn cta-btn--echoes">Bandcamp</a>

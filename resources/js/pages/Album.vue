@@ -416,9 +416,11 @@ onUnmounted(() => {
 <template>
     <SiteLayout>
     <Head :title="`Harry Skoler — ${album?.title ?? 'Album'}`">
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+        <meta name="description" :content="`${album?.title ?? 'Album'} by Harry Skoler — ${album?.year ?? ''} ${album?.label ?? ''}. Jazz clarinet album featuring ${album?.musicians?.slice(0, 3).join(', ') ?? 'world-class musicians'}.`" head-key="description" />
+        <meta property="og:title" :content="`Harry Skoler — ${album?.title ?? 'Album'}`" head-key="og:title" />
+        <meta property="og:description" :content="`${album?.title ?? 'Album'} — a jazz clarinet album on ${album?.label ?? 'Red Brick Hill'}.`" head-key="og:description" />
+        <meta property="og:image" :content="album?.cover" head-key="og:image" />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     </Head>
 
         <!-- Sub Nav (outside album-page to avoid opacity stacking context) -->
@@ -445,11 +447,11 @@ onUnmounted(() => {
             <!-- Hero -->
             <header id="album-top" class="album-hero">
                 <div class="album-hero-bg">
-                    <img :src="album.cover" :alt="album.title" />
+                    <img :src="album.cover" :alt="album.title" loading="eager" fetchpriority="high" />
                 </div>
                 <div class="album-hero-content">
                     <div class="album-hero-cover">
-                        <img :src="album.cover" :alt="album.title" />
+                        <img :src="album.cover" :alt="album.title" loading="eager" fetchpriority="high" />
                     </div>
                     <div class="album-hero-info">
                         <span class="album-label-tag">{{ album.label }}</span>

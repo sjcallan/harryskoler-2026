@@ -46,10 +46,11 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
 </script>
 
 <template>
-    <Head title="Harry Skoler — Echoes">
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <Head title="Harry Skoler — Jazz Clarinetist">
+        <meta name="description" content="Harry Skoler — Grammy-nominated jazz clarinetist, Berklee College of Music professor. Explore albums including Echoes, Red Brick Hill, and Living In Sound." head-key="description" />
+        <meta property="og:title" content="Harry Skoler — Jazz Clarinetist" head-key="og:title" />
+        <meta property="og:description" content="Grammy-nominated jazz clarinetist, Berklee College of Music professor. Albums, reviews, press, radio airplay, and events." head-key="og:description" />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     </Head>
 
     <div class="hs-page">
