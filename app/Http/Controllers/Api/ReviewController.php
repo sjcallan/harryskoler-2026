@@ -55,4 +55,18 @@ class ReviewController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function reorder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:reviews,id'],
+        ]);
+
+        foreach ($request->input('ids') as $index => $id) {
+            Review::where('id', $id)->update(['sort_order' => $index]);
+        }
+
+        return response()->json(['message' => 'Order updated']);
+    }
 }

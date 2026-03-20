@@ -32,6 +32,7 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::delete('news/{news}', [NewsController::class, 'destroy']);
 
     Route::post('reviews', [ReviewController::class, 'store']);
+    Route::post('reviews/reorder', [ReviewController::class, 'reorder']);
     Route::post('reviews/{review}', [ReviewController::class, 'update']);
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
 

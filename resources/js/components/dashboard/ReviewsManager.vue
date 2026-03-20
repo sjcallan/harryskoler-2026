@@ -31,6 +31,7 @@ import {
     GripVertical,
     Disc3,
 } from 'lucide-vue-next';
+import draggable from 'vuedraggable';
 
 const albumOptions: { slug: string; title: string }[] = [
     { slug: 'echoes', title: 'Echoes' },
@@ -231,6 +232,24 @@ async function deleteReview() {
     }
 }
 
+async function onDragEnd() {
+    const ids = filteredReviews.value.map((item) => item.id);
+    try {
+        await fetch('/api/reviews/reorder', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': getCsrfToken(),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids }),
+        });
+        await fetchReviews();
+    } catch {
+        flash('Failed to save order.', 'error');
+    }
+}
+
 onMounted(fetchReviews);
 </script>
 
@@ -301,67 +320,74 @@ onMounted(fetchReviews);
             </div>
 
             <!-- Reviews list -->
-            <div v-else class="divide-y rounded-md border">
-                <div
-                    v-for="item in filteredReviews"
-                    :key="item.id"
-                    class="flex items-start gap-4 p-4 transition-colors hover:bg-muted/40"
-                >
-                    <div class="text-muted-foreground/40 hidden shrink-0 pt-0.5 sm:block">
-                        <GripVertical class="size-4" />
-                        <span class="text-muted-foreground mt-0.5 block text-center text-[10px]">{{ item.sort_order }}</span>
-                    </div>
+            <draggable
+                v-else
+                v-model="filteredReviews"
+                item-key="id"
+                handle=".drag-handle"
+                ghost-class="opacity-30"
+                @end="onDragEnd"
+                tag="div"
+                class="divide-y rounded-md border"
+            >
+                <template #item="{ element: item }">
+                    <div class="flex items-start gap-4 p-4 transition-colors hover:bg-muted/40">
+                        <div class="drag-handle text-muted-foreground/40 hidden shrink-0 cursor-grab pt-0.5 sm:block active:cursor-grabbing">
+                            <GripVertical class="size-4" />
+                            <span class="text-muted-foreground mt-0.5 block text-center text-[10px]">{{ item.sort_order }}</span>
+                        </div>
 
-                    <div class="min-w-0 flex-1">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0">
-                                <p class="line-clamp-2 text-sm italic leading-relaxed">
-                                    "{{ item.excerpt }}"
-                                </p>
-                                <p class="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-                                    <span
-                                        v-if="item.album_slug"
-                                        class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="min-w-0">
+                                    <p class="line-clamp-2 text-sm italic leading-relaxed">
+                                        "{{ item.excerpt }}"
+                                    </p>
+                                    <p class="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                                        <span
+                                            v-if="item.album_slug"
+                                            class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                                        >
+                                            <Disc3 class="size-2.5" />
+                                            {{ albumTitleMap[item.album_slug] ?? item.album_slug }}
+                                        </span>
+                                        <span v-if="item.author" class="text-foreground font-medium">{{ item.author }}</span>
+                                        <span v-if="item.author"> &mdash; </span>
+                                        <span class="text-primary font-medium">{{ item.publication }}</span>
+                                        <a
+                                            v-if="item.source_url"
+                                            :href="item.source_url"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="text-primary ml-2 inline-flex items-center gap-0.5 hover:underline"
+                                        >
+                                            <ExternalLink class="size-3" />
+                                            Source
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="flex shrink-0 items-center gap-1">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        @click="openEditForm(item)"
                                     >
-                                        <Disc3 class="size-2.5" />
-                                        {{ albumTitleMap[item.album_slug] ?? item.album_slug }}
-                                    </span>
-                                    <span v-if="item.author" class="text-foreground font-medium">{{ item.author }}</span>
-                                    <span v-if="item.author"> &mdash; </span>
-                                    <span class="text-primary font-medium">{{ item.publication }}</span>
-                                    <a
-                                        v-if="item.source_url"
-                                        :href="item.source_url"
-                                        target="_blank"
-                                        rel="noopener"
-                                        class="text-primary ml-2 inline-flex items-center gap-0.5 hover:underline"
+                                        <Pencil class="size-3.5" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        class="text-destructive hover:text-destructive"
+                                        @click="confirmDelete(item)"
                                     >
-                                        <ExternalLink class="size-3" />
-                                        Source
-                                    </a>
-                                </p>
-                            </div>
-                            <div class="flex shrink-0 items-center gap-1">
-                                <Button
-                                    variant="ghost"
-                                    size="icon-sm"
-                                    @click="openEditForm(item)"
-                                >
-                                    <Pencil class="size-3.5" />
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="icon-sm"
-                                    class="text-destructive hover:text-destructive"
-                                    @click="confirmDelete(item)"
-                                >
-                                    <Trash2 class="size-3.5" />
-                                </Button>
+                                        <Trash2 class="size-3.5" />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </draggable>
         </CardContent>
     </Card>
 
