@@ -46,7 +46,7 @@ onUnmounted(() => {
         <div class="hero-slide-area">
             <div class="hero-track" :style="{ transform: 'translateX(-' + (currentSlide * 100) + '%)' }">
 
-                <!-- SLIDE 1: Echoes -->
+                <!-- SLIDE 1: Echoes — Coming May 1st Promo -->
                 <div class="hero-slide hero-slide--echoes" :class="{ 'slide-active': currentSlide === 0 }">
                     <div class="echoes-top-grad"></div>
                     <div class="slide-decor">
@@ -54,12 +54,13 @@ onUnmounted(() => {
                         <div class="deco-sq" style="width:220px;height:220px;bottom:12%;left:8%;--rot:-4deg;border-color:rgba(0,0,0,0.04);"></div>
                     </div>
                     <div class="hero-content hero-content--album">
+                        <div class="echoes-promo-label">New Album</div>
                         <div class="album-cover-wrap">
                             <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" loading="eager" fetchpriority="high" />
                         </div>
-                        <div class="hero-cta-row hero-cta-row--echoes">
-                            <a href="https://harryskoler.bandcamp.com/" target="_blank" class="cta-btn cta-btn--echoes">Bandcamp</a>
-                            <a href="https://music.apple.com/us/album/echoes/1788498519" target="_blank" class="cta-btn cta-btn--echoes cta-btn--echoes-outline">Apple Music</a>
+                        <div class="echoes-release-date">
+                            <span class="echoes-release-prefix">Available</span>
+                            <span class="echoes-release-day">May 1, 2026</span>
                         </div>
                     </div>
                 </div>
@@ -237,28 +238,55 @@ onUnmounted(() => {
     pointer-events: none;
 }
 
-.cta-btn--echoes {
-    background: var(--white);
-    color: var(--green-deeper);
-    border-color: var(--white);
-}
-
-.cta-btn--echoes:hover {
-    background: transparent;
+.echoes-promo-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: var(--white);
-    border-color: var(--white);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.7s 0.05s cubic-bezier(0.22, 1, 0.36, 1);
+    margin-bottom: 1.4rem;
 }
 
-.cta-btn--echoes-outline {
-    background: transparent;
+.slide-active .echoes-promo-label {
+    opacity: 0.85;
+    transform: translateY(0);
+}
+
+.echoes-release-date {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-active .echoes-release-date {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.echoes-release-prefix {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 235, 0.7);
+}
+
+.echoes-release-day {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 0.04em;
     color: var(--white);
-    border-color: rgba(245,240,235,0.6);
-}
-
-.cta-btn--echoes-outline:hover {
-    background: var(--white);
-    color: var(--green-deeper);
-    border-color: var(--white);
 }
 
 /* ==============================
@@ -530,7 +558,7 @@ onUnmounted(() => {
 }
 
 /* ==============================
-   ECHOES SLIDE (preserved)
+   ECHOES SLIDE
    ============================== */
 
 .hero-content--album {
@@ -563,22 +591,6 @@ onUnmounted(() => {
     z-index: 10;
     text-align: center;
     pointer-events: none;
-}
-
-.hero-cta-row {
-    margin-top: 2.5rem;
-    display: flex;
-    gap: 1.2rem;
-    justify-content: center;
-    pointer-events: auto;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.7s 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.slide-active .hero-cta-row {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* ==============================
@@ -714,6 +726,5 @@ onUnmounted(() => {
     .lis-content { padding-left: 3.5rem; padding-right: 3.5rem; }
     .lis-promo { font-size: 1rem; }
     .lis-album-cover { width: 130px; }
-    .hero-cta-row { flex-direction: column; align-items: center; gap: 0.8rem; }
 }
 </style>
