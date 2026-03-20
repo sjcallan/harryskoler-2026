@@ -155,7 +155,7 @@ onMounted(() => {
                                 class="press-image-thumb"
                                 @click="openLightbox(img, event.images)"
                             >
-                                <img :src="img.image_url" :alt="img.caption ?? event.title" loading="lazy" />
+                                <img :src="img.image_url" :alt="img.caption ?? event.title" />
                                 <div class="press-image-overlay">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                                 </div>
@@ -243,7 +243,7 @@ onMounted(() => {
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--red);
+    color: var(--white);
     display: block;
     margin-bottom: 0.4rem;
 }
@@ -280,17 +280,17 @@ onMounted(() => {
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--red);
+    color: var(--white);
     text-decoration: none;
     padding: 0.5rem 1rem;
-    border: 1px solid var(--red);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all 0.3s;
     white-space: nowrap;
 }
 
 .press-pdf-link:hover {
-    background: var(--red);
-    color: var(--white);
+    background: var(--white);
+    color: var(--dark);
 }
 
 .press-toggle-icon {
@@ -358,7 +358,7 @@ onMounted(() => {
 }
 
 .press-image-thumb:hover {
-    border-color: rgba(184, 40, 46, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .press-image-thumb img {
