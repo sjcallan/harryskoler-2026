@@ -36,6 +36,7 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy']);
 
     Route::post('radio-airplays', [RadioAirplayController::class, 'store']);
+    Route::post('radio-airplays/reorder', [RadioAirplayController::class, 'reorder']);
     Route::post('radio-airplays/{radio_airplay}', [RadioAirplayController::class, 'update']);
     Route::delete('radio-airplays/{radio_airplay}', [RadioAirplayController::class, 'destroy']);
 

@@ -13,6 +13,13 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Search,
     Plus,
     Pencil,
@@ -20,13 +27,38 @@ import {
     Radio,
     AlertCircle,
     GripVertical,
+    Disc3,
+    ImageIcon,
+    Link2,
+    X,
 } from 'lucide-vue-next';
+import draggable from 'vuedraggable';
+
+const albumOptions: { slug: string; title: string }[] = [
+    { slug: 'echoes', title: 'Echoes' },
+    { slug: 'red-brick-hill', title: 'Red Brick Hill' },
+    { slug: 'living-in-sound', title: 'Living In Sound' },
+    { slug: 'two-ones', title: 'Two Ones' },
+    { slug: 'work-of-heart', title: 'A Work of Heart' },
+    { slug: 'reflections', title: 'Reflections on the Art of Swing' },
+    { slug: 'conversations', title: 'Conversations in the Language of Jazz' },
+];
+
+const albumTitleMap: Record<string, string> = Object.fromEntries(
+    albumOptions.map((a) => [a.slug, a.title]),
+);
 
 interface RadioAirplayItem {
     id: number;
     rank: number;
     chart: string;
     detail: string | null;
+    link: string | null;
+    image: string | null;
+    thumbnail: string | null;
+    image_url: string | null;
+    thumbnail_url: string | null;
+    album_slug: string;
     sort_order: number;
     created_at: string;
     updated_at: string;
@@ -35,6 +67,7 @@ interface RadioAirplayItem {
 const entries = ref<RadioAirplayItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const albumFilter = ref('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -49,17 +82,31 @@ const form = ref({
     rank: 1,
     chart: '',
     detail: '',
+    link: '',
+    album_slug: '',
     sort_order: 0,
+    image: null as File | null,
+    removeImage: false,
 });
+const imagePreview = ref<string | null>(null);
 
 const filteredEntries = computed(() => {
-    if (!searchQuery.value) return entries.value;
-    const q = searchQuery.value.toLowerCase();
-    return entries.value.filter(
-        (item) =>
-            item.chart.toLowerCase().includes(q) ||
-            (item.detail?.toLowerCase().includes(q) ?? false),
-    );
+    let result = entries.value;
+
+    if (albumFilter.value && albumFilter.value !== 'all') {
+        result = result.filter((item) => item.album_slug === albumFilter.value);
+    }
+
+    if (searchQuery.value) {
+        const q = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (item) =>
+                item.chart.toLowerCase().includes(q) ||
+                (item.detail?.toLowerCase().includes(q) ?? false),
+        );
+    }
+
+    return result;
 });
 
 function getCsrfToken(): string {
@@ -88,7 +135,8 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { rank: 1, chart: '', detail: '', sort_order: 0 };
+    form.value = { rank: 1, chart: '', detail: '', link: '', album_slug: '', sort_order: 0, image: null, removeImage: false };
+    imagePreview.value = null;
     showForm.value = true;
 }
 
@@ -99,8 +147,13 @@ function openEditForm(item: RadioAirplayItem) {
         rank: item.rank,
         chart: item.chart,
         detail: item.detail ?? '',
+        link: item.link ?? '',
+        album_slug: item.album_slug ?? '',
         sort_order: item.sort_order,
+        image: null,
+        removeImage: false,
     };
+    imagePreview.value = item.thumbnail_url ?? null;
     showForm.value = true;
 }
 
@@ -109,16 +162,35 @@ function confirmDelete(item: RadioAirplayItem) {
     showDeleteConfirm.value = true;
 }
 
+function onImageChange(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+        form.value.image = file;
+        form.value.removeImage = false;
+        imagePreview.value = URL.createObjectURL(file);
+    }
+}
+
+function removeImage() {
+    form.value.image = null;
+    form.value.removeImage = true;
+    imagePreview.value = null;
+}
+
 async function saveEntry() {
     saving.value = true;
     errors.value = {};
 
-    const payload: Record<string, string | number> = {
-        rank: form.value.rank,
-        chart: form.value.chart,
-        sort_order: form.value.sort_order,
-    };
-    if (form.value.detail) payload.detail = form.value.detail;
+    const formData = new FormData();
+    formData.append('rank', String(form.value.rank));
+    formData.append('chart', form.value.chart);
+    formData.append('sort_order', String(form.value.sort_order));
+    if (form.value.detail) formData.append('detail', form.value.detail);
+    if (form.value.link) formData.append('link', form.value.link);
+    if (form.value.album_slug) formData.append('album_slug', form.value.album_slug);
+    if (form.value.image) formData.append('image', form.value.image);
+    if (form.value.removeImage) formData.append('remove_image', '1');
 
     const url = editingItem.value
         ? `/api/radio-airplays/${editingItem.value.id}`
@@ -130,9 +202,8 @@ async function saveEntry() {
             headers: {
                 'X-CSRF-TOKEN': getCsrfToken(),
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload),
+            body: formData,
         });
 
         if (!res.ok) {
@@ -183,6 +254,24 @@ async function deleteEntry() {
     }
 }
 
+async function onDragEnd() {
+    const ids = filteredEntries.value.map((item) => item.id);
+    try {
+        await fetch('/api/radio-airplays/reorder', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': getCsrfToken(),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids }),
+        });
+        await fetchEntries();
+    } catch {
+        flash('Failed to save order.', 'error');
+    }
+}
+
 onMounted(fetchEntries);
 </script>
 
@@ -210,14 +299,30 @@ onMounted(fetchEntries);
                 {{ flashMessage }}
             </div>
 
-            <!-- Search -->
-            <div class="relative">
-                <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-                <Input
-                    v-model="searchQuery"
-                    placeholder="Search radio airplay entries..."
-                    class="pl-9"
-                />
+            <!-- Search & Album Filter -->
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="relative flex-1">
+                    <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                    <Input
+                        v-model="searchQuery"
+                        placeholder="Search radio airplay entries..."
+                        class="pl-9"
+                    />
+                </div>
+                <Select v-model="albumFilter">
+                    <SelectTrigger class="w-full sm:w-[260px]">
+                        <div class="flex items-center gap-2">
+                            <Disc3 class="text-muted-foreground size-3.5 shrink-0" />
+                            <SelectValue placeholder="All Albums" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All Albums</SelectItem>
+                        <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                            {{ a.title }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <!-- Loading -->
@@ -232,51 +337,73 @@ onMounted(fetchEntries);
             >
                 <Radio class="size-10 opacity-40" />
                 <p v-if="searchQuery">No results for "{{ searchQuery }}"</p>
+                <p v-else-if="albumFilter !== 'all'">No entries for this album yet.</p>
                 <p v-else>No radio airplay entries yet. Add your first one.</p>
             </div>
 
             <!-- Entries list -->
-            <div v-else class="divide-y rounded-md border">
-                <div
-                    v-for="item in filteredEntries"
-                    :key="item.id"
-                    class="flex items-center gap-4 p-4 transition-colors hover:bg-muted/40"
-                >
-                    <div class="text-muted-foreground/40 hidden shrink-0 sm:block">
-                        <GripVertical class="size-4" />
-                        <span class="text-muted-foreground mt-0.5 block text-center text-[10px]">{{ item.sort_order }}</span>
-                    </div>
+            <draggable
+                v-else
+                v-model="filteredEntries"
+                item-key="id"
+                handle=".drag-handle"
+                ghost-class="opacity-30"
+                @end="onDragEnd"
+                tag="div"
+                class="divide-y rounded-md border"
+            >
+                <template #item="{ element: item }">
+                    <div class="flex items-center gap-4 p-4 transition-colors hover:bg-muted/40">
+                        <div class="drag-handle text-muted-foreground/40 hidden shrink-0 cursor-grab sm:block active:cursor-grabbing">
+                            <GripVertical class="size-4" />
+                            <span class="text-muted-foreground mt-0.5 block text-center text-[10px]">{{ item.sort_order }}</span>
+                        </div>
 
-                    <div class="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-md font-bold">
-                        #{{ item.rank }}
-                    </div>
+                        <div v-if="item.thumbnail_url" class="shrink-0">
+                            <img :src="item.thumbnail_url" :alt="item.chart" class="size-10 rounded-md object-cover" />
+                        </div>
 
-                    <div class="min-w-0 flex-1">
-                        <h4 class="truncate text-sm font-medium">{{ item.chart }}</h4>
-                        <p v-if="item.detail" class="text-muted-foreground mt-0.5 truncate text-xs">
-                            {{ item.detail }}
-                        </p>
-                    </div>
+                        <div class="bg-primary/10 text-primary flex size-10 shrink-0 items-center justify-center rounded-md font-bold">
+                            #{{ item.rank }}
+                        </div>
 
-                    <div class="flex shrink-0 items-center gap-1">
-                        <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            @click="openEditForm(item)"
-                        >
-                            <Pencil class="size-3.5" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            class="text-destructive hover:text-destructive"
-                            @click="confirmDelete(item)"
-                        >
-                            <Trash2 class="size-3.5" />
-                        </Button>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="truncate text-sm font-medium">{{ item.chart }}</h4>
+                            <p v-if="item.detail" class="text-muted-foreground mt-0.5 truncate text-xs">
+                                {{ item.detail }}
+                            </p>
+                            <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                <span
+                                    v-if="item.album_slug"
+                                    class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                                >
+                                    <Disc3 class="size-2.5" />
+                                    {{ albumTitleMap[item.album_slug] ?? item.album_slug }}
+                                </span>
+                                <a
+                                    v-if="item.link"
+                                    :href="item.link"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="text-primary inline-flex items-center gap-0.5 text-[10px] hover:underline"
+                                >
+                                    <Link2 class="size-2.5" />
+                                    Link
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex shrink-0 items-center gap-1">
+                            <Button variant="ghost" size="icon-sm" @click="openEditForm(item)">
+                                <Pencil class="size-3.5" />
+                            </Button>
+                            <Button variant="ghost" size="icon-sm" class="text-destructive hover:text-destructive" @click="confirmDelete(item)">
+                                <Trash2 class="size-3.5" />
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </draggable>
         </CardContent>
     </Card>
 
@@ -313,6 +440,45 @@ onMounted(fetchEntries);
                     <Label for="radio-detail">Detail (optional)</Label>
                     <Input id="radio-detail" v-model="form.detail" placeholder="e.g. North American College Chart · Aug 2024" />
                     <p v-if="errors.detail" class="text-destructive text-xs">{{ errors.detail[0] }}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="radio-link">Link (optional)</Label>
+                    <Input id="radio-link" v-model="form.link" placeholder="https://" />
+                    <p v-if="errors.link" class="text-destructive text-xs">{{ errors.link[0] }}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="radio-album">Album</Label>
+                    <Select v-model="form.album_slug">
+                        <SelectTrigger id="radio-album">
+                            <SelectValue placeholder="Select an album (optional)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="">None</SelectItem>
+                            <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                                {{ a.title }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <Label>Image (optional)</Label>
+                    <div v-if="imagePreview" class="flex items-center gap-3">
+                        <img :src="imagePreview" class="size-16 rounded-md object-cover" />
+                        <Button type="button" variant="ghost" size="icon-sm" @click="removeImage">
+                            <X class="size-4" />
+                        </Button>
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        class="text-muted-foreground block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/90"
+                        @change="onImageChange"
+                    />
+                    <p v-if="errors.image" class="text-destructive text-xs">{{ errors.image[0] }}</p>
                 </div>
 
                 <DialogFooter>
