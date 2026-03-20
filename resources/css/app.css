@@ -196,6 +196,12 @@
     -webkit-font-smoothing: antialiased;
 }
 
+.hs-auth input,
+.hs-auth textarea,
+.hs-auth select {
+    color: var(--foreground);
+}
+
 .hs-auth a:not([class*="bg-"]) {
     text-decoration-color: #c9a96e40;
 }
