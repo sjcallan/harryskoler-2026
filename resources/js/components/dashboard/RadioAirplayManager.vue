@@ -83,7 +83,7 @@ const form = ref({
     chart: '',
     detail: '',
     link: '',
-    album_slug: '',
+    album_slug: '__none__',
     sort_order: 0,
     image: null as File | null,
     removeImage: false,
@@ -135,7 +135,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { rank: 1, chart: '', detail: '', link: '', album_slug: '', sort_order: 0, image: null, removeImage: false };
+    form.value = { rank: 1, chart: '', detail: '', link: '', album_slug: '__none__', sort_order: 0, image: null, removeImage: false };
     imagePreview.value = null;
     showForm.value = true;
 }
@@ -148,7 +148,7 @@ function openEditForm(item: RadioAirplayItem) {
         chart: item.chart,
         detail: item.detail ?? '',
         link: item.link ?? '',
-        album_slug: item.album_slug ?? '',
+        album_slug: item.album_slug || '__none__',
         sort_order: item.sort_order,
         image: null,
         removeImage: false,
@@ -188,7 +188,7 @@ async function saveEntry() {
     formData.append('sort_order', String(form.value.sort_order));
     if (form.value.detail) formData.append('detail', form.value.detail);
     if (form.value.link) formData.append('link', form.value.link);
-    if (form.value.album_slug) formData.append('album_slug', form.value.album_slug);
+    if (form.value.album_slug && form.value.album_slug !== '__none__') formData.append('album_slug', form.value.album_slug);
     if (form.value.image) formData.append('image', form.value.image);
     if (form.value.removeImage) formData.append('remove_image', '1');
 
@@ -455,7 +455,7 @@ onMounted(fetchEntries);
                             <SelectValue placeholder="Select an album (optional)" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="">None</SelectItem>
+                            <SelectItem value="__none__">None</SelectItem>
                             <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
                                 {{ a.title }}
                             </SelectItem>

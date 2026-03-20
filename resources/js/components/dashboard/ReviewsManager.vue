@@ -84,25 +84,42 @@ const form = ref({
     sort_order: 0,
 });
 
-const filteredReviews = computed(() => {
-    let result = reviews.value;
+const filteredReviews = computed({
+    get() {
+        let result = reviews.value;
 
-    if (albumFilter.value && albumFilter.value !== 'all') {
-        result = result.filter((item) => item.album_slug === albumFilter.value);
-    }
+        if (albumFilter.value && albumFilter.value !== 'all') {
+            result = result.filter((item) => item.album_slug === albumFilter.value);
+        }
 
-    if (searchQuery.value) {
-        const q = searchQuery.value.toLowerCase();
-        result = result.filter(
-            (item) =>
-                item.excerpt.toLowerCase().includes(q) ||
-                item.body.toLowerCase().includes(q) ||
-                (item.author?.toLowerCase().includes(q) ?? false) ||
-                item.publication.toLowerCase().includes(q),
-        );
-    }
+        if (searchQuery.value) {
+            const q = searchQuery.value.toLowerCase();
+            result = result.filter(
+                (item) =>
+                    item.excerpt.toLowerCase().includes(q) ||
+                    item.body.toLowerCase().includes(q) ||
+                    (item.author?.toLowerCase().includes(q) ?? false) ||
+                    item.publication.toLowerCase().includes(q),
+            );
+        }
 
-    return result;
+        return result;
+    },
+    set(reordered: ReviewItem[]) {
+        const reorderedIds = new Map(reordered.map((item, idx) => [item.id, idx]));
+        const result: ReviewItem[] = [];
+        let reorderedIdx = 0;
+
+        for (const item of reviews.value) {
+            if (reorderedIds.has(item.id)) {
+                result.push(reordered[reorderedIdx++]);
+            } else {
+                result.push(item);
+            }
+        }
+
+        reviews.value = result;
+    },
 });
 
 function getCsrfToken(): string {
