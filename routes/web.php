@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\GalleryImageController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PressEventController;
@@ -56,6 +57,10 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::post('users', [UserController::class, 'store']);
     Route::post('users/{user}', [UserController::class, 'update']);
     Route::delete('users/{user}', [UserController::class, 'destroy']);
+
+    Route::get('dashboard/stats', [DashboardController::class, 'stats']);
+    Route::get('dashboard/recent', [DashboardController::class, 'recent']);
+    Route::get('dashboard/storage', [DashboardController::class, 'storage']);
 
     Route::post('gallery-images', [GalleryImageController::class, 'store']);
     Route::post('gallery-images/reorder', [GalleryImageController::class, 'reorder']);
