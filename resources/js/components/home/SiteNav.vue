@@ -35,7 +35,7 @@ function handleNavClick(event: Event, id: string) {
 </script>
 
 <template>
-    <nav class="site-nav" :class="{ scrolled: subpage || scrollY > 80 }">
+    <nav class="site-nav" :class="{ scrolled: subpage || scrollY > 80, 'mobile-menu-active': mobileOpen }">
         <component
             :is="subpage ? Link : 'a'"
             :href="subpage ? '/' : '#home'"
@@ -159,18 +159,23 @@ function handleNavClick(event: Event, id: string) {
 
 @media (max-width: 900px) {
     .site-nav { padding: 1rem 1.5rem; }
+    .site-nav.mobile-menu-active {
+        bottom: 0;
+        align-items: flex-start;
+    }
     .nav-links { display: none; }
     .mobile-toggle { display: block; }
     .nav-links.mobile-open {
         display: flex;
         flex-direction: column;
-        position: fixed;
+        position: absolute;
         inset: 0;
         background: rgba(10,10,10,0.97);
         justify-content: center;
         align-items: center;
-        gap: 2rem;
+        gap: 1.6rem;
         z-index: 999;
+        padding: 4rem 0 2rem;
     }
     .nav-links.mobile-open a { font-size: 1.2rem; }
 }
