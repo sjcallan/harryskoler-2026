@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GalleryImageController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PressEventController;
 use App\Http\Controllers\Api\QuoteController;
@@ -22,3 +23,5 @@ Route::get('press-events/{press_event}', [PressEventController::class, 'show']);
 Route::get('quotes', [QuoteController::class, 'index']);
 Route::get('quotes/active', [QuoteController::class, 'active']);
 Route::get('quotes/{quote}', [QuoteController::class, 'show']);
+
+Route::get('gallery-images', [GalleryImageController::class, 'index']);

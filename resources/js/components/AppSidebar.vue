@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Newspaper, Radio, Star, FileText, MessageSquareQuote, Users } from 'lucide-vue-next';
+import { LayoutGrid, Newspaper, Radio, Star, FileText, MessageSquareQuote, Users, ImageIcon } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -42,6 +42,11 @@ const mainNavItems: NavItem[] = [
         title: 'Press',
         href: '/press',
         icon: FileText,
+    },
+    {
+        title: 'Gallery',
+        href: '/gallery',
+        icon: ImageIcon,
     },
     {
         title: 'Quotes',

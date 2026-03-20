@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GalleryImageController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PressEventController;
 use App\Http\Controllers\Api\QuoteController;
@@ -24,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('press', 'admin/Press')->name('press');
     Route::inertia('quotes', 'admin/Quotes')->name('quotes');
     Route::inertia('users', 'admin/Users')->name('users');
+    Route::inertia('gallery', 'admin/Gallery')->name('gallery');
 });
 
 Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
@@ -54,6 +56,11 @@ Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::post('users', [UserController::class, 'store']);
     Route::post('users/{user}', [UserController::class, 'update']);
     Route::delete('users/{user}', [UserController::class, 'destroy']);
+
+    Route::post('gallery-images', [GalleryImageController::class, 'store']);
+    Route::post('gallery-images/reorder', [GalleryImageController::class, 'reorder']);
+    Route::post('gallery-images/{gallery_image}', [GalleryImageController::class, 'update']);
+    Route::delete('gallery-images/{gallery_image}', [GalleryImageController::class, 'destroy']);
 });
 
 require __DIR__.'/settings.php';
