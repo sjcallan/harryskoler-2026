@@ -1,4 +1,4 @@
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
@@ -22,6 +22,13 @@ createInertiaApp({
     progress: {
         color: '#4B5563',
     },
+});
+
+router.on('navigate', (event) => {
+    const token = event.detail.page.props.csrf_token as string | undefined;
+    if (token) {
+        document.querySelector('meta[name="csrf-token"]')?.setAttribute('content', token);
+    }
 });
 
 // This will set light / dark mode on page load...
