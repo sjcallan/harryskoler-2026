@@ -151,11 +151,15 @@ onUnmounted(() => {
 <style scoped>
 .quote-strip {
     width: 100%;
-    background: var(--black);
+    background: linear-gradient(180deg, #0e0c0a 0%, #12100d 100%);
+    border-top: 1px solid rgba(232, 224, 214, 0.06);
+    border-bottom: 1px solid rgba(184, 40, 46, 0.18);
+    box-shadow: inset 0 1px 0 rgba(232, 224, 214, 0.03),
+                inset 0 -1px 0 rgba(184, 40, 46, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.8rem 3rem;
+    padding: 2.2rem 3rem;
     min-height: 160px;
     position: relative;
     z-index: 5;
@@ -210,7 +214,7 @@ onUnmounted(() => {
     font-style: italic;
     font-size: clamp(0.85rem, 1.3vw, 1rem);
     line-height: 1.65;
-    color: var(--cream);
+    color: var(--white);
     letter-spacing: 0.01em;
 }
 
@@ -221,25 +225,28 @@ onUnmounted(() => {
 }
 
 .quote-attribution {
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    color: rgba(232, 224, 214, 0.5);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(232, 224, 214, 0.45);
 }
 
 .quote-person {
-    font-weight: 500;
-    color: rgba(232, 224, 214, 0.7);
+    font-weight: 600;
+    color: var(--cream);
 }
 
 .quote-company {
     font-weight: 400;
+    color: var(--red);
+    opacity: 0.8;
 }
 
 @media (max-width: 600px) {
     .quote-strip {
-        padding: 1.4rem 1rem;
+        padding: 1.6rem 1rem;
         min-height: 140px;
     }
 

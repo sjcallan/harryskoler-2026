@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import QuoteStrip from './QuoteStrip.vue';
 
 defineProps<{
     scrollY?: number;
@@ -189,8 +188,6 @@ onUnmounted(() => {
                 </button>
             </div>
         </div>
-
-        <QuoteStrip />
     </section>
 </template>
 

@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import { useScrollTracking } from '@/composables/useScrollTracking';
 import SiteNav from '@/components/home/SiteNav.vue';
 import HeroSlider from '@/components/home/HeroSlider.vue';
+import QuoteStrip from '@/components/home/QuoteStrip.vue';
 import FloatingCanvas from '@/components/home/FloatingCanvas.vue';
 import ListenStrip from '@/components/home/ListenStrip.vue';
 import AboutSection from '@/components/home/AboutSection.vue';
@@ -66,6 +67,7 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
         />
 
         <HeroSlider :scroll-y="scrollY" />
+        <QuoteStrip />
         <RadioSection :theme="sectionThemes.radio" />
         <NewsSection :theme="sectionThemes.news" />
         <ReviewsSection :theme="sectionThemes.reviews" />
