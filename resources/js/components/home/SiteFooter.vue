@@ -230,6 +230,12 @@ const socialLinks = [
         gap: 2rem;
     }
 
+    .footer-col--brand,
+    .footer-col--rep,
+    .footer-col--nav {
+        grid-column: 1;
+    }
+
     .footer-col--nav { text-align: left; }
 
     .footer-nav {
@@ -237,5 +243,17 @@ const socialLinks = [
         flex-wrap: wrap;
         gap: 1rem 2rem;
     }
+}
+
+@media (max-width: 480px) {
+    .site-footer { padding: 2rem 1rem; }
+
+    .footer-inner { gap: 1.5rem; }
+
+    .footer-brand { font-size: 1.25rem; }
+
+    .footer-nav { gap: 0.75rem 1.5rem; }
+
+    .footer-bottom { padding-top: 1.5rem; }
 }
 </style>
