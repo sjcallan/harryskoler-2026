@@ -20,7 +20,10 @@ export function useScrollTracking(navLinks: NavLink[]) {
         for (let i = sections.length - 1; i >= 0; i--) {
             const el = document.getElementById(sections[i]);
             if (el && el.getBoundingClientRect().top <= 200) {
-                activeSection.value = sections[i];
+                if (activeSection.value !== sections[i]) {
+                    activeSection.value = sections[i];
+                    history.replaceState(null, '', `#${sections[i]}`);
+                }
                 break;
             }
         }
@@ -43,6 +46,11 @@ export function useScrollTracking(navLinks: NavLink[]) {
     onMounted(() => {
         window.addEventListener('scroll', onScroll, { passive: true });
         setTimeout(revealElements, 300);
+
+        const hash = window.location.hash.replace('#', '');
+        if (hash && navLinks.some(l => l.id === hash)) {
+            setTimeout(() => scrollToSection(hash), 400);
+        }
     });
 
     onUnmounted(() => {

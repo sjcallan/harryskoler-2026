@@ -21,6 +21,7 @@ function handleLogoClick(event: Event) {
     if (!props.subpage) {
         event.preventDefault();
         props.scrollToSection?.('home');
+        history.replaceState(null, '', `#home`);
     }
     mobileOpen.value = false;
 }
@@ -30,6 +31,7 @@ function handleNavClick(event: Event, id: string) {
     if (!props.subpage && props.scrollToSection) {
         event.preventDefault();
         props.scrollToSection(id);
+        history.replaceState(null, '', `#${id}`);
     }
 }
 </script>
