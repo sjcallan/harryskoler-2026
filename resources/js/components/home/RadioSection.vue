@@ -108,7 +108,7 @@ onMounted(fetchRadioAirplays);
         </div>
 
         <div v-else class="radio-charts">
-            <div class="radio-item reveal" v-for="chart in filteredCharts" :key="chart.id">
+            <div class="radio-item" v-for="chart in filteredCharts" :key="chart.id">
                 <div v-if="chart.thumbnail_url" class="radio-thumb" @click="openLightbox(chart)">
                     <img :src="chart.thumbnail_url" :alt="chart.chart" loading="lazy" />
                 </div>
