@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 
 defineProps<{
     scrollY?: number;
@@ -46,6 +46,12 @@ function resumeVideos() {
         video.play().catch(() => {});
     }
 }
+
+watch(currentSlide, (slide) => {
+    if (slide === 0) {
+        resumeVideos();
+    }
+});
 
 function handleVisibilityChange() {
     if (document.visibilityState === 'visible') {
