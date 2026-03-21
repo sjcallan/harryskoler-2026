@@ -48,6 +48,14 @@ onUnmounted(() => {
 
                 <!-- SLIDE 1: Echoes — Coming May 1st Promo -->
                 <div class="hero-slide hero-slide--echoes" :class="{ 'slide-active': currentSlide === 0 }">
+                    <video
+                        class="echoes-bg-video"
+                        src="/assets/videos/echoes-album-cover-animation-low.mp4"
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                    ></video>
                     <div class="echoes-top-grad"></div>
                     <div class="slide-decor">
                         <div class="deco-sq" style="width:380px;height:380px;top:8%;right:5%;--rot:6deg;border-color:rgba(0,0,0,0.06);"></div>
@@ -226,6 +234,17 @@ onUnmounted(() => {
 }
 
 .hero-slide--echoes { background: var(--green); }
+
+.echoes-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+}
 
 .echoes-top-grad {
     position: absolute;
