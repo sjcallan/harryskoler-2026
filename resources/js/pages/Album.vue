@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import SiteLayout from '@/layouts/SiteLayout.vue';
+import ReviewsSection from '@/components/home/ReviewsSection.vue';
+import RadioSection from '@/components/home/RadioSection.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
@@ -357,6 +359,26 @@ const allAlbums = computed(() =>
     albums.map((a) => ({ slug: a.slug, title: a.title, cover: a.cover, year: a.year })),
 );
 
+const albumReviewCount = ref(0);
+const albumRadioCount = ref(0);
+const hasReviews = computed(() => albumReviewCount.value > 0);
+const hasRadio = computed(() => albumRadioCount.value > 0);
+
+async function fetchAlbumCounts() {
+    try {
+        const [reviewsRes, radioRes] = await Promise.all([
+            fetch('/api/reviews'),
+            fetch('/api/radio-airplays'),
+        ]);
+        const allReviews = await reviewsRes.json();
+        const allRadio = await radioRes.json();
+        albumReviewCount.value = allReviews.filter((r: any) => r.album_slug === props.slug).length;
+        albumRadioCount.value = allRadio.filter((r: any) => r.album_slug === props.slug).length;
+    } catch {
+        // Silently fail
+    }
+}
+
 const subNavLinks = computed(() => {
     if (!album.value) return [];
     const links = [
@@ -365,6 +387,12 @@ const subNavLinks = computed(() => {
     ];
     if (album.value.story) {
         links.push({ id: 'album-story', label: 'Story' });
+    }
+    if (hasReviews.value) {
+        links.push({ id: 'album-reviews', label: 'Reviews' });
+    }
+    if (hasRadio.value) {
+        links.push({ id: 'album-radio', label: 'Radio' });
     }
     links.push({ id: 'album-listen', label: 'Listen' });
     links.push({ id: 'album-more', label: 'More' });
@@ -382,8 +410,17 @@ function measureNav() {
     }
 }
 
+function revealElements() {
+    document.querySelectorAll('.reveal').forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.85) {
+            el.classList.add('visible');
+        }
+    });
+}
+
 function onScroll() {
     measureNav();
+    revealElements();
     const ids = subNavLinks.value.map((l) => l.id);
     for (let i = ids.length - 1; i >= 0; i--) {
         const el = document.getElementById(ids[i]);
@@ -404,8 +441,10 @@ onMounted(() => {
     requestAnimationFrame(() => {
         revealed.value = true;
         measureNav();
+        setTimeout(revealElements, 300);
     });
     window.addEventListener('scroll', onScroll, { passive: true });
+    fetchAlbumCounts();
 });
 
 onUnmounted(() => {
@@ -426,10 +465,10 @@ onUnmounted(() => {
         <!-- Sub Nav (outside album-page to avoid opacity stacking context) -->
         <Teleport to="body">
             <nav v-if="album" class="album-subnav" :style="{ top: mainNavHeight + 'px' }">
-                <Link href="/#music" class="album-subnav-back">
+                <a href="/#music" class="album-subnav-back">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                     All Albums
-                </Link>
+                </a>
                 <div class="album-subnav-sections">
                     <a
                         v-for="link in subNavLinks"
@@ -518,6 +557,22 @@ onUnmounted(() => {
                     </template>
                 </div>
             </section>
+
+            <!-- Reviews -->
+            <ReviewsSection
+                v-if="hasReviews"
+                :album-slug="album.slug"
+                section-id="album-reviews"
+                theme="section-dark"
+            />
+
+            <!-- Radio Airplay -->
+            <RadioSection
+                v-if="hasRadio"
+                :album-slug="album.slug"
+                section-id="album-radio"
+                theme="section-dark"
+            />
 
             <!-- Spotify Embed -->
             <section id="album-listen" class="album-listen-section">
@@ -1087,5 +1142,17 @@ onUnmounted(() => {
 
 @media (max-width: 600px) {
     .album-subnav { display: none; }
+}
+
+#album-reviews.section {
+    background: var(--green-deeper);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#album-radio.section {
+    background: var(--green-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 </style>

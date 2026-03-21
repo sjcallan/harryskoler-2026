@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 
-withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
+const props = withDefaults(defineProps<{
+    theme?: string;
+    albumSlug?: string;
+    sectionId?: string;
+}>(), {
+    theme: 'section-dark',
+    sectionId: 'reviews',
+});
 
 interface ReviewItem {
     id: number;
@@ -26,7 +33,7 @@ const albumFilters = [
 const reviews = ref<ReviewItem[]>([]);
 const loading = ref(true);
 const expandedId = ref<number | null>(null);
-const activeAlbum = ref<string | null>(null);
+const activeAlbum = ref<string | null>(props.albumSlug ?? null);
 
 const availableAlbums = computed(() => albumFilters);
 
@@ -36,6 +43,7 @@ const filteredReviews = computed(() => {
 });
 
 function selectAlbum(slug: string) {
+    if (props.albumSlug) return;
     activeAlbum.value = activeAlbum.value === slug ? null : slug;
     expandedId.value = null;
 }
@@ -59,14 +67,14 @@ onMounted(fetchReviews);
 </script>
 
 <template>
-    <section id="reviews" :class="['section', theme]">
+    <section :id="sectionId" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Critical Acclaim</span>
             <h2 class="section-title">Reviews</h2>
             <div class="section-divider"></div>
         </div>
 
-        <div class="album-filter reveal">
+        <div v-if="!albumSlug" class="album-filter reveal">
             <button
                 v-for="album in availableAlbums"
                 :key="album.slug"

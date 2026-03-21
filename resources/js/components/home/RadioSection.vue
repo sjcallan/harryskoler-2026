@@ -3,7 +3,14 @@ import { ref, computed, onMounted } from 'vue';
 import ImageLightbox from './ImageLightbox.vue';
 import type { LightboxImage } from './ImageLightbox.vue';
 
-withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-red-accent' });
+const props = withDefaults(defineProps<{
+    theme?: string;
+    albumSlug?: string;
+    sectionId?: string;
+}>(), {
+    theme: 'section-red-accent',
+    sectionId: 'radio',
+});
 
 interface RadioAirplayItem {
     id: number;
@@ -28,7 +35,7 @@ const albumFilters = [
 
 const radioCharts = ref<RadioAirplayItem[]>([]);
 const loading = ref(true);
-const activeAlbum = ref<string | null>(null);
+const activeAlbum = ref<string | null>(props.albumSlug ?? null);
 const lightboxOpen = ref(false);
 const lightboxIndex = ref(0);
 
@@ -48,6 +55,7 @@ const lightboxImages = computed<LightboxImage[]>(() =>
 );
 
 function selectAlbum(slug: string) {
+    if (props.albumSlug) return;
     activeAlbum.value = activeAlbum.value === slug ? null : slug;
 }
 
@@ -73,14 +81,14 @@ onMounted(fetchRadioAirplays);
 </script>
 
 <template>
-    <section id="radio" :class="['section', theme]">
+    <section :id="sectionId" :class="['section', theme]">
         <div class="section-header reveal">
             <span class="section-label">Charts</span>
             <h2 class="section-title">Radio Airplay</h2>
             <div class="section-divider"></div>
         </div>
 
-        <div class="album-filter reveal">
+        <div v-if="!albumSlug" class="album-filter reveal">
             <button
                 v-for="album in albumFilters"
                 :key="album.slug"
