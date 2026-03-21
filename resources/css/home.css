@@ -48,6 +48,8 @@ html, body {
     scrollbar-width: thin;
     scrollbar-color: var(--red) var(--green-dark);
     overflow-x: hidden;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
 }
 
 /* SECTION BASE */

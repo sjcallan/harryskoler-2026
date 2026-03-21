@@ -9,6 +9,7 @@ const currentSlide = ref(0);
 const totalSlides = 3;
 const slideNames = ['Echoes', 'Red Brick Hill', 'Living In Sound'];
 let autoSlideTimer: ReturnType<typeof setInterval> | null = null;
+const echoesVideo = ref<HTMLVideoElement | null>(null);
 
 function stopAutoSlide() {
     if (autoSlideTimer) {
@@ -39,12 +40,34 @@ function resetAutoSlide() {
     }, 8000);
 }
 
+function resumeVideos() {
+    const video = echoesVideo.value;
+    if (video && video.paused) {
+        video.play().catch(() => {});
+    }
+}
+
+function handleVisibilityChange() {
+    if (document.visibilityState === 'visible') {
+        resumeVideos();
+        resetAutoSlide();
+    } else {
+        stopAutoSlide();
+    }
+}
+
 onMounted(() => {
     resetAutoSlide();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pageshow', resumeVideos);
+    window.addEventListener('focus', resumeVideos);
 });
 
 onUnmounted(() => {
     if (autoSlideTimer) clearInterval(autoSlideTimer);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    window.removeEventListener('pageshow', resumeVideos);
+    window.removeEventListener('focus', resumeVideos);
 });
 </script>
 
@@ -56,12 +79,14 @@ onUnmounted(() => {
                 <!-- SLIDE 1: Echoes — Coming May 1st Promo -->
                 <div class="hero-slide hero-slide--echoes" :class="{ 'slide-active': currentSlide === 0 }">
                     <video
+                        ref="echoesVideo"
                         class="echoes-bg-video"
                         src="/assets/videos/echoes-album-cover-animation-low.mp4"
                         autoplay
                         loop
                         muted
                         playsinline
+                        webkit-playsinline
                     ></video>
                     <div class="echoes-top-grad"></div>
                     <div class="slide-decor">
@@ -215,6 +240,8 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    touch-action: pan-y;
+    -ms-touch-action: pan-y;
 }
 
 .hero-slide-area {
