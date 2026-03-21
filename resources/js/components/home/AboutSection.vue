@@ -148,7 +148,7 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
 
     .about-image-stack {
-        height: 620px;
+        height: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
