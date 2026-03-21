@@ -10,19 +10,26 @@ const totalSlides = 3;
 const slideNames = ['Echoes', 'Red Brick Hill', 'Living In Sound'];
 let autoSlideTimer: ReturnType<typeof setInterval> | null = null;
 
+function stopAutoSlide() {
+    if (autoSlideTimer) {
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = null;
+    }
+}
+
 function nextSlide() {
     currentSlide.value = (currentSlide.value + 1) % totalSlides;
-    resetAutoSlide();
+    stopAutoSlide();
 }
 
 function prevSlide() {
     currentSlide.value = (currentSlide.value - 1 + totalSlides) % totalSlides;
-    resetAutoSlide();
+    stopAutoSlide();
 }
 
 function goToSlide(i: number) {
     currentSlide.value = i;
-    resetAutoSlide();
+    stopAutoSlide();
 }
 
 function resetAutoSlide() {
