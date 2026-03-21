@@ -22,13 +22,8 @@ interface PressEvent {
 
 const events = ref<PressEvent[]>([]);
 const loading = ref(true);
-const expandedEventId = ref<number | null>(null);
 const lightboxImage = ref<PressImage | null>(null);
 const lightboxEventImages = ref<PressImage[]>([]);
-
-function toggleEvent(id: number) {
-    expandedEventId.value = expandedEventId.value === id ? null : id;
-}
 
 function openLightbox(image: PressImage, allImages: PressImage[]) {
     lightboxImage.value = image;
@@ -70,9 +65,6 @@ async function fetchPress() {
     try {
         const res = await fetch('/api/press-events');
         events.value = await res.json();
-        if (events.value.length > 0) {
-            expandedEventId.value = events.value[0].id;
-        }
     } catch {
         // Silently fail on public page
     } finally {
@@ -116,12 +108,8 @@ onMounted(() => {
                 v-for="event in events"
                 :key="event.id"
                 class="press-event reveal"
-                :class="{ 'press-event--expanded': expandedEventId === event.id }"
             >
-                <button
-                    class="press-event-header"
-                    @click="toggleEvent(event.id)"
-                >
+                <div class="press-event-header">
                     <div class="press-event-info">
                         <span v-if="event.publication" class="press-publication">{{ event.publication }}</span>
                         <h3 class="press-event-title">{{ event.title }}</h3>
@@ -134,36 +122,30 @@ onMounted(() => {
                             target="_blank"
                             rel="noopener"
                             class="press-pdf-link"
-                            @click.stop
                         >
                             View PDF
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                         </a>
-                        <span class="press-toggle-icon" :class="{ 'press-toggle-icon--open': expandedEventId === event.id }">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                        </span>
                     </div>
-                </button>
+                </div>
 
-                <transition name="press-expand">
-                    <div v-if="expandedEventId === event.id" class="press-event-body">
-                        <p v-if="event.description" class="press-description">{{ event.description }}</p>
-                        <div class="press-image-grid">
-                            <button
-                                v-for="img in event.images"
-                                :key="img.id"
-                                class="press-image-thumb"
-                                @click="openLightbox(img, event.images)"
-                            >
-                                <img :src="img.image_url" :alt="img.caption ?? event.title" />
-                                <div class="press-image-overlay">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                                </div>
-                                <span v-if="img.caption" class="press-image-caption">{{ img.caption }}</span>
-                            </button>
-                        </div>
+                <div class="press-event-body">
+                    <p v-if="event.description" class="press-description">{{ event.description }}</p>
+                    <div v-if="event.images.length" class="press-image-grid">
+                        <button
+                            v-for="img in event.images"
+                            :key="img.id"
+                            class="press-image-thumb"
+                            @click="openLightbox(img, event.images)"
+                        >
+                            <img :src="img.image_url" :alt="img.caption ?? event.title" />
+                            <div class="press-image-overlay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            </div>
+                            <span v-if="img.caption" class="press-image-caption">{{ img.caption }}</span>
+                        </button>
                     </div>
-                </transition>
+                </div>
             </div>
         </div>
 
@@ -221,17 +203,8 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    padding: 2rem 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
+    padding: 2rem 0 1rem;
     color: inherit;
-    transition: opacity 0.3s;
-}
-
-.press-event-header:hover {
-    opacity: 0.85;
 }
 
 .press-event-info {
@@ -291,39 +264,6 @@ onMounted(() => {
 .press-pdf-link:hover {
     background: var(--white);
     color: var(--dark);
-}
-
-.press-toggle-icon {
-    display: flex;
-    color: rgba(232, 224, 214, 0.4);
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.press-toggle-icon--open {
-    transform: rotate(180deg);
-}
-
-/* Expand transition */
-.press-expand-enter-active {
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    overflow: hidden;
-}
-
-.press-expand-leave-active {
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.press-expand-enter-from,
-.press-expand-leave-to {
-    opacity: 0;
-    max-height: 0;
-}
-
-.press-expand-enter-to,
-.press-expand-leave-from {
-    opacity: 1;
-    max-height: 800px;
 }
 
 .press-event-body {
