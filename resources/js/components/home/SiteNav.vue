@@ -161,6 +161,7 @@ function handleNavClick(event: Event, id: string) {
 
 @media (max-width: 900px) {
     .site-nav { padding: 1rem 1.5rem; }
+    .site-nav.scrolled { padding: 0.8rem 1.5rem; }
     .site-nav.mobile-menu-active {
         bottom: 0;
         align-items: flex-start;
