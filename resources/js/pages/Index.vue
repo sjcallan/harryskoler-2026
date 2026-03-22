@@ -11,6 +11,7 @@ import AboutSection from '@/components/home/AboutSection.vue';
 import MusicSection from '@/components/home/MusicSection.vue';
 import ReviewsSection from '@/components/home/ReviewsSection.vue';
 import NewsSection from '@/components/home/NewsSection.vue';
+import ParallaxImageBreak from '@/components/home/ParallaxImageBreak.vue';
 import RadioSection from '@/components/home/RadioSection.vue';
 import PressSection from '@/components/home/PressSection.vue';
 import GallerySection from '@/components/home/GallerySection.vue';
@@ -70,6 +71,10 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
         <QuoteStrip />
         <RadioSection :theme="sectionThemes.radio" />
         <NewsSection :theme="sectionThemes.news" />
+        <ParallaxImageBreak
+            src="/images/press/jazztimes-no-cta.jpg"
+            alt="JazzTimes feature on Harry Skoler"
+        />
         <ReviewsSection :theme="sectionThemes.reviews" />
         <PressSection :theme="sectionThemes.press" />
         <MusicSection :theme="sectionThemes.music" />
