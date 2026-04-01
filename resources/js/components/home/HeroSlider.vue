@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { useIsMacDesktop } from '@/composables/useIsMacDesktop';
 
 defineProps<{
     scrollY?: number;
 }>();
+
+const { isMacDesktop } = useIsMacDesktop();
 
 const currentSlide = ref(0);
 const totalSlides = 3;
@@ -139,6 +142,7 @@ onUnmounted(() => {
                                 "Red Brick Hill" on <a href="https://www.sunnysiderecords.com/" target="_blank" class="rbh-accent-link">Sunnyside Records</a><br />
                                 is now available for order on <a href="https://harryskoler.bandcamp.com/album/red-brick-hill" target="_blank" class="rbh-accent-link">Bandcamp</a><br />
                                 and <a href="https://music.apple.com/us/album/red-brick-hill/1755928110" target="_blank" class="rbh-accent-link">Apple Music</a>!
+                                <span v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</span>
                             </div>
                             <div class="rbh-catalog">SSC 1748</div>
                             <ul class="rbh-icons">
@@ -183,6 +187,7 @@ onUnmounted(() => {
                             is available for purchase on
                             <a href="https://harryskoler.bandcamp.com/album/living-in-sound-the-music-of-charles-mingus" target="_blank" class="lis-accent-link">Bandcamp</a>
                             and <a href="https://music.apple.com/us/album/living-in-sound-the-music-of-charles-mingus/1614535356" target="_blank" class="lis-accent-link">Apple Music</a>!
+                            <span v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</span>
                         </div>
                         <div class="lis-album-wrap">
                             <a href="https://harryskoler.bandcamp.com/album/living-in-sound-the-music-of-charles-mingus" target="_blank">
@@ -448,6 +453,17 @@ onUnmounted(() => {
     transition: color 0.3s;
 }
 .rbh-accent-link:hover { color: #f0c06a; }
+
+.apple-music-note {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 0.72rem;
+    color: rgba(232, 226, 218, 0.55);
+    font-style: italic;
+    letter-spacing: 0.02em;
+}
 
 .rbh-catalog {
     margin-top: 1rem;

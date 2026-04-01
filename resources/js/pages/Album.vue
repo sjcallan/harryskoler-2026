@@ -4,8 +4,10 @@ import ReviewsSection from '@/components/home/ReviewsSection.vue';
 import RadioSection from '@/components/home/RadioSection.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useIsMacDesktop } from '@/composables/useIsMacDesktop';
 
 const props = defineProps<{ slug: string }>();
+const { isMacDesktop } = useIsMacDesktop();
 
 interface Album {
     slug: string;
@@ -509,6 +511,7 @@ onUnmounted(() => {
                                 Apple Music
                             </a>
                         </div>
+                        <p v-if="album.appleMusicUrl && isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
                     </div>
                 </div>
             </header>
@@ -738,6 +741,16 @@ onUnmounted(() => {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+}
+
+.apple-music-note {
+    margin-top: 0.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--cream);
+    opacity: 0.45;
+    font-style: italic;
+    letter-spacing: 0.02em;
 }
 
 /* DETAILS */

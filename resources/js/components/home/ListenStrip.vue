@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useIsMacDesktop } from '@/composables/useIsMacDesktop';
+
+const { isMacDesktop } = useIsMacDesktop();
+</script>
+
 <template>
     <div class="listen-strip">
         <p>Now Available — Listen to <em>Echoes</em></p>
@@ -5,6 +11,7 @@
             <a href="https://harryskoler.bandcamp.com/" target="_blank" class="cta-btn">Bandcamp</a>
             <a href="https://music.apple.com/" target="_blank" class="cta-btn cta-btn-outline">Apple Music</a>
         </div>
+        <p v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
     </div>
 </template>
 
@@ -33,5 +40,16 @@
     display: flex;
     gap: 1.5rem;
     flex-wrap: wrap;
+}
+
+.apple-music-note {
+    width: 100%;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin-top: -0.5rem;
 }
 </style>

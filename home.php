@@ -170,3 +170,22 @@
 <section id="rbh-story" class="section footer-stick" style="min-height: 700px">
         <a href="https://harryskoler.bandcamp.com/album/red-brick-hill" target="_blank"><img src="/images/media/full/downbeat-07-2024-ad.jpg" alt="" /></a>
 </section>
+<script>
+(function() {
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    var isMac = /^Mac/i.test(platform) || platform === 'macOS';
+    var hasTouch = navigator.maxTouchPoints > 0;
+    if (!isMac || hasTouch) return;
+    var style = document.createElement('style');
+    style.textContent = '.apple-music-note-legacy{display:block;margin-top:6px;font-size:11px;color:rgba(255,255,255,0.5);font-style:italic;letter-spacing:0.02em}';
+    document.head.appendChild(style);
+    document.querySelectorAll('a[href*="music.apple.com"]').forEach(function(link) {
+        if (link.querySelector('i, svg, img')) return;
+        var note = document.createElement('span');
+        note.className = 'apple-music-note-legacy';
+        note.textContent = 'Mac users: opens in Music app. To purchase, select iTunes Store inside Music.';
+        var parent = link.parentNode;
+        if (parent) parent.insertBefore(note, link.nextSibling);
+    });
+})();
+</script>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import type { NavLink } from '@/composables/useScrollTracking';
+import { useIsMacDesktop } from '@/composables/useIsMacDesktop';
+
+const { isMacDesktop } = useIsMacDesktop();
 
 withDefaults(defineProps<{
     navLinks: NavLink[];
@@ -44,6 +47,7 @@ const socialLinks = [
                         </a>
                     </li>
                 </ul>
+                <p v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
             </div>
 
             <div class="footer-col footer-col--rep">
@@ -151,6 +155,15 @@ const socialLinks = [
 .social-links svg {
     width: 1.15rem;
     height: 1.15rem;
+}
+
+.apple-music-note {
+    margin-top: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: rgba(232, 224, 214, 0.4);
+    font-style: italic;
+    letter-spacing: 0.02em;
 }
 
 /* Representation */
