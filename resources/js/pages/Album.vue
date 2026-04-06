@@ -50,6 +50,7 @@ const albums: Album[] = [
         description: [],
         spotifyEmbed: '',
         bandcampUrl: 'https://harryskoler1.bandcamp.com/album/echoes',
+        appleMusicUrl: 'https://music.apple.com/us/album/echoes/1890977854',
         artwork: 'Illustration and layout by Julian Montague',
         story: {
             heading: 'The Stories Behind Echoes',
@@ -511,7 +512,7 @@ onUnmounted(() => {
                         </div>
                         <div v-if="album.bandcampUrl || album.appleMusicUrl" class="album-links">
                             <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn">
-                                Buy on Bandcamp
+                                {{ album.spotifyEmbed ? 'Buy on Bandcamp' : 'Pre-Order on Bandcamp' }}
                             </a>
                             <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline">
                                 Apple Music
@@ -601,9 +602,11 @@ onUnmounted(() => {
                 <div v-else class="coming-soon">
                     <p class="coming-soon-date">May 1, 2026</p>
                     <p class="coming-soon-text">Coming Soon</p>
-                    <div v-if="album.bandcampUrl" class="coming-soon-links">
-                        <a :href="album.bandcampUrl" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+                    <div v-if="album.bandcampUrl || album.appleMusicUrl" class="coming-soon-links">
+                        <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+                        <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline">Apple Music</a>
                     </div>
+                    <p v-if="album.appleMusicUrl && isMacDesktop" class="apple-music-note" style="margin-top:1rem;">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
                 </div>
             </section>
 

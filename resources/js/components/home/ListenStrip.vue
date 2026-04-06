@@ -12,6 +12,7 @@ const { isMacDesktop } = useIsMacDesktop();
         <p>Pre-Order <em>Echoes</em> — Available May 1, 2026</p>
         <div class="listen-links">
             <a href="https://harryskoler1.bandcamp.com/album/echoes" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+            <a href="https://music.apple.com/us/album/echoes/1890977854" target="_blank" class="cta-btn cta-btn-outline">Apple Music</a>
             <a href="/album/echoes" class="cta-btn cta-btn-outline">Explore the Album</a>
         </div>
         <p v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
