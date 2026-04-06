@@ -105,12 +105,40 @@ onUnmounted(() => {
                     <div class="hero-content hero-content--album">
                         <div class="echoes-promo-label">New Album</div>
                         <div class="album-cover-wrap">
-                            <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" loading="eager" fetchpriority="high" />
+                            <a href="/album/echoes">
+                                <img src="/images/albums/echoes.png" alt="Harry Skoler — Echoes" class="album-cover" loading="eager" fetchpriority="high" />
+                            </a>
                         </div>
                         <div class="echoes-release-date">
                             <span class="echoes-release-prefix">Available</span>
                             <span class="echoes-release-day">May 1, 2026</span>
                         </div>
+                        <div class="echoes-cta-row">
+                            <a href="https://harryskoler1.bandcamp.com/album/echoes" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+                            <a href="/album/echoes" class="cta-btn cta-btn-outline">Explore the Album</a>
+                        </div>
+                        <ul class="echoes-icons">
+                            <li>
+                                <a href="https://harryskoler1.bandcamp.com/album/echoes" target="_blank" aria-label="Bandcamp">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.facebook.com/HarrySkolerJazzClarinet" target="_blank" aria-label="Facebook">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/harryskoler/" target="_blank" aria-label="Instagram">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://music.apple.com/us/artist/harry-skoler/287182016" target="_blank" aria-label="Apple Music">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -120,7 +148,7 @@ onUnmounted(() => {
                     <div class="rbh-layout">
                         <div class="rbh-cover-side">
                             <div class="rbh-cover-wrap">
-                                <a href="https://harryskoler.bandcamp.com/album/red-brick-hill" target="_blank">
+                                <a href="/album/red-brick-hill">
                                     <img src="/images/albums/red-brick-hill-md.png" alt="Red Brick Hill" class="rbh-cover" />
                                 </a>
                             </div>
@@ -135,8 +163,8 @@ onUnmounted(() => {
                             </div>
                             <div class="rbh-story-coda">
                                 and a red brick hill.
-                                <a href="/press/red-brick-hill-05-2024" class="rbh-story-link">Read the full story here</a>
                             </div>
+                            <a href="/album/red-brick-hill#album-story" class="rbh-story-link">Read the full story here</a>
                             <div class="rbh-promo">
                                 The new recording from Harry Skoler<br />
                                 "Red Brick Hill" on <a href="https://www.sunnysiderecords.com/" target="_blank" class="rbh-accent-link">Sunnyside Records</a><br />
@@ -190,7 +218,7 @@ onUnmounted(() => {
                             <span v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</span>
                         </div>
                         <div class="lis-album-wrap">
-                            <a href="https://harryskoler.bandcamp.com/album/living-in-sound-the-music-of-charles-mingus" target="_blank">
+                            <a href="/album/living-in-sound">
                                 <img src="/images/albums/living-in-sound-md.jpg" alt="Living In Sound" class="lis-album-cover" />
                             </a>
                         </div>
@@ -430,10 +458,12 @@ onUnmounted(() => {
 }
 
 .rbh-story-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
     color: #e8a849;
     text-decoration: none;
-    margin-left: 0.5rem;
     transition: color 0.3s;
 }
 .rbh-story-link:hover { color: #f0c06a; }
@@ -665,7 +695,82 @@ onUnmounted(() => {
     position: relative;
     z-index: 10;
     text-align: center;
-    pointer-events: none;
+    pointer-events: auto;
+}
+
+.echoes-cta-row {
+    margin-top: 1.8rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-active .echoes-cta-row {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.echoes-cta-row .cta-btn {
+    background: var(--white);
+    color: var(--black, #0a0a0a);
+    border-color: var(--white);
+}
+
+.echoes-cta-row .cta-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    border-color: var(--white);
+}
+
+.echoes-cta-row .cta-btn-outline {
+    background: transparent;
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.echoes-cta-row .cta-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--white);
+    border-color: var(--white);
+}
+
+.echoes-icons {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.7s 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-active .echoes-icons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.echoes-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.3s, transform 0.3s;
+}
+.echoes-icons a:hover {
+    color: #fff;
+    transform: scale(1.12);
+}
+
+.echoes-icons svg {
+    width: 24px;
+    height: 24px;
 }
 
 /* ==============================
@@ -801,5 +906,6 @@ onUnmounted(() => {
     .lis-content { padding-left: 3.5rem; padding-right: 3.5rem; }
     .lis-promo { font-size: 1rem; }
     .lis-album-cover { width: 130px; }
+    .echoes-cta-row { flex-direction: column; align-items: center; gap: 0.7rem; }
 }
 </style>

@@ -26,6 +26,9 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
                     <a href="http://www.buffet-crampon.com/en/artist/harry-skoler/" target="_blank">
                         <img src="/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
                     </a>
+                    <a href="https://www.dansr.com/artists/harry-skoler" target="_blank">
+                        <img src="/images/logos/dansr.svg" alt="DANSR" class="endorsement-logo">
+                    </a>
                 </div>
             </div>
             <div class="about-sidebar reveal">
@@ -34,6 +37,7 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
                     <img src="/images/about/side-image-2.jpg" alt="Harry Skoler performing" class="about-img about-img-2">
                     <img src="/images/about/side-image-3.jpg" alt="Harry Skoler" class="about-img about-img-3">
                 </div>
+                <p class="about-photo-credit">Photos by Francesco Gargiulli</p>
             </div>
         </div>
     </section>
@@ -126,6 +130,17 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
     transform: rotate(-2.5deg);
 }
 .about-img-3:hover { transform: rotate(-2.5deg) scale(1.03); }
+
+.about-photo-credit {
+    margin-top: 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: var(--cream);
+    opacity: 0.35;
+    font-style: italic;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
 
 .endorsements {
     display: flex;

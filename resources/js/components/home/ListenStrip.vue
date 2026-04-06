@@ -6,10 +6,13 @@ const { isMacDesktop } = useIsMacDesktop();
 
 <template>
     <div class="listen-strip">
-        <p>Now Available — Listen to <em>Echoes</em></p>
+        <a href="/album/echoes" class="listen-strip-cover">
+            <img src="/images/albums/echoes.png" alt="Echoes" />
+        </a>
+        <p>Pre-Order <em>Echoes</em> — Available May 1, 2026</p>
         <div class="listen-links">
-            <a href="https://harryskoler.bandcamp.com/" target="_blank" class="cta-btn">Bandcamp</a>
-            <a href="https://music.apple.com/" target="_blank" class="cta-btn cta-btn-outline">Apple Music</a>
+            <a href="https://harryskoler1.bandcamp.com/album/echoes" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+            <a href="/album/echoes" class="cta-btn cta-btn-outline">Explore the Album</a>
         </div>
         <p v-if="isMacDesktop" class="apple-music-note">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
     </div>
@@ -22,10 +25,22 @@ const { isMacDesktop } = useIsMacDesktop();
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
+    gap: 2rem;
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
+}
+
+.listen-strip-cover {
+    flex-shrink: 0;
+}
+
+.listen-strip-cover img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 
 .listen-strip p {

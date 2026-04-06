@@ -31,15 +31,15 @@ const albums: Album[] = [
     {
         slug: 'echoes',
         title: 'Echoes',
-        year: '2025',
+        year: '2026',
         label: 'Red Brick Hill',
         catalogNumber: 'RBH 2131',
         cover: '/images/albums/echoes.png',
         tracks: [
-            'Evocation*', 'Study in Orange', 'JW, Michelangelo & the 40 Cent Burger',
-            'Everything\'s Cool, Everything\'s Cool!', 'Marian', 'Reminiscence*',
-            'Thank You', 'Waiting Patiently', 'Counterpart', 'Sea of Feeling',
-            'POW!', 'Overtone', 'Never Played in Syracuse!', 'Allusion*',
+            'Evocation*', 'Study in Orange (for Bill Evans)', 'JW, Michelangelo & the 40 Cent Burger (for James Williams)',
+            'Everything\'s Cool, Everything\'s Cool! (for Rahsaan Roland Kirk)', 'Marian (for Marian McPartland)', 'Reminiscence*',
+            'Thank You (for Teddy Wilson)', 'Waiting Patiently (for Benny Goodman)', 'Counterpart', 'Sea of Feeling (for Jimmy Giuffre)',
+            'POW! (for Lionel Hampton)', 'Overtone', 'Never Played in Syracuse! (for Miles Davis)', 'Allusion*',
         ],
         musicians: [
             'Harry Skoler — Clarinet',
@@ -49,6 +49,7 @@ const albums: Album[] = [
         ],
         description: [],
         spotifyEmbed: '',
+        bandcampUrl: 'https://harryskoler1.bandcamp.com/album/echoes',
         artwork: 'Illustration and layout by Julian Montague',
         story: {
             heading: 'The Stories Behind Echoes',
@@ -242,6 +243,7 @@ const albums: Album[] = [
         description: [],
         spotifyEmbed: 'https://open.spotify.com/embed/album/4TOAU5MmZwyYFVhJnKGI1h',
         bandcampUrl: 'https://harryskoler.bandcamp.com/album/living-in-sound-the-music-of-charles-mingus',
+        appleMusicUrl: 'https://music.apple.com/us/album/living-in-sound-the-music-of-charles-mingus/1614535356',
         artwork: 'Artwork by Dave Chisholm',
     },
     {
@@ -267,6 +269,7 @@ const albums: Album[] = [
             'Original jazz compositions featuring intimate portraits expressed through quintet and duo settings. The quintet\'s unique sound highlights the blend of clarinet, flute, and vibes/piano.',
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/7kWJvopHUhGm6HnPzIwybO',
+        appleMusicUrl: 'https://music.apple.com/us/album/two-ones/318369952',
     },
     {
         slug: 'work-of-heart',
@@ -303,6 +306,7 @@ const albums: Album[] = [
             'Charting in JAZZIZ Magazine\'s Top Ten "radioACTIVE" Jazz Chart for national radio airplay, this heartfelt, lush recording is a collection of diversified standard and original compositions that features jazz clarinet with six tracks augmented with Strings.',
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/0FPfMzuI7FGzOtR5de6Z9U',
+        appleMusicUrl: 'https://music.apple.com/us/album/a-work-of-heart/287182012',
     },
     {
         slug: 'reflections',
@@ -327,6 +331,7 @@ const albums: Album[] = [
             'Reflections on the Art of Swing captures the timelessness of the songs associated with Benny Goodman, played in a unique quartet setting of Clarinet, Vibes, Bass and Drums that reflects a chamber-music approach with a fresh, distinctive, "voice".',
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/2JSzixGVlP3F3KDjjlcnND',
+        appleMusicUrl: 'https://music.apple.com/us/album/reflections-on-the-art-of-swing/287879117',
     },
     {
         slug: 'conversations',
@@ -352,6 +357,7 @@ const albums: Album[] = [
             'The quartet\'s distinct arrangements are exacting and delicate. With an emphasis on a lyrical and fluid approach, the ensemble\'s style can best be described as \'chamber-like\'.',
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/0He2PJ9ta34MbeoC9uBwp4',
+        appleMusicUrl: 'https://music.apple.com/us/album/conversations-in-the-language-of-jazz/289144282',
     },
 ];
 
@@ -527,6 +533,7 @@ onUnmounted(() => {
                                 <span class="track-name">{{ track }}</span>
                             </li>
                         </ol>
+                        <p v-if="album.tracks.some(t => t.includes('*'))" class="track-footnote">* Composed by Walter Smith III</p>
                     </div>
                     <div class="album-personnel">
                         <h3 class="detail-heading">Musicians</h3>
@@ -594,6 +601,9 @@ onUnmounted(() => {
                 <div v-else class="coming-soon">
                     <p class="coming-soon-date">May 1, 2026</p>
                     <p class="coming-soon-text">Coming Soon</p>
+                    <div v-if="album.bandcampUrl" class="coming-soon-links">
+                        <a :href="album.bandcampUrl" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
+                    </div>
                 </div>
             </section>
 
@@ -829,6 +839,16 @@ onUnmounted(() => {
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
+.track-footnote {
+    margin-top: 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--cream);
+    opacity: 0.5;
+    font-style: italic;
+    letter-spacing: 0.03em;
+}
+
 .artwork-credit {
     margin-top: 2rem;
     font-size: 0.78rem;
@@ -951,6 +971,14 @@ onUnmounted(() => {
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--red);
+}
+
+.coming-soon-links {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* MORE ALBUMS */

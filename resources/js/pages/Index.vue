@@ -78,6 +78,7 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
         <ReviewsSection :theme="sectionThemes.reviews" />
         <PressSection :theme="sectionThemes.press" />
         <MusicSection :theme="sectionThemes.music" />
+        <ListenStrip />
         <GallerySection :theme="sectionThemes.gallery" />
         <AboutSection :theme="sectionThemes.about" />
         <EventsSection :theme="sectionThemes.events" />

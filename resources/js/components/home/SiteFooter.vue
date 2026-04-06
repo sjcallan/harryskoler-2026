@@ -14,7 +14,7 @@ withDefaults(defineProps<{
 });
 
 const socialLinks = [
-    { href: 'https://harryskoler.bandcamp.com/album/red-brick-hill', label: 'Bandcamp', icon: 'bandcamp' },
+    { href: 'https://harryskoler1.bandcamp.com/album/echoes', label: 'Bandcamp', icon: 'bandcamp' },
     { href: 'https://www.facebook.com/HarrySkolerJazzClarinet', label: 'Facebook', icon: 'facebook' },
     { href: 'https://www.instagram.com/harryskoler/', label: 'Instagram', icon: 'instagram' },
     { href: 'https://music.apple.com/us/artist/harry-skoler/287182016', label: 'Apple Music', icon: 'apple' },

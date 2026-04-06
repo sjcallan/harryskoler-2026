@@ -306,9 +306,8 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown));
 
 .lightbox-meta-text {
     display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.35rem;
     min-width: 0;
 }
 
@@ -332,10 +331,11 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown));
 
 .lightbox-credit {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    color: rgba(232, 224, 214, 0.5);
+    font-size: 0.78rem;
+    color: rgba(232, 224, 214, 0.75);
     margin: 0;
-    white-space: nowrap;
+    font-style: italic;
+    letter-spacing: 0.02em;
 }
 
 .lightbox-view-original {
