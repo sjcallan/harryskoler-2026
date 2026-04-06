@@ -690,7 +690,7 @@ onUnmounted(() => {
     width: min(55vw, 440px);
     height: auto;
     display: block;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 15px 35px rgba(0,0,0,0.45), 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .hero-content {
