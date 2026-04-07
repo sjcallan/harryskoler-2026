@@ -138,6 +138,14 @@ html, body {
     background: transparent;
 }
 
+.apple-icon {
+    width: 14px;
+    height: 14px;
+    vertical-align: -2px;
+    margin-right: 0.3em;
+    flex-shrink: 0;
+}
+
 /* SCROLL REVEAL */
 .reveal {
     opacity: 0;
