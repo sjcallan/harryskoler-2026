@@ -108,7 +108,9 @@ html, body {
 
 /* CTA BUTTONS */
 .cta-btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
     padding: 0.9rem 2.5rem;
     background: var(--red);
     color: var(--white);
@@ -119,6 +121,7 @@ html, body {
     text-transform: uppercase;
     transition: all 0.4s;
     border: 1px solid var(--red);
+    white-space: nowrap;
 }
 
 .cta-btn:hover {
@@ -138,11 +141,10 @@ html, body {
     background: transparent;
 }
 
-.apple-icon {
+.apple-icon,
+.bandcamp-icon {
     width: 14px;
     height: 14px;
-    vertical-align: -2px;
-    margin-right: 0.3em;
     flex-shrink: 0;
 }
 

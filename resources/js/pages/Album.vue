@@ -24,6 +24,9 @@ interface Album {
     bandcampUrl?: string;
     appleMusicUrl?: string;
     artwork?: string;
+    labelLogo?: string;
+    trackFootnote?: string;
+    linerNotes?: { author: string; paragraphs: string[] };
     story?: { heading?: string; paragraphs?: string[]; sections?: { subheading: string; paragraphs: string[] }[] };
 }
 
@@ -52,6 +55,7 @@ const albums: Album[] = [
         bandcampUrl: 'https://harryskoler1.bandcamp.com/album/echoes',
         appleMusicUrl: 'https://music.apple.com/us/album/echoes/1890977854',
         artwork: 'Illustration and layout by Julian Montague',
+        trackFootnote: '* Composed by Walter Smith III',
         story: {
             heading: 'The Stories Behind Echoes',
             sections: [
@@ -180,6 +184,7 @@ const albums: Album[] = [
         year: '2024',
         label: 'Sunnyside Records',
         catalogNumber: 'SSC 1748',
+        labelLogo: '/images/logos/sunnyside-logo-white.png',
         cover: '/images/albums/red-brick-hill-md.png',
         tracks: [
             'Last Star, Last Night (prologue)', 'NanCee', 'ascent', 'blue, mostly',
@@ -223,6 +228,7 @@ const albums: Album[] = [
         year: '2022',
         label: 'Sunnyside Records',
         catalogNumber: 'SSC 1665',
+        labelLogo: '/images/logos/sunnyside-logo-white.png',
         cover: '/images/albums/living-in-sound-md.jpg',
         tracks: [
             'Goodbye Pork Pie Hat', 'Peggy\'s Blue Skylight', 'Duke Ellington\'s Sound of Life',
@@ -271,6 +277,26 @@ const albums: Album[] = [
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/7kWJvopHUhGm6HnPzIwybO',
         appleMusicUrl: 'https://music.apple.com/us/album/two-ones/318369952',
+        linerNotes: {
+            author: 'Ken Franckling, October 2008',
+            paragraphs: [
+                'The title of this recording project by clarinetist Harry Skoler invites several interpretations. It could reference the tracks "Two Onderful" or "Two as One." It could speak to the fact that this is a two-part recording, opening with seven pieces performed by jazz quintet, followed by eight more-intimate duos by Harry and longtime band-mate Ed Saindon, who is featured on piano rather than his better-known instrument, the vibes. But mostly, Two Ones is a project that celebrates the simpatico of Harry and Ed, who make very intuitive and personal music together. "It speaks to the combination of our individuality and teamwork as players," Harry says. "It is a high-wire act. You have to be in sync emotionally and in the phrasing."',
+                'Harry and Ed began working together in 1993 and very quickly discovered the affinity that makes their collaborations so enjoyable. "I think we are coming from the same musical place," Saindon says.',
+                'Two Ones is Harry\'s fourth recording as a leader, following Conversations in the Language of Jazz (1995), Reflections on the Art of Swing, a Tribute to Benny Goodman (1996) and A Work of Heart (1999). Three of the four projects have been collaborations with Ed.',
+                'Both men are on the faculty at Boston\'s Berklee College of Music, and their fine band-mates here also have Berklee faculty connections: bassist Barry Smith is a longtime faculty member; flute player Matt Marvuglio, who was on the Berklee faculty when Harry was a student there in the 1970s, is Dean of the Performance Division; and drummer Bob Tamagni is an associate professor of percussion. All have extensive performing credentials. "They are very sharp players. Their quiet confidence made this project a joy," Harry says.',
+                'At its core, this recording is rooted in emotion, both as inspiration for each composition \u2013 and their heart-felt, vibrant and highly improvised delivery. The project had a special spirit. "It was not a matter of making the music happen, but allowing it to emerge from you," Harry says. The late clarinetist, composer and bandleader Jimmy Giuffre, who was a teacher and mentor while Harry pursued his master\'s degree at New England Conservatory of Music in the 1980s, called that goal in music-making "stepping into a sea of feeling."',
+                'Saindon wrote nine of the compositions and collaborated with Skoler on the other five. Most are ballads. Both writers say they were inspired by something real that touched them profoundly from everyday life. Nothing here was plucked out of the air \u2013 or a book of charts. It is helpful to know those inspirations in order to appreciate where the music is coming from \u2013 and where they take it.',
+                'Ed wrote the seven quintet tunes. "Leaves of Autumn" enabled him to add a new melody and reharmonize the chord changes to "Autumn Leaves" in order to create a nice mood with impact and emotion. He penned the lovely "Two as One" for his wife, Pam, as an expression of emotion, humanity and life itself. This quintet version, featuring Ed on vibes, is a change from its first appearance on Key Play, his 2005 duo album with pianist Kenny Werner. "Alpine Sunset," Ed\'s first shift to piano on this project, was inspired by a train ride Ed and Pam took through the Alps during a trip to Switzerland last year. Through Harry and Ed\'s melodic interplay, you can hear the train climbing in elevation \u2013 and the breathtaking beauty of the moment.',
+                '"Joyful Sorrow" is performed twice on this CD, here by the quintet and later by the clarinet-piano duo. The title may sound like an oxymoron, but Ed disagrees. "To me, a lot of music is filled with emotion, even conflicting emotion. I tried to capture both sides," he says. "You might hear it differently at different times, depending on who you are with." The duo version (track 13) is more reflective and wistful, and reveals more of Harry and Ed\'s uncanny and symmetrical unison playing. "Giorgio\'s Theme" was written for the father of Marco Pacassoni, one of Ed\'s former students who hails from Fano, Italy, a coastal city south of Venice. "I got to know Giorgio when I was doing a tour and some clinics. He and his family treated us royally," Ed says. The vibes-clarinet combination here conjures a pleasant ride through the Italian countryside.',
+                'Ed wrote "Piazzolla" for Astor Piazzolla, whom he first heard when the "New Tango" master recorded with fellow-vibraphonist Gary Burton. He became fascinated with the Argentinean\'s sound and musical expression. "We\'re reaching for pure emotion and that\'s what Piazzolla was all about," he says. The final quintet track, "Silent Serenity," is intentionally somber to touch on the reflective side of human emotions. "I do a lot of writing in minor keys. They tend to have a lot of impact and are more powerful than major key tunes," Ed says. The tune also became a very nice showcase for Marvuglio\'s exquisite flute work. And what a joy to hear clarinet and flute playing in sync.',
+                'Harry was inspired to write the first of the session\'s duo tunes, "Dad\'s Clarinet," for his father, Louis, who played classical clarinet from 1930 to 1941. He made an even more direct connection by playing it on his father\'s 1929 clarinet, which has a haunting, bittersweet tone. "This enabled me to focus on the bigger picture," Harry says. "It\'s about what this gentle, humble man has lived through \u2013 and his influence on my life."',
+                '"Song for Jessy" was inspired by the daughter of close friends. Harry says the girl was upset about something that happened at school one day. He sat down at the piano, played "Somewhere Over the Rainbow" and snapped her out of her melancholy. He never forgot the impact that the music had. Ed wrote "Life\'s Dreams" because "everyone has dreams and that\'s what keeps us going. It applies to anyone\'s dreams," he says. "Two Onederful" was inspired by Amelia, one of Harry\'s two daughters. When she was young and recently adopted from China, he says she "didn\'t want two of anything. She wanted one in each hand \u2013 she called it \'two ones.\'"',
+                'The inspiration for "Jenna\'s Voice" was simply hearing Jessy\'s sister\'s voice on the telephone one day. "The child had such a musical voice on the phone," Harry says. The duo version of "Joyful Sorrow" is followed by "Don\'t Say Words," which is dedicated to Harry\'s other daughter, Gianna, who also is adopted from China. Harry says Gianna changed the lyrics to "don\'t say words" when singing the lullaby "Mockingbird" ("Hush, little baby, don\'t say a word. Papa\'s gonna buy you a mockingbird.")',
+                'This splendid session closes with Ed\'s tune, "Hope," which he calls a song of great emotion. "It is very positive and was written to leave the listener with a nice high," he says. It was a treat to hear so much of Saindon\'s piano playing on this CD, in addition to the pianistic approach that enriches his four-mallet technique on vibes.',
+                '"There is a sense of something profound at work when we play together," Harry says. "I listen to the tracks and say, \'These things sound very well rehearsed.\' They weren\'t. We\'re all soloing all the time, even when one person is stretching out. It\'s all about the group sound."',
+                'This project could have been called "Emotion" because that\'s what it is all about: How emotion and friendship enable like-minded musicians to create something greater, stronger and deeper than even they could imagine.',
+            ],
+        },
     },
     {
         slug: 'work-of-heart',
@@ -308,6 +334,29 @@ const albums: Album[] = [
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/0FPfMzuI7FGzOtR5de6Z9U',
         appleMusicUrl: 'https://music.apple.com/us/album/a-work-of-heart/287182012',
+        linerNotes: {
+            author: 'Dr. Chuck Berg, University of Kansas',
+            paragraphs: [
+                'A Work of Heart! Yes, the title is a play on words. More profoundly, it\'s also an accurate summing-up of one of the most personal and musically appealing albums of recent years. Indeed, with the simpatico coupling of Harry Skoler\'s poignant clarinet and Donn Trenner\'s warm arrangements and pianistics, we\'re taken to realms rich with sonorous melodic and harmonic pleasures.',
+                'Skoler, although a first-rate saxophonist and flutist, has made his major impact on clarinet thanks to Conversations in the Language of Jazz (1995) and Reflections on the Art of Swing: A Tribute to Benny Goodman (1996), both also on Brownstone. Along with stalwarts such as Eddie Daniels, Ken Peplowski and Gary Foster, Skoler has helped rekindle interest in the clarinet as a uniquely expressive contemporary "voice." Here, Skoler\'s impassioned playing, while reflecting the legacy of legends such as Benny Goodman and Buddy DeFranco, clearly stands on its own. It\'s an impression redoubled due to the clarinetist\'s highly personal compositions, co-crafted with Trenner.',
+                'Donn Trenner is a name more of us should be familiar with. As a bop pianist, his credits include Charlie Parker, Stan Getz, Oscar Pettiford, Dave Pell, Howard McGhee and Ben Webster. As for big bands, he\'s held down the piano chair with Charlie Barnet, Tommy Dorsey and Les Brown; with Brown, he was Bob Hope\'s major musical foil. As a music director-pianist-arranger, he\'s lifted bandstands with Lena Horne, Nancy Wilson, Jack Jones, Dick Haymes and Ann-Margret, and for TV\'s Steve Allen. He\'s also responsible for the sumptuous charts for another landmark Brownstone release, Here\'s to Joe (1996), spotlighting the gifted vocalist Paul Broadnax.',
+                'In assembling these notes, I had the pleasure of speaking with Harry and Donn, two thoughtful gentlemen who in separate phone conversations spoke warmly of what obviously has become a mutual admiration society. Interestingly, it was the Broadnax project that first brought them together. Before that, however, there was a Wes Montgomery album. "When I was a kid," Harry recalled, "there was a double album by Wes Montgomery with string arrangements of tunes like \'Here\'s That Rainy Day.\' I must have worn that album out. That\'s how much I loved it. So I can trace the desire to play with strings back to that double album."',
+                'That desire was refired in February 1997 when Harry caught Paul Broadnax at Sculler\'s in Boston. "I hadn\'t heard the record, but I was curious. That\'s where I first heard Donn. They didn\'t have live strings. Instead, he had synthesizers playing the string parts. Still, it was a beautiful sound. I introduced myself to Donn and before leaving the club, bought the CD. It moved me so much that when I got home, I knew that it was time for the string project, and that Donn was the person I wanted to work with. That night I decided to write him."',
+                'Donn picks up the story. "I got this lovely letter which was so sincere. So I called and told him to come and visit. After talking about various possibilities, he asked me if I would undertake the project. I said \'sure.\' The first thing I wanted to do was to play with his guys. I wanted to sit down and see what it felt like. They were sensitive players, and good to work with. They were also gentlemen, which is a high priority with me."',
+                'The well-balanced repertory consists of mostly off-beat standards and engaging originals. "A lot of the pieces by other artists are tunes that helped get me through the years, the bad times as well as the good times," says Harry. "They\'re the kinds of tunes that I would listen to all night long. Eventually, each one became so much a part of me that I thought, \'I\'ve got to play that piece.\' The feelings that went into this music, the originals as well as the standards, run the emotional gamut. For me, music has been a saving grace. It\'s been the means of expressing the deepest parts of myself. And, it\'s always come from a place of love."',
+                'The process of developing the originals speaks to an unusually high level of collaboration. Initially written by Harry, the tunes were then revised under Donn\'s experienced eye. "When we got to Harry\'s tunes," Donn recalls, "we were FAXing back and forth. There was an emotional statement that Harry was making that was important to understand and include and, I hoped, maybe help make more cohesive. He was wonderful to work with, very open." Harry was also grateful to the unusual and unselfish extent of having Donn listed as co-composer.',
+                'Harry recalls writing "Goodbye, Mr. Evans" in 1980 to commemorate the passing of the great pianist. "Sometimes I\'ve written tunes that come together over a period of time, where I go back and re-write. This, though, is one of those pieces that I wrote from beginning to end, even though I\'ve made a few changes from time to time. I didn\'t consciously write it in 3/4 because Bill was associated with waltzes. It just happened. At any rate, I played it many times through the years, including my graduate recital under Jimmy Giuffre."',
+                '"I don\'t want to sound like an egomaniac, but it\'s one of those pieces that I love. When I showed it to Donn, he liked it and revised the piece once again. He helped make the tune stronger, and yet it never lost the essence of being my composition. That\'s one of the magical things about working with Donn. When he speaks, he looks you right in the eye. He has the same approach to your writing. Also, he\'ll sit with it for the longest period of time. Even after he feels it\'s done, he\'ll sometimes come back and say, \'I\'m still unsettled about this part here.\' So we kept the FAX and phone lines pretty busy. He\'d listen to my suggestions in a way that felt like he was an extension of my writing. He was so respectful of the music that by the time a tune was finished, it wasn\'t drastically different from the original. Still, it was those nuances that made it a true collaboration. It was a great experience."',
+                'The logistics of the recording process constitute another saga. Indeed, it was Donn\'s teaming with Paul Broadnax that formed the template. "Harry was enamored with Paul\'s project. He liked the way it turned out. So, after we did the initial tracks in Boston with Harry, I went to Las Vegas to write and record the arrangements with a string section that I had worked with through the years. The Las Vegas players, who can play anything, have a real bent for jazz. They don\'t \'pooh pooh\' it like so many other string players."',
+                '"I also had the help of Joe Lano, a great guitarist who also writes and arranges, and who\'s responsible for the chart on Garry Dial\'s \'Sophisticated Yenta.\' A lot of the orchestration for strings came directly out of what I played on piano. We also used a French horn when it fit. So by writing in a manner that called for three passes, we were able to go into the studio and create the feeling of 24 strings and 3 French horns. I believe in simplicity. If you can color something gently and not overload it with everything available, you have a good chance of being successful. That\'s really how I approach everything. Also I wanted to leave Harry loose at times so you could feel him without the lushness. That\'s how I tried to balance it out."',
+                'In my conversation with Harry, "trust" was a word that came up time and again. Indeed, Harry\'s faith in Donn\'s multiple talents was clearly well placed. For me, Harry\'s lyrical playing and Donn\'s gently caressing writing (and keyboard work) are flip sides of the same stylistic coin . . . clear, clean and lean, and yet also lush in an attractively understated way. There\'s a spatial subtlety, a kind of sublime reciprocity derived as much from knowing what to omit, as what to play (and write). As a result, the music breathes. It\'s alive.',
+                'In this uncommon collaboration, I would be remiss not to mention the vital contributions of Harry\'s and Donn\'s colleagues. The players from Boston and Las Vegas are superb. And yes, Donn is right, the strings do play with a jazz-nuanced hipness that\'s on the money. I\'m also taken with the two guitarists, Garrison Fewell and Joe Lano, both consummate pros. Also noteworthy is the rhythm section work which motors with Rolls-Royce aplomb.',
+                'Harry is wonderful. His gorgeous sound shimmers, bringing everything to immediate and fully realized life. And, Donn? Along with his exquisite charts, we\'re treated to the tasteful yet in-the-moment pianistics that previously helped heat sessions with the likes of Parker and Getz.',
+                'One could spin words galore about the individual tracks, but they, I think, more than stand on their own. Therefore, let me conclude by referencing the album\'s title, A Work of Heart. In fact, it is the heart of Harry Skoler that is at centerstage. Like great artists of every genre, Harry connects to us by daring to reveal his deepest experiences, his moments of pain as well as ecstasy, indeed, his soul. That willingness, perhaps, compulsion, to share is a risky bit of artistic business. Harry, however, prevails.',
+                'It is music of transcendent beauty, emotionally direct and yet also timeless.',
+                'To conclude, I\'d like go out on a limb by predicting that this extraordinary collaboration by Harry Skoler and Donn Trenner promises to stand next to Stan Getz\'s nonpareil teaming with Eddie Sauter (Focus; 1961), as one of the benchmarks of jazz cum strings.',
+            ],
+        },
     },
     {
         slug: 'reflections',
@@ -333,6 +382,20 @@ const albums: Album[] = [
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/2JSzixGVlP3F3KDjjlcnND',
         appleMusicUrl: 'https://music.apple.com/us/album/reflections-on-the-art-of-swing/287879117',
+        linerNotes: {
+            author: 'Scott Yanow',
+            paragraphs: [
+                'Harry Skoler\'s debut for Brownstone (Conversations in the Language of Jazz) featured his quartet playing swing standards along with some more modern pieces and the leader\'s original "Treasures." For his second recording, the clarinetist looks back towards his original inspiration, Benny Goodman.',
+                'Skoler\'s father had been a clarinetist but quit years before his son was born, and his mother was a singer who also played piano. "My mother started giving me piano lessons when I was five but I was not that interested so it didn\'t last very long" remembers Skoler who was born and raised in Syracuse, New York. "I took up clarinet when I was nine and had such miserable teachers that I quit within nine months. Then when I was thirteen my parents found a great teacher, Doug Soyars, and I started taking lessons from him. After a year and a half, he asked if I wanted to learn about jazz. I didn\'t know anything about jazz at that point so he gave me a clarinet transcription of Benny Goodman from the 1940\'s and told me to go home and learn it. I did and the following week played it for him, horribly, as if it were a classical exercise. He took the clarinet out of my hand and wailed on the piece. The sound of the clarinet along with the swing rhythm completely blew me away and I went out and bought the album Benny Goodman\'s Greatest Hits. I made up my mind that this was going to be what I did with my life and I told my parents that night that I was going to be a jazz clarinetist."',
+                'Skoler knew what direction he wanted to go in fairly early. "I started collecting records and my parents took me to concerts featuring such great musicians as Earl Hines, Bobby Hackett, Lionel Hampton, Teddy Wilson and Goodman. I was willing to play anywhere and had all kinds of gigs, getting all of the experience I could." He attended Ithaca College for a period and then went to Berklee College of Music (where two of his favorite teachers were Joe Viola and Andy McGhee), graduating in 1978. By then Skoler was also playing tenor, flute and piano and was quite familiar with more modern styles of jazz. A three year period in Nashville found him gigging with his own group, teaching and working in the studios. "I became concerned about making enough money so I went into architecture since my father is an architect. I studied at Syracuse University, but I just wasn\'t happy being away from playing. So I returned to music, attended the New England Conservatory and studied with Jimmy Giuffre. I found the confidence to fully dedicate myself to music; it has worked out well."',
+                'Since graduating from the New England Conservatory in 1986 with a Master of Music degree in Jazz Studies, Harry Skoler has been quite busy. He has worked in the studios, played with the shows "Ain\'t Misbehavin\'" and "Nunsense" and led his own groups, most notably the quartet featured on both of his Brownstone recordings.',
+                '"Tim Gilmore has been playing drums with me since 1984. We worked together in a number of groups including a trio where I was playing mostly piano and synthesizer. Tim and I really connect and seem to be able to read each other\'s minds. I have been playing with bassist Roger Kimball since 1987 and I also originally played piano with him. In both cases our friendships have made our exchanges more conversational than with other players. I played a trio concert in 1993 with Tim and Roger (the first time that we all performed together) and at that point I wanted to get back to playing clarinet. I put on a couple of additional concerts with a pianist to round out the quartet but it wasn\'t clicking. Ed Saindon was the missing piece. Roger had played with Ed before and he recommended him. The first time we got together at Ed\'s house, it worked. Ed plays vibes quite pianistically and has a unique style with sensitive phrasing and lots of color and texture. The quartet provides the perfect setting for my clarinet."',
+                'While Harry Skoler had played tenor, alto, flute and piano on one selection apiece (in addition to his clarinet) on Conversations in the Language of Jazz, for his Benny Goodman tribute he sticks exclusively to clarinet except for a taste of his cool-toned tenor on "Undecided."',
+                '"Ed Saindon did the arrangements, and the whole quartet had input during the rehearsals" remembers Skoler. "We played some of the first tunes that I had loved when I was a kid. I did not try to sound like Benny Goodman but I hear him in the songs. I feel that I can be myself playing swing and can make my own contribution without having to try to sound like a Benny Goodman clone." Although some of the arrangements closely recall the Benny Goodman Quartet and Sextet of the 1935\u201345 period, Skoler has his own lyrical sound on clarinet and does not copy Goodman\'s solos. Also, Ed Saindon\'s style owes as much to Red Norvo as to Lionel Hampton and the lack of a piano in the rhythm section helps give the Quartet its own personality.',
+                'Each of the 11 swing standards are easily enjoyable without detailed program notes. A few of the highlights include "Don\'t Be That Way" (which Goodman usually performed with his big band rather than small group), the uptempo "After You\'ve Gone," Fats Waller\'s tricky "Handful Of Keys," a charming rendition of "What Can I Say After I Say I\'m Sorry" and an unusual version of "Just You, Just Me" that is a clarinet-vibes duet. In addition there are two new and original compositions. "Benny" is a thoughtful duet by its co-composers Skoler and Saindon, while the vibraphonist contributed the complex but swinging "Reflections on the Art of Swing."',
+                'In addition to playing regularly with his Quartet, Harry Skoler performs at schools throughout New England with his "Adventures With Jazz" program. "We have a whole show that involves the kids and gets them to improvise for the first time. It is a mission I have to introduce this music to younger people." Through his own example and rewarding recordings such as Reflections on the Art of Swing, Harry Skoler is insuring that swing music will continue to thrive for decades to come.',
+            ],
+        },
     },
     {
         slug: 'conversations',
@@ -359,6 +422,26 @@ const albums: Album[] = [
         ],
         spotifyEmbed: 'https://open.spotify.com/embed/album/0He2PJ9ta34MbeoC9uBwp4',
         appleMusicUrl: 'https://music.apple.com/us/album/conversations-in-the-language-of-jazz/289144282',
+        linerNotes: {
+            author: 'Ken Franckling',
+            paragraphs: [
+                'Harry Skoler, born in Syracuse, N.Y in 1956, first heard Benny Goodman\'s solos played by his teacher Douglas Soyars during a clarinet lesson in 1971. In Professor Soyar\'s attempt to introduce Harry to the language of jazz, an old transcription of Goodman\'s solo from the tune "Grand Slam" was assigned for study. Mostly to appease Soyars, the transcription was practiced, and played at the next lesson in the style of a classical piece (the only style Harry was familiar with). Soyars proceeded to take the clarinet from Harry\'s hands, and wailed through the transcribed solo like a hot knife through butter. Ears singed from this spiritual awakening, Harry ran to pick up his first Goodman record. After repeated listenings, he told his family that evening that he aspired to be a jazz clarinetist.',
+                'Twenty four years have passed since that day in the small basement studio where those first licks introduced Harry to the language of jazz. Schools were attended, careers changed, cities moved to and from, and the addition of saxophone, flute, and piano to his arsenal of voices. However, the voice of the clarinet is still the deepest voice in his heart.',
+                'Harry graduated from Berklee College of Music in 1978, having studied with Joe Viola, Andy McGhee, and Greg Badolato. During a three year period in Nashville, Tennessee, he performed with his jazz groups, taught privately, and played in the studio for the first time. In 1982, he became intrigued with architecture, and decided to study at Syracuse University. Although studying architecture proved interesting and challenging, Harry began to escape from the late night design sessions and participate in local jam sessions. A year later, music was once again the sole pursuit of his life, and with renewed commitment to becoming a jazz musician, he enrolled at New England Conservatory. Here he studied clarinet, saxophone, flute, and composition with the legendary Jimmy Giuffre, and began performing with jazz groups throughout New England.',
+                'Harry graduated in 1986 with a Master of Music degree in Jazz Studies. In addition to his quartet, he performs with Adventures With Jazz, educating young people in the language of jazz throughout New England. He has performed with the casts of "Ain\'t Misbehavin\'" and "Nunsense," and has recorded for television and numerous other projects.',
+                'His jazz quartet illuminates Harry\'s passion for the clarinet, "conversing" with vibraphone, bass and drums. The quartet additionally features Harry on saxophone, flute, and piano, and performs both original music as well as music from the Great American Songbook, and of course . . . the music of Benny Goodman (played and arranged with the quartet\'s distinct approach).',
+                'The clarinet tends to be more a footnote than a specialty for most players of reed instruments on today\'s jazz scene. Harry Skoler understands its endangered species status in jazz and in his own expressive way is working to reverse it. "The clarinet is a very difficult instrument to stick with in a group," he explains. "People can step all over it."',
+                'That doesn\'t happen in Skoler\'s New England based quartet, where the clarinet is his axe of preference though he sometimes doubles on the saxophones, flute and piano. While building his group and finding his sound over the past half dozen years, a special affinity developed between Skoler\'s clarinetics and the vibraphone playing of Boston jazz veteran Ed Saindon.',
+                'Like the flip sides of a coin, like yin and yang, these two instruments were made to be played together. While they often share space in larger musical ensembles, rarely have clarinet and vibes been showcased with the empathy heard on this session, including three very fine duets (Memories Of You, I Wish I\'d Met You, and Moonglow).',
+                'With no short shrift intended for bassist Roger Kimball and drummer Tim Gilmore, who are solid equal partners on this session, the clarinet-vibes pairing grabs the ear because of the special musical combination that is at work. "I noticed that right off the bat when playing with Ed. I\'ve been able to come up with ideas I have never found with anybody else," Skoler says. "We\'re not always sure who is following whom when we play, but there is always a real melodic affinity."',
+                'The music on Skoler\'s first recording as a leader swings sweetly. At times it is exacting and delicate. There\'s a cool jazz feel that avoids the roughshod abandon of beboppers even when Harry\'s playing breaks into an occasional hot sweat.',
+                'The standards Skoler & Co. offer up here are melodic showcases. Clarinet and vibes are featured from the start on Irving Berlin\'s classic If I Had You, Skoler\'s hero Benny Goodman\'s Stompin\' At The Savoy, the three aforementioned duets and several other gems, including Sweet Lorraine, the Bernstein/Sondheim classic Somewhere from West Side Story, and the Gershwins\' Soon. We are treated to a duet shift on the Brazilian standard Recado Bossa Nova, which features Skoler\'s clarinet with Kimball\'s bass work.',
+                'Harry shifts to tenor sax, and Ed Saindon to piano, for the classic Johnny Mandel/Peggy Lee tune The Shining Sea, which floats easily over a mood setting Latin beat from Kimball and Gilmore. We get a taste of Harry\'s alto playing on Treasures, an original written for his fianc\u00E9e, Joanne; his flute work on The Sweetest Sounds; and his piano on Happiness Is, a tasty ballad written by melody master Vince Guaraldi.',
+                'The level of empathy among these players comes through clearest on a lesser-known but equally exquisite Johnny Mandel treasure, El Cajon, and on the finale. The latter is an extended solo showcase written by Ed Saindon that has been titled Conversations in the Language of Jazz. Conversation is the right word. Listen to the interplay within the quartet as Harry gradually works his way up the clarinet\'s three registers while stretching the melody with his solos.',
+                'Harry Skoler has learned his lessons well, particularly mentor Jimmy Giuffre\'s advice to trust his individuality, to play with clarity, and always use his music to tell a story.',
+                'That advice is the essence of these fine conversations.',
+            ],
+        },
     },
 ];
 
@@ -402,6 +485,9 @@ const subNavLinks = computed(() => {
     }
     if (hasRadio.value) {
         links.push({ id: 'album-radio', label: 'Radio' });
+    }
+    if (album.value.linerNotes) {
+        links.push({ id: 'album-liner-notes', label: 'Liner Notes' });
     }
     links.push({ id: 'album-listen', label: 'Listen' });
     links.push({ id: 'album-more', label: 'More' });
@@ -512,9 +598,11 @@ onUnmounted(() => {
                         </div>
                         <div v-if="album.bandcampUrl || album.appleMusicUrl" class="album-links">
                             <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn">
+                                <svg class="bandcamp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg>
                                 {{ album.spotifyEmbed ? 'Buy on Bandcamp' : 'Pre-Order on Bandcamp' }}
                             </a>
                             <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline">
+                                <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                                 Apple Music
                             </a>
                         </div>
@@ -534,13 +622,17 @@ onUnmounted(() => {
                                 <span class="track-name">{{ track }}</span>
                             </li>
                         </ol>
-                        <p v-if="album.tracks.some(t => t.includes('*'))" class="track-footnote">* Composed by Walter Smith III</p>
+                        <p v-if="album.trackFootnote" class="track-footnote">{{ album.trackFootnote }}</p>
                     </div>
                     <div class="album-personnel">
                         <h3 class="detail-heading">Musicians</h3>
                         <ul class="musician-list">
                             <li v-for="(m, i) in album.musicians" :key="i">{{ m }}</li>
                         </ul>
+                        <div v-if="album.labelLogo && album.catalogNumber" class="label-badge">
+                            <img :src="album.labelLogo" :alt="album.label" class="label-logo" />
+                            <span class="label-catalog">{{ album.catalogNumber }}</span>
+                        </div>
                         <p v-if="album.artwork" class="artwork-credit">{{ album.artwork }}</p>
                     </div>
                 </div>
@@ -585,6 +677,18 @@ onUnmounted(() => {
                 theme="section-dark"
             />
 
+            <!-- Liner Notes -->
+            <section v-if="album.linerNotes" id="album-liner-notes" class="album-liner-notes-section">
+                <div class="liner-notes-inner">
+                    <h2 class="story-heading">Liner Notes</h2>
+                    <div class="story-divider"></div>
+                    <div class="story-body">
+                        <p v-for="(p, i) in album.linerNotes.paragraphs" :key="i">{{ p }}</p>
+                    </div>
+                    <p v-if="album.linerNotes.author" class="liner-notes-author">\u2014 {{ album.linerNotes.author }}</p>
+                </div>
+            </section>
+
             <!-- Spotify Embed -->
             <section id="album-listen" class="album-listen-section">
                 <h3 class="detail-heading listen-heading">Listen Now</h3>
@@ -603,8 +707,8 @@ onUnmounted(() => {
                     <p class="coming-soon-date">May 1, 2026</p>
                     <p class="coming-soon-text">Coming Soon</p>
                     <div v-if="album.bandcampUrl || album.appleMusicUrl" class="coming-soon-links">
-                        <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn">Pre-Order on Bandcamp</a>
-                        <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline">Apple Music</a>
+                        <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn"><svg class="bandcamp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg> Pre-Order on Bandcamp</a>
+                        <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline"><svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> Apple Music</a>
                     </div>
                     <p v-if="album.appleMusicUrl && isMacDesktop" class="apple-music-note" style="margin-top:1rem;">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
                 </div>
@@ -852,6 +956,27 @@ onUnmounted(() => {
     letter-spacing: 0.03em;
 }
 
+.label-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.label-logo {
+    width: 36px;
+    height: auto;
+    opacity: 0.7;
+}
+
+.label-catalog {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--cream);
+    opacity: 0.55;
+    letter-spacing: 0.06em;
+}
+
 .artwork-credit {
     margin-top: 2rem;
     font-size: 0.78rem;
@@ -932,6 +1057,30 @@ onUnmounted(() => {
     opacity: 0.8;
     margin-bottom: 1.5rem;
     text-align: justify;
+}
+
+/* LINER NOTES */
+.album-liner-notes-section {
+    padding: 6rem 3rem;
+    background: var(--green-deeper);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.liner-notes-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.liner-notes-author {
+    margin-top: 2.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--cream);
+    opacity: 0.6;
+    font-style: italic;
+    text-align: right;
+    letter-spacing: 0.02em;
 }
 
 /* LISTEN */
@@ -1074,6 +1223,7 @@ onUnmounted(() => {
     }
 
     .album-story-section { padding: 4rem 1.5rem; }
+    .album-liner-notes-section { padding: 3rem 1.5rem; }
     .album-listen-section { padding: 3rem 1.5rem; }
 
     .album-more-section { padding: 3rem 1.5rem; }
