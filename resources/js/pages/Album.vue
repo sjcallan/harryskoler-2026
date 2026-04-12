@@ -26,6 +26,8 @@ interface Album {
     artwork?: string;
     labelLogo?: string;
     trackFootnote?: string;
+    credits?: string[];
+    copyright?: string;
     linerNotes?: { author: string; paragraphs: string[] };
     story?: { heading?: string; paragraphs?: string[]; sections?: { subheading: string; paragraphs: string[] }[] };
 }
@@ -37,6 +39,7 @@ const albums: Album[] = [
         year: '2026',
         label: 'Red Brick Hill',
         catalogNumber: 'RBH 2131',
+        labelLogo: '/images/logos/red-brick-logo.png',
         cover: '/images/albums/echoes.png',
         tracks: [
             'Evocation*', 'Study in Orange (for Bill Evans)', 'JW, Michelangelo & the 40 Cent Burger (for James Williams)',
@@ -55,7 +58,20 @@ const albums: Album[] = [
         bandcampUrl: 'https://harryskoler1.bandcamp.com/album/echoes',
         appleMusicUrl: 'https://music.apple.com/us/album/echoes/1890977854',
         artwork: 'Illustration and layout by Julian Montague',
-        trackFootnote: '* Composed by Walter Smith III',
+        trackFootnote: '* Compositions by Walter Smith III',
+        credits: [
+            'Produced by Walter Smith III',
+            'Compositions by Harry Skoler and Walter Smith III*',
+            'Harry Skoler compositions BMI | Walter Smith III compositions WS3 Music ASCAP',
+            'Recorded at Sear Sound, NY, NY June 6 & 7, 2025',
+            'Chris Allen — Recording Engineer',
+            'Maximilian Troppe — Assistant Engineer',
+            'Andrew Kochinka — Studio Assistant',
+            'Roberta Findlay — Manager/Studio Owner',
+            'Mixed and Mastered at The Mud Room by Chris Allen',
+            'Harry Skoler plays Vandoren Reeds, Mouthpieces and Accessories, and Buffet Crampon Clarinets exclusively.',
+        ],
+        copyright: '© 2026 Red Brick Hill',
         story: {
             heading: 'The Stories Behind Echoes',
             sections: [
@@ -633,8 +649,16 @@ onUnmounted(() => {
                             <img :src="album.labelLogo" :alt="album.label" class="label-logo" />
                             <span class="label-catalog">{{ album.catalogNumber }}</span>
                         </div>
+                        <p v-if="album.copyright" class="copyright-notice">{{ album.copyright }}</p>
                         <p v-if="album.artwork" class="artwork-credit">{{ album.artwork }}</p>
                     </div>
+                </div>
+
+                <div v-if="album.credits?.length" class="album-credits">
+                    <h3 class="detail-heading">Credits</h3>
+                    <ul class="credits-list">
+                        <li v-for="(c, i) in album.credits" :key="i">{{ c }}</li>
+                    </ul>
                 </div>
 
                 <div v-if="album.description.length" class="album-description">
@@ -977,6 +1001,15 @@ onUnmounted(() => {
     letter-spacing: 0.06em;
 }
 
+.copyright-notice {
+    margin-top: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--cream);
+    opacity: 0.45;
+    letter-spacing: 0.04em;
+}
+
 .artwork-credit {
     margin-top: 2rem;
     font-size: 0.78rem;
@@ -984,6 +1017,33 @@ onUnmounted(() => {
     opacity: 0.4;
     font-style: italic;
     letter-spacing: 0.04em;
+}
+
+.album-credits {
+    margin-top: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.credits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.credits-list li {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--cream);
+    opacity: 0.7;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+}
+
+.credits-list li:last-child {
+    border-bottom: none;
 }
 
 .album-description {
