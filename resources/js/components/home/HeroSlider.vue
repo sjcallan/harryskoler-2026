@@ -9,10 +9,53 @@ defineProps<{
 const { isMacDesktop } = useIsMacDesktop();
 
 const currentSlide = ref(0);
-const totalSlides = 3;
-const slideNames = ['Echoes', 'Red Brick Hill', 'Living In Sound'];
+const totalSlides = 4;
+const slideNames = ['Echoes', 'Harry Skoler', 'Red Brick Hill', 'Living In Sound'];
 let autoSlideTimer: ReturnType<typeof setInterval> | null = null;
 const echoesVideo = ref<HTMLVideoElement | null>(null);
+
+interface QuoteData {
+    id: number;
+    quote: string;
+    person: string | null;
+    company: string | null;
+}
+
+const heroQuotes = ref<QuoteData[]>([]);
+const heroQuoteIndex = ref(0);
+const heroQuoteVisible = ref(true);
+let quoteTimer: ReturnType<typeof setInterval> | null = null;
+
+function cycleQuote() {
+    if (heroQuotes.value.length <= 1) return;
+    heroQuoteVisible.value = false;
+    setTimeout(() => {
+        heroQuoteIndex.value = (heroQuoteIndex.value + 1) % heroQuotes.value.length;
+        heroQuoteVisible.value = true;
+    }, 500);
+}
+
+function startQuoteCycle() {
+    stopQuoteCycle();
+    quoteTimer = setInterval(cycleQuote, 6000);
+}
+
+function stopQuoteCycle() {
+    if (quoteTimer) { clearInterval(quoteTimer); quoteTimer = null; }
+}
+
+async function fetchHeroQuotes() {
+    try {
+        const res = await fetch('/api/quotes/active');
+        const data: QuoteData[] = await res.json();
+        if (data.length) {
+            heroQuotes.value = data;
+            heroQuoteIndex.value = 0;
+            heroQuoteVisible.value = true;
+            startQuoteCycle();
+        }
+    } catch { /* quotes are supplementary */ }
+}
 
 function stopAutoSlide() {
     if (autoSlideTimer) {
@@ -67,6 +110,7 @@ function handleVisibilityChange() {
 
 onMounted(() => {
     resetAutoSlide();
+    fetchHeroQuotes();
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('pageshow', resumeVideos);
     window.addEventListener('focus', resumeVideos);
@@ -74,6 +118,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (autoSlideTimer) clearInterval(autoSlideTimer);
+    stopQuoteCycle();
     document.removeEventListener('visibilitychange', handleVisibilityChange);
     window.removeEventListener('pageshow', resumeVideos);
     window.removeEventListener('focus', resumeVideos);
@@ -144,8 +189,26 @@ onUnmounted(() => {
                     </div>
                 </div>
 
-                <!-- SLIDE 2: Red Brick Hill -->
-                <div class="hero-slide hero-slide--rbh" :class="{ 'slide-active': currentSlide === 1 }">
+                <!-- SLIDE 2: Harry Skoler — Signature + Quotes -->
+                <div class="hero-slide hero-slide--sig" :class="{ 'slide-active': currentSlide === 1 }">
+                    <div class="sig-bg"></div>
+                    <div class="sig-overlay"></div>
+                    <div class="sig-content">
+                        <img src="/images/logos/harry-skoler-signature.svg" alt="Harry Skoler" class="sig-signature" />
+                        <div class="sig-quote-wrap" v-if="heroQuotes.length">
+                            <div class="sig-quote" :class="{ 'sig-quote--visible': heroQuoteVisible }">
+                                <p class="sig-quote-text" v-html="'&ldquo;' + heroQuotes[heroQuoteIndex].quote + '&rdquo;'"></p>
+                                <div class="sig-quote-meta" v-if="heroQuotes[heroQuoteIndex].person || heroQuotes[heroQuoteIndex].company">
+                                    <span v-if="heroQuotes[heroQuoteIndex].person" class="sig-quote-person">{{ heroQuotes[heroQuoteIndex].person }}</span>
+                                    <span v-if="heroQuotes[heroQuoteIndex].company" class="sig-quote-company">{{ heroQuotes[heroQuoteIndex].company }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: Red Brick Hill -->
+                <div class="hero-slide hero-slide--rbh" :class="{ 'slide-active': currentSlide === 2 }">
                     <div class="rbh-bg"></div>
                     <div class="rbh-layout">
                         <div class="rbh-cover-side">
@@ -211,8 +274,8 @@ onUnmounted(() => {
                     </div>
                 </div>
 
-                <!-- SLIDE 3: Living In Sound -->
-                <div class="hero-slide hero-slide--lis" :class="{ 'slide-active': currentSlide === 2 }">
+                <!-- SLIDE 4: Living In Sound -->
+                <div class="hero-slide hero-slide--lis" :class="{ 'slide-active': currentSlide === 3 }">
                     <div class="lis-bg"></div>
                     <div class="lis-overlay"></div>
                     <div class="lis-content">
@@ -391,6 +454,129 @@ onUnmounted(() => {
     font-size: clamp(1.4rem, 3vw, 2rem);
     letter-spacing: 0.04em;
     color: var(--white);
+}
+
+/* ==============================
+   SIGNATURE + QUOTES SLIDE
+   ============================== */
+
+.hero-slide--sig {
+    background: #0a0a0a;
+}
+
+.sig-bg {
+    position: absolute;
+    inset: 0;
+    background: url('/images/homepage.jpg') center/cover no-repeat;
+    z-index: 0;
+}
+
+.sig-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.65) 0%,
+        rgba(0, 0, 0, 0.35) 45%,
+        rgba(0, 0, 0, 0.05) 100%
+    );
+    z-index: 1;
+}
+
+.sig-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 90%;
+    max-width: 1200px;
+    height: 100%;
+    padding: 6rem 0 4rem;
+    box-sizing: border-box;
+    pointer-events: auto;
+}
+
+.sig-signature {
+    width: clamp(200px, 28vw, 380px);
+    height: auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s 0.1s cubic-bezier(0.22, 1, 0.36, 1);
+    filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5));
+}
+
+.slide-active .sig-signature {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sig-quote-wrap {
+    margin-top: 2rem;
+    max-width: 480px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-active .sig-quote-wrap {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sig-quote {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.sig-quote--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sig-quote-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(0.88rem, 1.3vw, 1.05rem);
+    line-height: 1.7;
+    color: #e8e2da;
+    text-align: left;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.sig-quote-text :deep(em) {
+    font-style: normal;
+    font-weight: 500;
+}
+
+.sig-quote-meta {
+    margin-top: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+}
+
+.sig-quote-person {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(232, 224, 214, 0.7);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.sig-quote-company {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: rgba(184, 40, 46, 0.85);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* ==============================
@@ -896,6 +1082,16 @@ onUnmounted(() => {
    ============================== */
 
 @media (max-width: 900px) {
+    .sig-content { width: 100%; padding-left: 4rem; padding-right: 4rem; }
+    .sig-overlay {
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.4) 40%,
+            rgba(0, 0, 0, 0.15) 100%
+        );
+    }
+    .sig-quote-wrap { max-width: 100%; }
     .hero-content { padding: 0 4rem; }
     .rbh-layout {
         flex-direction: column;
@@ -920,6 +1116,8 @@ onUnmounted(() => {
 }
 
 @media (max-width: 600px) {
+    .sig-content { padding-left: 3.5rem; padding-right: 3.5rem; }
+    .sig-signature { width: clamp(170px, 55vw, 260px); }
     .hero-content { padding: 0 3.5rem; }
     .rbh-layout { gap: 1.5rem; padding: 0 3.5rem; }
     .rbh-cover { width: 220px; }
