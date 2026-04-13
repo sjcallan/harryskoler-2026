@@ -709,7 +709,7 @@ onUnmounted(() => {
                     <div class="story-body">
                         <p v-for="(p, i) in album.linerNotes.paragraphs" :key="i">{{ p }}</p>
                     </div>
-                    <p v-if="album.linerNotes.author" class="liner-notes-author">\u2014 {{ album.linerNotes.author }}</p>
+                    <p v-if="album.linerNotes.author" class="liner-notes-author">— {{ album.linerNotes.author }}</p>
                 </div>
             </section>
 
