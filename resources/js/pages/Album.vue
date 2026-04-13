@@ -769,6 +769,10 @@ onUnmounted(() => {
 }
 .album-page.is-revealed { opacity: 1; }
 
+[id^="album-"] {
+    scroll-margin-top: var(--nav-total-height, 100px);
+}
+
 /* HERO */
 .album-hero {
     position: relative;

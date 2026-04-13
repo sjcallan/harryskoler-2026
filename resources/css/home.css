@@ -43,6 +43,10 @@
     overflow-x: hidden;
 }
 
+html {
+    scroll-padding-top: var(--scroll-offset, 80px);
+}
+
 html, body {
     scroll-behavior: smooth;
     scrollbar-width: thin;
@@ -57,6 +61,7 @@ html, body {
     position: relative;
     z-index: 1;
     padding: 8rem 3rem;
+    scroll-margin-top: var(--scroll-offset, 80px);
 }
 
 .section-dark { background: var(--black); }

@@ -9,6 +9,14 @@ export function useScrollTracking(navLinks: NavLink[]) {
     const scrollY = ref(0);
     const activeSection = ref('home');
 
+    function measureNavOffset() {
+        const nav = document.querySelector('.site-nav');
+        if (nav) {
+            const h = nav.getBoundingClientRect().height + 16;
+            document.documentElement.style.setProperty('--scroll-offset', h + 'px');
+        }
+    }
+
     function onScroll() {
         scrollY.value = window.scrollY;
         updateActiveSection();
@@ -44,12 +52,31 @@ export function useScrollTracking(navLinks: NavLink[]) {
     }
 
     onMounted(() => {
+        measureNavOffset();
         window.addEventListener('scroll', onScroll, { passive: true });
         setTimeout(revealElements, 300);
 
         const hash = window.location.hash.replace('#', '');
         if (hash && navLinks.some(l => l.id === hash)) {
-            setTimeout(() => scrollToSection(hash), 400);
+            let lastHeight = 0;
+            let attempts = 0;
+            const maxAttempts = 10;
+            const interval = 300;
+
+            function attemptScroll() {
+                const el = document.getElementById(hash);
+                if (!el) return;
+                const currentHeight = document.documentElement.scrollHeight;
+                if (currentHeight !== lastHeight || attempts === 0) {
+                    lastHeight = currentHeight;
+                    scrollToSection(hash);
+                }
+                attempts++;
+                if (attempts < maxAttempts) {
+                    setTimeout(attemptScroll, interval);
+                }
+            }
+            requestAnimationFrame(attemptScroll);
         }
     });
 
