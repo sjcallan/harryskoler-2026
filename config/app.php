@@ -56,6 +56,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Preview Token
+    |--------------------------------------------------------------------------
+    |
+    | When set, anonymous visitors may append `?preview=<token>` to any web URL
+    | to enable a session-scoped preview that exposes draft content on the
+    | public site (see `App\Http\Middleware\HandlePreviewMode`). Leave empty
+    | to disable preview links entirely.
+    |
+    */
+
+    'preview_token' => env('PREVIEW_TOKEN', ''),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

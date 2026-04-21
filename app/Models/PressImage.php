@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
+use App\Concerns\HasPublishStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PressImage extends Model
 {
+    use HasPublishStatus;
+
     protected $fillable = [
+        'status',
         'press_event_id',
         'image',
         'caption',
         'sort_order',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_PUBLISHED,
     ];
 
     protected function casts(): array

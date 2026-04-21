@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\News;
 
+use App\Models\News;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreNewsRequest extends FormRequest
 {
@@ -14,6 +16,7 @@ class StoreNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => ['nullable', Rule::in(News::availableStatuses())],
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:news,slug'],
             'body' => ['required', 'string'],

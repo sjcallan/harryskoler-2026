@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Concerns\HasPublishStatus;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class RadioAirplay extends Model
 {
+    use HasPublishStatus;
+
     protected $fillable = [
+        'status',
         'rank',
         'chart',
         'detail',
@@ -16,6 +19,10 @@ class RadioAirplay extends Model
         'thumbnail',
         'album_slug',
         'sort_order',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_DRAFT,
     ];
 
     protected function casts(): array

@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\News\StoreNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
 use App\Models\News;
+use App\Support\ContentVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NewsController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
         $query = News::query()->orderByDesc('date');
+
+        ContentVisibility::apply($query, $request);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -52,8 +56,12 @@ class NewsController extends Controller
         ], 201);
     }
 
-    public function show(News $news): JsonResponse
+    public function show(Request $request, News $news): JsonResponse
     {
+        if (! ContentVisibility::canView($request, $news->status)) {
+            throw new NotFoundHttpException();
+        }
+
         return response()->json([
             ...$news->toArray(),
             'image_url' => $news->image_url,

@@ -33,6 +33,8 @@ import {
     X,
 } from 'lucide-vue-next';
 import draggable from 'vuedraggable';
+import StatusBadge from '@/components/dashboard/StatusBadge.vue';
+import { CONTENT_STATUSES, STATUS_FILTER_OPTIONS, type ContentStatus } from '@/composables/useContentStatus';
 
 const albumOptions: { slug: string; title: string }[] = [
     { slug: 'echoes', title: 'Echoes' },
@@ -50,6 +52,7 @@ const albumTitleMap: Record<string, string> = Object.fromEntries(
 
 interface RadioAirplayItem {
     id: number;
+    status: ContentStatus;
     rank: number;
     chart: string;
     detail: string | null;
@@ -68,6 +71,7 @@ const entries = ref<RadioAirplayItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const albumFilter = ref('all');
+const statusFilter = ref<'all' | ContentStatus>('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -79,6 +83,7 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error'>('success');
 
 const form = ref({
+    status: 'draft' as ContentStatus,
     rank: 1,
     chart: '',
     detail: '',
@@ -95,6 +100,10 @@ const filteredEntries = computed(() => {
 
     if (albumFilter.value && albumFilter.value !== 'all') {
         result = result.filter((item) => item.album_slug === albumFilter.value);
+    }
+
+    if (statusFilter.value !== 'all') {
+        result = result.filter((item) => item.status === statusFilter.value);
     }
 
     if (searchQuery.value) {
@@ -117,7 +126,7 @@ function getCsrfToken(): string {
 async function fetchEntries() {
     loading.value = true;
     try {
-        const res = await fetch('/api/radio-airplays');
+        const res = await fetch('/api/radio-airplays?admin=1');
         entries.value = await res.json();
     } catch {
         flash('Failed to load radio airplay entries.', 'error');
@@ -135,7 +144,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { rank: 1, chart: '', detail: '', link: '', album_slug: '__none__', sort_order: 0, image: null, removeImage: false };
+    form.value = { status: 'draft', rank: 1, chart: '', detail: '', link: '', album_slug: '__none__', sort_order: 0, image: null, removeImage: false };
     imagePreview.value = null;
     showForm.value = true;
 }
@@ -144,6 +153,7 @@ function openEditForm(item: RadioAirplayItem) {
     editingItem.value = item;
     errors.value = {};
     form.value = {
+        status: item.status ?? 'draft',
         rank: item.rank,
         chart: item.chart,
         detail: item.detail ?? '',
@@ -183,6 +193,7 @@ async function saveEntry() {
     errors.value = {};
 
     const formData = new FormData();
+    formData.append('status', form.value.status);
     formData.append('rank', String(form.value.rank));
     formData.append('chart', form.value.chart);
     formData.append('sort_order', String(form.value.sort_order));
@@ -310,7 +321,7 @@ onMounted(fetchEntries);
                     />
                 </div>
                 <Select v-model="albumFilter">
-                    <SelectTrigger class="w-full sm:w-[260px]">
+                    <SelectTrigger class="w-full sm:w-[220px]">
                         <div class="flex items-center gap-2">
                             <Disc3 class="text-muted-foreground size-3.5 shrink-0" />
                             <SelectValue placeholder="All Albums" />
@@ -320,6 +331,20 @@ onMounted(fetchEntries);
                         <SelectItem value="all">All Albums</SelectItem>
                         <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
                             {{ a.title }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+                <Select v-model="statusFilter">
+                    <SelectTrigger class="w-full sm:w-[180px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="opt in STATUS_FILTER_OPTIONS"
+                            :key="opt.value"
+                            :value="opt.value"
+                        >
+                            {{ opt.label }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
@@ -373,6 +398,7 @@ onMounted(fetchEntries);
                                 {{ item.detail }}
                             </p>
                             <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                                <StatusBadge :status="item.status" compact />
                                 <span
                                     v-if="item.album_slug"
                                     class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
@@ -448,20 +474,36 @@ onMounted(fetchEntries);
                     <p v-if="errors.link" class="text-destructive text-xs">{{ errors.link[0] }}</p>
                 </div>
 
-                <div class="space-y-2">
-                    <Label for="radio-album">Album</Label>
-                    <Select v-model="form.album_slug">
-                        <SelectTrigger id="radio-album">
-                            <SelectValue placeholder="Select an album (optional)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="__none__">None</SelectItem>
-                            <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
-                                {{ a.title }}
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <Label for="radio-album">Album</Label>
+                        <Select v-model="form.album_slug">
+                            <SelectTrigger id="radio-album">
+                                <SelectValue placeholder="Select an album (optional)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="__none__">None</SelectItem>
+                                <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                                    {{ a.title }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="radio-status">Status</Label>
+                        <Select v-model="form.status">
+                            <SelectTrigger id="radio-status">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                                    {{ s.label }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p v-if="errors.status" class="text-destructive text-xs">{{ errors.status[0] }}</p>
+                    </div>
                 </div>
 
                 <div class="space-y-2">

@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
 Route::inertia('/', 'Index')->name('home');
 
@@ -29,6 +28,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('gallery', 'admin/Gallery')->name('gallery');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Public JSON API (read-only)
+|--------------------------------------------------------------------------
+|
+| These endpoints are registered in `web.php` on purpose: they need access
+| to the session (cookie) so the controllers can tell whether the viewer
+| is authenticated or has enabled preview-mode. Session-less API routes
+| would always return public (published-only) content.
+|
+*/
+Route::prefix('api')->group(function () {
+    Route::get('news', [NewsController::class, 'index']);
+    Route::get('news/{news}', [NewsController::class, 'show']);
+
+    Route::get('reviews', [ReviewController::class, 'index']);
+    Route::get('reviews/{review}', [ReviewController::class, 'show']);
+
+    Route::get('radio-airplays', [RadioAirplayController::class, 'index']);
+    Route::get('radio-airplays/{radio_airplay}', [RadioAirplayController::class, 'show']);
+
+    Route::get('press-events', [PressEventController::class, 'index']);
+    Route::get('press-events/{press_event}', [PressEventController::class, 'show']);
+
+    Route::get('quotes', [QuoteController::class, 'index']);
+    Route::get('quotes/active', [QuoteController::class, 'active']);
+    Route::get('quotes/{quote}', [QuoteController::class, 'show']);
+
+    Route::get('gallery-images', [GalleryImageController::class, 'index']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated admin mutation endpoints
+|--------------------------------------------------------------------------
+*/
 Route::prefix('api')->middleware(['auth', 'verified'])->group(function () {
     Route::post('news', [NewsController::class, 'store']);
     Route::post('news/{news}', [NewsController::class, 'update']);

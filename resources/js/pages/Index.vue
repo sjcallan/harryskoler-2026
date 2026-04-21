@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useScrollTracking } from '@/composables/useScrollTracking';
+import PreviewBanner from '@/components/home/PreviewBanner.vue';
 import SiteNav from '@/components/home/SiteNav.vue';
 import HeroSlider from '@/components/home/HeroSlider.vue';
 import QuoteStrip from '@/components/home/QuoteStrip.vue';
@@ -56,6 +57,7 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
     </Head>
 
     <div class="hs-page">
+        <PreviewBanner />
         <div class="grain-overlay"></div>
 
         <FloatingCanvas :scroll-y="scrollY" />

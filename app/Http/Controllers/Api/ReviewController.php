@@ -6,14 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Reviews\StoreReviewRequest;
 use App\Http\Requests\Reviews\UpdateReviewRequest;
 use App\Models\Review;
+use App\Support\ContentVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReviewController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
         $query = Review::query()->orderBy('sort_order')->orderByDesc('created_at');
+
+        ContentVisibility::apply($query, $request);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -37,8 +41,12 @@ class ReviewController extends Controller
         return response()->json($review, 201);
     }
 
-    public function show(Review $review): JsonResponse
+    public function show(Request $request, Review $review): JsonResponse
     {
+        if (! ContentVisibility::canView($request, $review->status)) {
+            throw new NotFoundHttpException();
+        }
+
         return response()->json($review);
     }
 

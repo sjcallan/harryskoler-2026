@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import PreviewBanner from '@/components/home/PreviewBanner.vue';
 import SiteNav from '@/components/home/SiteNav.vue';
 import SiteFooter from '@/components/home/SiteFooter.vue';
 import ScrollToTop from '@/components/home/ScrollToTop.vue';
@@ -34,6 +35,7 @@ onUnmounted(() => {
 
 <template>
     <div class="hs-page">
+        <PreviewBanner />
         <div class="grain-overlay"></div>
 
         <SiteNav

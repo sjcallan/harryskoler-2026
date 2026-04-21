@@ -32,6 +32,8 @@ import {
     Disc3,
 } from 'lucide-vue-next';
 import draggable from 'vuedraggable';
+import StatusBadge from '@/components/dashboard/StatusBadge.vue';
+import { CONTENT_STATUSES, STATUS_FILTER_OPTIONS, type ContentStatus } from '@/composables/useContentStatus';
 
 const albumOptions: { slug: string; title: string }[] = [
     { slug: 'echoes', title: 'Echoes' },
@@ -49,6 +51,7 @@ const albumTitleMap: Record<string, string> = Object.fromEntries(
 
 interface ReviewItem {
     id: number;
+    status: ContentStatus;
     album_slug: string;
     excerpt: string;
     body: string;
@@ -64,6 +67,7 @@ const reviews = ref<ReviewItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
 const albumFilter = ref('all');
+const statusFilter = ref<'all' | ContentStatus>('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -75,6 +79,7 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error'>('success');
 
 const form = ref({
+    status: 'draft' as ContentStatus,
     album_slug: '',
     excerpt: '',
     body: '',
@@ -90,6 +95,10 @@ const filteredReviews = computed({
 
         if (albumFilter.value && albumFilter.value !== 'all') {
             result = result.filter((item) => item.album_slug === albumFilter.value);
+        }
+
+        if (statusFilter.value !== 'all') {
+            result = result.filter((item) => item.status === statusFilter.value);
         }
 
         if (searchQuery.value) {
@@ -130,7 +139,7 @@ function getCsrfToken(): string {
 async function fetchReviews() {
     loading.value = true;
     try {
-        const res = await fetch('/api/reviews');
+        const res = await fetch('/api/reviews?admin=1');
         reviews.value = await res.json();
     } catch {
         flash('Failed to load reviews.', 'error');
@@ -148,7 +157,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { album_slug: '', excerpt: '', body: '', author: '', publication: '', source_url: '', sort_order: 0 };
+    form.value = { status: 'draft', album_slug: '', excerpt: '', body: '', author: '', publication: '', source_url: '', sort_order: 0 };
     showForm.value = true;
 }
 
@@ -156,6 +165,7 @@ function openEditForm(item: ReviewItem) {
     editingItem.value = item;
     errors.value = {};
     form.value = {
+        status: item.status ?? 'draft',
         album_slug: item.album_slug,
         excerpt: item.excerpt,
         body: item.body,
@@ -177,6 +187,7 @@ async function saveReview() {
     errors.value = {};
 
     const payload: Record<string, string | number> = {
+        status: form.value.status,
         album_slug: form.value.album_slug,
         excerpt: form.value.excerpt,
         body: form.value.body,
@@ -305,7 +316,7 @@ onMounted(fetchReviews);
                     />
                 </div>
                 <Select v-model="albumFilter">
-                    <SelectTrigger class="w-full sm:w-[260px]">
+                    <SelectTrigger class="w-full sm:w-[220px]">
                         <div class="flex items-center gap-2">
                             <Disc3 class="text-muted-foreground size-3.5 shrink-0" />
                             <SelectValue placeholder="All Albums" />
@@ -315,6 +326,20 @@ onMounted(fetchReviews);
                         <SelectItem value="all">All Albums</SelectItem>
                         <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
                             {{ a.title }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+                <Select v-model="statusFilter">
+                    <SelectTrigger class="w-full sm:w-[180px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="opt in STATUS_FILTER_OPTIONS"
+                            :key="opt.value"
+                            :value="opt.value"
+                        >
+                            {{ opt.label }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
@@ -361,6 +386,7 @@ onMounted(fetchReviews);
                                         "{{ item.excerpt }}"
                                     </p>
                                     <p class="text-muted-foreground mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+                                        <StatusBadge :status="item.status" compact />
                                         <span
                                             v-if="item.album_slug"
                                             class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
@@ -418,19 +444,35 @@ onMounted(fetchReviews);
             </DialogHeader>
 
             <form @submit.prevent="saveReview" class="space-y-4">
-                <div class="space-y-2">
-                    <Label for="review-album">Album</Label>
-                    <Select v-model="form.album_slug">
-                        <SelectTrigger id="review-album">
-                            <SelectValue placeholder="Select an album..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
-                                {{ a.title }}
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <Label for="review-album">Album</Label>
+                        <Select v-model="form.album_slug">
+                            <SelectTrigger id="review-album">
+                                <SelectValue placeholder="Select an album..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem v-for="a in albumOptions" :key="a.slug" :value="a.slug">
+                                    {{ a.title }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p v-if="errors.album_slug" class="text-destructive text-xs">{{ errors.album_slug[0] }}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="review-status">Status</Label>
+                        <Select v-model="form.status">
+                            <SelectTrigger id="review-status">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                                    {{ s.label }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p v-if="errors.status" class="text-destructive text-xs">{{ errors.status[0] }}</p>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">

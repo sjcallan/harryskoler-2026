@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Concerns\HasPublishStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class PressEvent extends Model
 {
+    use HasPublishStatus;
+
     protected $fillable = [
+        'status',
         'title',
         'slug',
         'publication',
@@ -16,6 +20,10 @@ class PressEvent extends Model
         'date',
         'pdf',
         'sort_order',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_DRAFT,
     ];
 
     protected function casts(): array

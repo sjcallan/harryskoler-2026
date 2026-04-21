@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RadioAirplays\StoreRadioAirplayRequest;
 use App\Http\Requests\RadioAirplays\UpdateRadioAirplayRequest;
 use App\Models\RadioAirplay;
+use App\Support\ContentVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RadioAirplayController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
         $query = RadioAirplay::query()->orderBy('sort_order')->orderBy('rank');
+
+        ContentVisibility::apply($query, $request);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -54,8 +58,12 @@ class RadioAirplayController extends Controller
         ], 201);
     }
 
-    public function show(RadioAirplay $radioAirplay): JsonResponse
+    public function show(Request $request, RadioAirplay $radioAirplay): JsonResponse
     {
+        if (! ContentVisibility::canView($request, $radioAirplay->status)) {
+            throw new NotFoundHttpException();
+        }
+
         return response()->json([
             ...$radioAirplay->toArray(),
             'image_url' => $radioAirplay->image_url,

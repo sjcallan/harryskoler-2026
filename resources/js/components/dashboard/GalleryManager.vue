@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,9 +21,19 @@ import {
     GripVertical,
 } from 'lucide-vue-next';
 import draggable from 'vuedraggable';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import StatusBadge from '@/components/dashboard/StatusBadge.vue';
+import { CONTENT_STATUSES, STATUS_FILTER_OPTIONS, type ContentStatus } from '@/composables/useContentStatus';
 
 interface GalleryImageItem {
     id: number;
+    status: ContentStatus;
     image: string;
     thumbnail: string;
     image_url: string;
@@ -39,6 +49,8 @@ interface GalleryImageItem {
 const images = ref<GalleryImageItem[]>([]);
 const loading = ref(true);
 const uploading = ref(false);
+const statusFilter = ref<'all' | ContentStatus>('all');
+const uploadStatus = ref<ContentStatus>('draft');
 const showEditDialog = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -51,9 +63,15 @@ const flashType = ref<'success' | 'error'>('success');
 const dragOver = ref(false);
 
 const editForm = ref({
+    status: 'draft' as ContentStatus,
     caption: '',
     alt_text: '',
     credit: '',
+});
+
+const filteredImages = computed(() => {
+    if (statusFilter.value === 'all') return images.value;
+    return images.value.filter((item) => item.status === statusFilter.value);
 });
 
 function getCsrfToken(): string {
@@ -64,7 +82,7 @@ function getCsrfToken(): string {
 async function fetchImages() {
     loading.value = true;
     try {
-        const res = await fetch('/api/gallery-images');
+        const res = await fetch('/api/gallery-images?admin=1');
         images.value = await res.json();
     } catch {
         flash('Failed to load gallery images.', 'error');
@@ -101,6 +119,7 @@ async function uploadFiles(files: File[]) {
     errors.value = {};
 
     const formData = new FormData();
+    formData.append('status', uploadStatus.value);
     files.forEach(f => formData.append('images[]', f));
 
     try {
@@ -136,6 +155,7 @@ async function uploadFiles(files: File[]) {
 function openEditDialog(item: GalleryImageItem) {
     editingItem.value = item;
     editForm.value = {
+        status: item.status ?? 'draft',
         caption: item.caption ?? '',
         alt_text: item.alt_text ?? '',
         credit: item.credit ?? '',
@@ -239,6 +259,16 @@ onMounted(fetchImages);
         <CardHeader class="flex-row items-center justify-between space-y-0">
             <CardTitle class="text-xl font-semibold">Gallery</CardTitle>
             <div class="flex items-center gap-2">
+                <Select v-model="uploadStatus">
+                    <SelectTrigger class="h-9 w-[150px]">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                            Upload as {{ s.label }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
                 <label class="cursor-pointer">
                     <Button as="span" size="sm">
                         <Upload class="size-4" />
@@ -269,6 +299,24 @@ onMounted(fetchImages);
                 {{ flashMessage }}
             </div>
 
+            <!-- Status Filter -->
+            <div class="flex items-center justify-end">
+                <Select v-model="statusFilter">
+                    <SelectTrigger class="w-full sm:w-[200px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="opt in STATUS_FILTER_OPTIONS"
+                            :key="opt.value"
+                            :value="opt.value"
+                        >
+                            {{ opt.label }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+
             <!-- Drop zone -->
             <div
                 :class="[
@@ -294,16 +342,17 @@ onMounted(fetchImages);
 
             <!-- Empty -->
             <div
-                v-else-if="images.length === 0"
+                v-else-if="filteredImages.length === 0"
                 class="text-muted-foreground flex flex-col items-center justify-center gap-2 py-12 text-center"
             >
                 <ImageIcon class="size-10 opacity-40" />
-                <p>No gallery images yet. Upload your first one.</p>
+                <p v-if="statusFilter !== 'all'">No {{ statusFilter }} images.</p>
+                <p v-else>No gallery images yet. Upload your first one.</p>
             </div>
 
-            <!-- Image grid -->
+            <!-- Image grid (draggable when filter = all) -->
             <draggable
-                v-else
+                v-else-if="statusFilter === 'all'"
                 v-model="images"
                 item-key="id"
                 ghost-class="opacity-30"
@@ -320,7 +369,10 @@ onMounted(fetchImages);
                                 class="h-full w-full object-cover"
                             />
                         </div>
-                        <div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                        <div class="absolute top-1.5 right-1.5">
+                            <StatusBadge :status="item.status" compact />
+                        </div>
+                        <div class="absolute inset-0 flex items-end bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                             <div class="flex w-full items-center justify-between p-2">
                                 <span class="truncate text-xs text-white">{{ item.caption || 'No caption' }}</span>
                                 <div class="flex shrink-0 gap-1">
@@ -339,6 +391,42 @@ onMounted(fetchImages);
                     </div>
                 </template>
             </draggable>
+
+            <!-- Filtered grid (not draggable) -->
+            <div
+                v-else
+                class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            >
+                <div
+                    v-for="item in filteredImages"
+                    :key="item.id"
+                    class="group relative overflow-hidden rounded-lg border"
+                >
+                    <div class="aspect-square">
+                        <img
+                            :src="item.thumbnail_url"
+                            :alt="item.alt_text || item.caption || 'Gallery image'"
+                            class="h-full w-full object-cover"
+                        />
+                    </div>
+                    <div class="absolute top-1.5 right-1.5">
+                        <StatusBadge :status="item.status" compact />
+                    </div>
+                    <div class="absolute inset-0 flex items-end bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                        <div class="flex w-full items-center justify-between p-2">
+                            <span class="truncate text-xs text-white">{{ item.caption || 'No caption' }}</span>
+                            <div class="flex shrink-0 gap-1">
+                                <Button variant="ghost" size="icon-sm" class="text-white hover:text-white hover:bg-white/20" @click="openEditDialog(item)">
+                                    <Pencil class="size-3.5" />
+                                </Button>
+                                <Button variant="ghost" size="icon-sm" class="text-white hover:text-red-400 hover:bg-white/20" @click="confirmDelete(item)">
+                                    <Trash2 class="size-3.5" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </CardContent>
     </Card>
 
@@ -354,6 +442,21 @@ onMounted(fetchImages);
             </div>
 
             <form @submit.prevent="saveEdit" class="space-y-4">
+                <div class="space-y-2">
+                    <Label for="gallery-status">Status</Label>
+                    <Select v-model="editForm.status">
+                        <SelectTrigger id="gallery-status">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                                {{ s.label }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p v-if="errors.status" class="text-destructive text-xs">{{ errors.status[0] }}</p>
+                </div>
+
                 <div class="space-y-2">
                     <Label for="gallery-caption">Caption</Label>
                     <Input id="gallery-caption" v-model="editForm.caption" placeholder="Photo caption..." />

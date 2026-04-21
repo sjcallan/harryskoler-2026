@@ -7,16 +7,22 @@ use App\Http\Requests\Press\StorePressEventRequest;
 use App\Http\Requests\Press\UpdatePressEventRequest;
 use App\Models\PressEvent;
 use App\Models\PressImage;
+use App\Support\ContentVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PressEventController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = PressEvent::with('images')->orderBy('sort_order')->orderByDesc('date');
+        $query = PressEvent::with('images')
+            ->orderBy('sort_order')
+            ->orderByDesc('date');
+
+        ContentVisibility::apply($query, $request);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -26,13 +32,12 @@ class PressEventController extends Controller
             });
         }
 
+        $adminContext = ContentVisibility::isAdminContext($request);
+
         $events = $query->get()->map(fn (PressEvent $event) => [
             ...$event->toArray(),
             'pdf_url' => $event->pdf_url,
-            'images' => $event->images->map(fn (PressImage $img) => [
-                ...$img->toArray(),
-                'image_url' => $img->image_url,
-            ]),
+            'images' => $this->mapImages($event->images, $request, $adminContext),
         ]);
 
         return response()->json($events);
@@ -71,24 +76,23 @@ class PressEventController extends Controller
         return response()->json([
             ...$event->toArray(),
             'pdf_url' => $event->pdf_url,
-            'images' => $event->images->map(fn (PressImage $img) => [
-                ...$img->toArray(),
-                'image_url' => $img->image_url,
-            ]),
+            'images' => $this->mapImages($event->images, $request, true),
         ], 201);
     }
 
-    public function show(PressEvent $pressEvent): JsonResponse
+    public function show(Request $request, PressEvent $pressEvent): JsonResponse
     {
+        if (! ContentVisibility::canView($request, $pressEvent->status)) {
+            throw new NotFoundHttpException();
+        }
+
         $pressEvent->load('images');
+        $adminContext = ContentVisibility::isAdminContext($request);
 
         return response()->json([
             ...$pressEvent->toArray(),
             'pdf_url' => $pressEvent->pdf_url,
-            'images' => $pressEvent->images->map(fn (PressImage $img) => [
-                ...$img->toArray(),
-                'image_url' => $img->image_url,
-            ]),
+            'images' => $this->mapImages($pressEvent->images, $request, $adminContext),
         ]);
     }
 
@@ -155,10 +159,7 @@ class PressEventController extends Controller
         return response()->json([
             ...$pressEvent->toArray(),
             'pdf_url' => $pressEvent->pdf_url,
-            'images' => $pressEvent->images->map(fn (PressImage $img) => [
-                ...$img->toArray(),
-                'image_url' => $img->image_url,
-            ]),
+            'images' => $this->mapImages($pressEvent->images, $request, true),
         ]);
     }
 
@@ -177,5 +178,30 @@ class PressEventController extends Controller
         $pressEvent->delete();
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * Transform the nested image collection, honouring per-image visibility rules
+     * when the consumer is the public site (logged-out or preview viewer).
+     *
+     * @param  iterable<PressImage>  $images
+     * @return array<int, array<string, mixed>>
+     */
+    private function mapImages(iterable $images, Request $request, bool $adminContext): array
+    {
+        return collect($images)
+            ->filter(function (PressImage $img) use ($request, $adminContext) {
+                if ($adminContext) {
+                    return true;
+                }
+
+                return ContentVisibility::canView($request, $img->status);
+            })
+            ->map(fn (PressImage $img) => [
+                ...$img->toArray(),
+                'image_url' => $img->image_url,
+            ])
+            ->values()
+            ->all();
     }
 }

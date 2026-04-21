@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Reviews;
 
+use App\Models\Review;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreReviewRequest extends FormRequest
 {
@@ -14,6 +16,7 @@ class StoreReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => ['nullable', Rule::in(Review::availableStatuses())],
             'album_slug' => ['required', 'string', 'max:255'],
             'excerpt' => ['required', 'string', 'max:1000'],
             'body' => ['required', 'string'],

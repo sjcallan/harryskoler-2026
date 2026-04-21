@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\RadioAirplays;
 
+use App\Models\RadioAirplay;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRadioAirplayRequest extends FormRequest
 {
@@ -14,6 +16,7 @@ class StoreRadioAirplayRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => ['nullable', Rule::in(RadioAirplay::availableStatuses())],
             'rank' => ['required', 'integer', 'min:1'],
             'chart' => ['required', 'string', 'max:255'],
             'detail' => ['nullable', 'string', 'max:500'],

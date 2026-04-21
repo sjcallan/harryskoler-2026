@@ -14,6 +14,13 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Search,
     Plus,
     Pencil,
@@ -22,9 +29,12 @@ import {
     ImageIcon,
     AlertCircle,
 } from 'lucide-vue-next';
+import StatusBadge from '@/components/dashboard/StatusBadge.vue';
+import { CONTENT_STATUSES, STATUS_FILTER_OPTIONS, type ContentStatus } from '@/composables/useContentStatus';
 
 interface NewsItem {
     id: number;
+    status: ContentStatus;
     title: string;
     slug: string;
     body: string;
@@ -39,6 +49,7 @@ interface NewsItem {
 const news = ref<NewsItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const statusFilter = ref<'all' | ContentStatus>('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -50,6 +61,7 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error'>('success');
 
 const form = ref({
+    status: 'draft' as ContentStatus,
     title: '',
     slug: '',
     body: '',
@@ -61,13 +73,22 @@ const form = ref({
 const imagePreview = ref<string | null>(null);
 
 const filteredNews = computed(() => {
-    if (!searchQuery.value) return news.value;
-    const q = searchQuery.value.toLowerCase();
-    return news.value.filter(
-        (item) =>
-            item.title.toLowerCase().includes(q) ||
-            item.body.toLowerCase().includes(q),
-    );
+    let result = news.value;
+
+    if (statusFilter.value !== 'all') {
+        result = result.filter((item) => item.status === statusFilter.value);
+    }
+
+    if (searchQuery.value) {
+        const q = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (item) =>
+                item.title.toLowerCase().includes(q) ||
+                item.body.toLowerCase().includes(q),
+        );
+    }
+
+    return result;
 });
 
 function getCsrfToken(): string {
@@ -78,7 +99,7 @@ function getCsrfToken(): string {
 async function fetchNews() {
     loading.value = true;
     try {
-        const res = await fetch('/api/news');
+        const res = await fetch('/api/news?admin=1');
         news.value = await res.json();
     } catch {
         flash('Failed to load news entries.', 'error');
@@ -96,7 +117,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { title: '', slug: '', body: '', date: '', link: '', image: null };
+    form.value = { status: 'draft', title: '', slug: '', body: '', date: '', link: '', image: null };
     imagePreview.value = null;
     showForm.value = true;
 }
@@ -105,6 +126,7 @@ function openEditForm(item: NewsItem) {
     editingItem.value = item;
     errors.value = {};
     form.value = {
+        status: item.status ?? 'draft',
         title: item.title,
         slug: item.slug,
         body: item.body,
@@ -135,6 +157,7 @@ async function saveNews() {
     errors.value = {};
 
     const formData = new FormData();
+    formData.append('status', form.value.status);
     formData.append('title', form.value.title);
     formData.append('slug', form.value.slug);
     formData.append('body', form.value.body);
@@ -242,14 +265,30 @@ onMounted(fetchNews);
                 {{ flashMessage }}
             </div>
 
-            <!-- Search -->
-            <div class="relative">
-                <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-                <Input
-                    v-model="searchQuery"
-                    placeholder="Search news entries..."
-                    class="pl-9"
-                />
+            <!-- Search & Status Filter -->
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="relative flex-1">
+                    <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                    <Input
+                        v-model="searchQuery"
+                        placeholder="Search news entries..."
+                        class="pl-9"
+                    />
+                </div>
+                <Select v-model="statusFilter">
+                    <SelectTrigger class="w-full sm:w-[200px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="opt in STATUS_FILTER_OPTIONS"
+                            :key="opt.value"
+                            :value="opt.value"
+                        >
+                            {{ opt.label }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <!-- Loading -->
@@ -294,9 +333,12 @@ onMounted(fetchNews);
                     <div class="min-w-0 flex-1">
                         <div class="flex items-start justify-between gap-2">
                             <div class="min-w-0">
-                                <h4 class="truncate text-sm font-medium">
-                                    {{ item.title }}
-                                </h4>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h4 class="truncate text-sm font-medium">
+                                        {{ item.title }}
+                                    </h4>
+                                    <StatusBadge :status="item.status" compact />
+                                </div>
                                 <p class="text-muted-foreground mt-0.5 text-xs">
                                     {{ formatDate(item.date) }}
                                     <a
@@ -365,6 +407,24 @@ onMounted(fetchNews);
                         <Input id="news-date" v-model="form.date" type="date" />
                         <p v-if="errors.date" class="text-destructive text-xs">{{ errors.date[0] }}</p>
                     </div>
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="news-status">Status</Label>
+                    <Select v-model="form.status">
+                        <SelectTrigger id="news-status">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                                {{ s.label }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p class="text-muted-foreground text-xs">
+                        {{ CONTENT_STATUSES.find((s) => s.value === form.status)?.description }}
+                    </p>
+                    <p v-if="errors.status" class="text-destructive text-xs">{{ errors.status[0] }}</p>
                 </div>
 
                 <div class="space-y-2">

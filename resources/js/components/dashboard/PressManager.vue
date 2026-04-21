@@ -24,9 +24,19 @@ import {
     GripVertical,
     X,
 } from 'lucide-vue-next';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import StatusBadge from '@/components/dashboard/StatusBadge.vue';
+import { CONTENT_STATUSES, STATUS_FILTER_OPTIONS, type ContentStatus } from '@/composables/useContentStatus';
 
 interface PressImageItem {
     id: number;
+    status: ContentStatus;
     image: string;
     image_url: string;
     caption: string | null;
@@ -35,6 +45,7 @@ interface PressImageItem {
 
 interface PressEventItem {
     id: number;
+    status: ContentStatus;
     title: string;
     slug: string;
     publication: string | null;
@@ -51,6 +62,7 @@ interface PressEventItem {
 const events = ref<PressEventItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const statusFilter = ref<'all' | ContentStatus>('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);
 const saving = ref(false);
@@ -62,6 +74,7 @@ const flashMessage = ref('');
 const flashType = ref<'success' | 'error'>('success');
 
 const form = ref({
+    status: 'draft' as ContentStatus,
     title: '',
     slug: '',
     publication: '',
@@ -77,14 +90,23 @@ const newImages = ref<{ file: File; caption: string; preview: string }[]>([]);
 const pdfPreviewName = ref<string | null>(null);
 
 const filteredEvents = computed(() => {
-    if (!searchQuery.value) return events.value;
-    const q = searchQuery.value.toLowerCase();
-    return events.value.filter(
-        (item) =>
-            item.title.toLowerCase().includes(q) ||
-            (item.publication ?? '').toLowerCase().includes(q) ||
-            (item.description ?? '').toLowerCase().includes(q),
-    );
+    let result = events.value;
+
+    if (statusFilter.value !== 'all') {
+        result = result.filter((item) => item.status === statusFilter.value);
+    }
+
+    if (searchQuery.value) {
+        const q = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (item) =>
+                item.title.toLowerCase().includes(q) ||
+                (item.publication ?? '').toLowerCase().includes(q) ||
+                (item.description ?? '').toLowerCase().includes(q),
+        );
+    }
+
+    return result;
 });
 
 function getCsrfToken(): string {
@@ -95,7 +117,7 @@ function getCsrfToken(): string {
 async function fetchEvents() {
     loading.value = true;
     try {
-        const res = await fetch('/api/press-events');
+        const res = await fetch('/api/press-events?admin=1');
         events.value = await res.json();
     } catch {
         flash('Failed to load press events.', 'error');
@@ -113,7 +135,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { title: '', slug: '', publication: '', description: '', date: '', sort_order: 0, pdf: null, removePdf: false };
+    form.value = { status: 'draft', title: '', slug: '', publication: '', description: '', date: '', sort_order: 0, pdf: null, removePdf: false };
     existingImages.value = [];
     newImages.value = [];
     pdfPreviewName.value = null;
@@ -124,6 +146,7 @@ function openEditForm(item: PressEventItem) {
     editingItem.value = item;
     errors.value = {};
     form.value = {
+        status: item.status ?? 'draft',
         title: item.title,
         slug: item.slug,
         publication: item.publication ?? '',
@@ -188,6 +211,7 @@ async function saveEvent() {
     errors.value = {};
 
     const formData = new FormData();
+    formData.append('status', form.value.status);
     formData.append('title', form.value.title);
     formData.append('slug', form.value.slug);
     if (form.value.publication) formData.append('publication', form.value.publication);
@@ -310,13 +334,29 @@ onMounted(fetchEvents);
                 {{ flashMessage }}
             </div>
 
-            <div class="relative">
-                <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-                <Input
-                    v-model="searchQuery"
-                    placeholder="Search press events..."
-                    class="pl-9"
-                />
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div class="relative flex-1">
+                    <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                    <Input
+                        v-model="searchQuery"
+                        placeholder="Search press events..."
+                        class="pl-9"
+                    />
+                </div>
+                <Select v-model="statusFilter">
+                    <SelectTrigger class="w-full sm:w-[180px]">
+                        <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem
+                            v-for="opt in STATUS_FILTER_OPTIONS"
+                            :key="opt.value"
+                            :value="opt.value"
+                        >
+                            {{ opt.label }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div v-if="loading" class="flex items-center justify-center py-12">
@@ -358,9 +398,12 @@ onMounted(fetchEvents);
                     <div class="min-w-0 flex-1">
                         <div class="flex items-start justify-between gap-2">
                             <div class="min-w-0">
-                                <h4 class="truncate text-sm font-medium">
-                                    {{ item.title }}
-                                </h4>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h4 class="truncate text-sm font-medium">
+                                        {{ item.title }}
+                                    </h4>
+                                    <StatusBadge :status="item.status" compact />
+                                </div>
                                 <p class="text-muted-foreground mt-0.5 text-xs">
                                     <span v-if="item.publication">{{ item.publication }} · </span>
                                     {{ formatDate(item.date) }}
@@ -429,7 +472,7 @@ onMounted(fetchEvents);
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                     <div class="space-y-2">
                         <Label for="press-date">Date</Label>
                         <Input id="press-date" v-model="form.date" type="date" />
@@ -439,6 +482,20 @@ onMounted(fetchEvents);
                         <Label for="press-sort">Sort Order</Label>
                         <Input id="press-sort" v-model.number="form.sort_order" type="number" min="0" />
                         <p v-if="errors.sort_order" class="text-destructive text-xs">{{ errors.sort_order[0] }}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <Label for="press-status">Status</Label>
+                        <Select v-model="form.status">
+                            <SelectTrigger id="press-status">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem v-for="s in CONTENT_STATUSES" :key="s.value" :value="s.value">
+                                    {{ s.label }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p v-if="errors.status" class="text-destructive text-xs">{{ errors.status[0] }}</p>
                     </div>
                 </div>
 

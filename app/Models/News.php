@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
+use App\Concerns\HasPublishStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class News extends Model
 {
+    use HasPublishStatus;
+
     protected $fillable = [
+        'status',
         'title',
         'slug',
         'body',
         'date',
         'image',
         'link',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_DRAFT,
     ];
 
     protected function casts(): array

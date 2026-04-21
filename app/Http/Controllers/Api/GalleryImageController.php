@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Gallery\StoreGalleryImageRequest;
 use App\Http\Requests\Gallery\UpdateGalleryImageRequest;
 use App\Models\GalleryImage;
+use App\Support\ContentVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,16 +14,19 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class GalleryImageController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $images = GalleryImage::orderBy('sort_order')
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(fn (GalleryImage $img) => [
-                ...$img->toArray(),
-                'image_url' => $img->image_url,
-                'thumbnail_url' => $img->thumbnail_url,
-            ]);
+        $query = GalleryImage::query()
+            ->orderBy('sort_order')
+            ->orderByDesc('created_at');
+
+        ContentVisibility::apply($query, $request);
+
+        $images = $query->get()->map(fn (GalleryImage $img) => [
+            ...$img->toArray(),
+            'image_url' => $img->image_url,
+            'thumbnail_url' => $img->thumbnail_url,
+        ]);
 
         return response()->json($images);
     }
@@ -31,12 +35,14 @@ class GalleryImageController extends Controller
     {
         $created = [];
         $maxSort = GalleryImage::max('sort_order') ?? 0;
+        $status = $request->input('status', GalleryImage::STATUS_DRAFT);
 
         foreach ($request->file('images') as $i => $file) {
             $imagePath = $file->store('gallery/images', 'public');
             $thumbnailPath = $this->generateThumbnail($imagePath);
 
             $galleryImage = GalleryImage::create([
+                'status' => $status,
                 'image' => $imagePath,
                 'thumbnail' => $thumbnailPath,
                 'caption' => $request->input('caption'),

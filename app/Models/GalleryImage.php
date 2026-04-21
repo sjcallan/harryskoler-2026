@@ -2,17 +2,25 @@
 
 namespace App\Models;
 
+use App\Concerns\HasPublishStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class GalleryImage extends Model
 {
+    use HasPublishStatus;
+
     protected $fillable = [
+        'status',
         'image',
         'thumbnail',
         'caption',
         'alt_text',
         'credit',
         'sort_order',
+    ];
+
+    protected $attributes = [
+        'status' => self::STATUS_DRAFT,
     ];
 
     protected function casts(): array

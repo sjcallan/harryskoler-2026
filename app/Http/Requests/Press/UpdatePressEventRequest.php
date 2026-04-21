@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Press;
 
+use App\Models\PressEvent;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePressEventRequest extends FormRequest
 {
@@ -14,6 +16,7 @@ class UpdatePressEventRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'status' => ['nullable', Rule::in(PressEvent::availableStatuses())],
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'unique:press_events,slug,' . $this->route('press_event')->id],
             'publication' => ['nullable', 'string', 'max:255'],
