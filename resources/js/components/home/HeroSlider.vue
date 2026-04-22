@@ -577,6 +577,8 @@ onUnmounted(() => {
     letter-spacing: 0.06em;
     color: rgba(184, 40, 46, 0.85);
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+    white-space: pre-line;
+    line-height: 1.4;
 }
 
 /* ==============================

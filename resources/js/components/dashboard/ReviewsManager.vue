@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { TiptapEditor } from '@/components/ui/tiptap-editor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import {
@@ -500,12 +501,10 @@ onMounted(fetchReviews);
                 </div>
 
                 <div class="space-y-2">
-                    <Label for="review-body">Full Review</Label>
-                    <Textarea
-                        id="review-body"
+                    <Label>Full Review</Label>
+                    <TiptapEditor
                         v-model="form.body"
                         placeholder="Complete review text..."
-                        class="min-h-[140px]"
                     />
                     <p v-if="errors.body" class="text-destructive text-xs">{{ errors.body[0] }}</p>
                 </div>

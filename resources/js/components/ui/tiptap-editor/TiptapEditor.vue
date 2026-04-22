@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onBeforeUnmount } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -18,6 +18,7 @@ import {
     Unlink,
     Undo2,
     Redo2,
+    Code2,
 } from 'lucide-vue-next';
 
 const props = withDefaults(
@@ -34,6 +35,9 @@ const props = withDefaults(
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
 }>();
+
+const showSource = ref(false);
+const sourceHtml = ref(props.modelValue);
 
 const editor = useEditor({
     content: props.modelValue,
@@ -60,11 +64,33 @@ const editor = useEditor({
 watch(
     () => props.modelValue,
     (val) => {
+        if (showSource.value) {
+            if (val !== sourceHtml.value) sourceHtml.value = val;
+            return;
+        }
         if (editor.value && val !== editor.value.getHTML()) {
             editor.value.commands.setContent(val, false);
         }
     },
 );
+
+function onSourceInput(event: Event) {
+    const target = event.target as HTMLTextAreaElement;
+    sourceHtml.value = target.value;
+    emit('update:modelValue', target.value);
+}
+
+function toggleSource() {
+    if (!editor.value) return;
+    if (!showSource.value) {
+        sourceHtml.value = editor.value.getHTML();
+        showSource.value = true;
+    } else {
+        editor.value.commands.setContent(sourceHtml.value, true);
+        emit('update:modelValue', editor.value.getHTML());
+        showSource.value = false;
+    }
+}
 
 onBeforeUnmount(() => {
     editor.value?.destroy();
@@ -126,14 +152,34 @@ function isActive(name: string): boolean {
                 :key="i"
                 type="button"
                 :title="btn.title"
-                class="hover:bg-accent hover:text-accent-foreground inline-flex size-7 items-center justify-center rounded-sm transition-colors"
-                :class="btn.active && isActive(btn.active) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'"
+                :disabled="showSource"
+                class="hover:bg-accent hover:text-accent-foreground inline-flex size-7 items-center justify-center rounded-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+                :class="!showSource && btn.active && isActive(btn.active) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'"
                 @click="btn.action"
             >
                 <component :is="btn.icon" class="size-3.5" />
             </button>
+            <span class="bg-border mx-1 h-5 w-px" aria-hidden="true"></span>
+            <button
+                type="button"
+                title="View / edit HTML source"
+                class="hover:bg-accent hover:text-accent-foreground ml-auto inline-flex size-7 items-center justify-center rounded-sm transition-colors"
+                :class="showSource ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'"
+                @click="toggleSource"
+            >
+                <Code2 class="size-3.5" />
+            </button>
         </div>
-        <EditorContent :editor="editor" />
+        <div v-show="!showSource">
+            <EditorContent :editor="editor" />
+        </div>
+        <textarea
+            v-if="showSource"
+            :value="sourceHtml"
+            spellcheck="false"
+            class="tiptap-source"
+            @input="onSourceInput"
+        ></textarea>
     </div>
 </template>
 
@@ -213,5 +259,27 @@ function isActive(name: string): boolean {
     color: var(--muted-foreground);
     pointer-events: none;
     height: 0;
+}
+
+.tiptap-source {
+    display: block;
+    width: 100%;
+    min-height: 220px;
+    padding: 0.75rem;
+    border: 0;
+    outline: none;
+    resize: vertical;
+    background: transparent;
+    color: var(--foreground);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    tab-size: 2;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.tiptap-source:focus {
+    outline: none;
 }
 </style>

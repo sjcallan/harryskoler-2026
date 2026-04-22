@@ -116,7 +116,7 @@ onMounted(fetchReviews);
                     <template v-if="review.body && review.body !== review.excerpt">
                         <transition name="review-expand">
                             <div v-if="expandedId === review.id" class="review-full">
-                                <p>{{ review.body }}</p>
+                                <div class="review-body" v-html="review.body"></div>
                                 <a
                                     v-if="review.source_url"
                                     :href="review.source_url"
@@ -271,8 +271,75 @@ onMounted(fetchReviews);
     font-weight: 300;
 }
 
-.review-full p {
-    white-space: pre-line;
+.review-body :deep(p) {
+    margin: 0 0 1em;
+}
+
+.review-body :deep(p:last-child) {
+    margin-bottom: 0;
+}
+
+.review-body :deep(h2),
+.review-body :deep(h3) {
+    font-family: 'Instrument Serif', serif;
+    color: var(--cream);
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 1.4em 0 0.5em;
+}
+
+.review-body :deep(h2) {
+    font-size: 1.25rem;
+}
+
+.review-body :deep(h3) {
+    font-size: 1.1rem;
+}
+
+.review-body :deep(strong) {
+    font-weight: 600;
+    color: var(--cream);
+}
+
+.review-body :deep(em) {
+    font-style: italic;
+}
+
+.review-body :deep(ul),
+.review-body :deep(ol) {
+    padding-left: 1.4em;
+    margin: 0 0 1em;
+}
+
+.review-body :deep(ul) {
+    list-style: disc;
+}
+
+.review-body :deep(ol) {
+    list-style: decimal;
+}
+
+.review-body :deep(li) {
+    margin-bottom: 0.3em;
+}
+
+.review-body :deep(blockquote) {
+    border-left: 2px solid var(--red);
+    padding: 0.1em 0 0.1em 1em;
+    margin: 1em 0;
+    color: rgba(232, 224, 214, 0.9);
+    font-style: italic;
+}
+
+.review-body :deep(a) {
+    color: var(--red);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.review-body :deep(a:hover) {
+    opacity: 0.75;
 }
 
 .review-source-link {

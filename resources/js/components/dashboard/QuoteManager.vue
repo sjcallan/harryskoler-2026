@@ -266,7 +266,10 @@ onMounted(fetchQuotes);
                                 <p class="text-muted-foreground mt-1.5 text-xs">
                                     <span v-if="item.person" class="text-foreground font-medium">{{ item.person }}</span>
                                     <span v-if="item.person && item.company"> &mdash; </span>
-                                    <span v-if="item.company" class="text-primary font-medium">{{ item.company }}</span>
+                                    <span
+                                        v-if="item.company"
+                                        class="text-primary font-medium whitespace-pre-line align-top"
+                                    >{{ item.company }}</span>
                                     <span
                                         v-if="!item.is_active"
                                         class="text-muted-foreground ml-2 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider"
@@ -327,7 +330,14 @@ onMounted(fetchQuotes);
                     </div>
                     <div class="space-y-2">
                         <Label for="quote-company">Publication / Company (optional)</Label>
-                        <Input id="quote-company" v-model="form.company" placeholder="e.g. JazzTimes" />
+                        <Textarea
+                            id="quote-company"
+                            v-model="form.company"
+                            placeholder="e.g. JazzTimes&#10;New York, NY"
+                            class="min-h-[72px]"
+                            rows="2"
+                        />
+                        <p class="text-muted-foreground text-[11px]">Line breaks are preserved on the site.</p>
                         <p v-if="errors.company" class="text-destructive text-xs">{{ errors.company[0] }}</p>
                     </div>
                 </div>

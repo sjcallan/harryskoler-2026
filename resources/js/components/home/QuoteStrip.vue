@@ -242,6 +242,7 @@ onUnmounted(() => {
     font-weight: 400;
     color: var(--red);
     opacity: 0.8;
+    white-space: pre-line;
 }
 
 @media (max-width: 600px) {
