@@ -170,7 +170,7 @@ function isActive(name: string): boolean {
                 <Code2 class="size-3.5" />
             </button>
         </div>
-        <div v-show="!showSource">
+        <div v-show="!showSource" class="tiptap-scroll">
             <EditorContent :editor="editor" />
         </div>
         <textarea
@@ -184,6 +184,11 @@ function isActive(name: string): boolean {
 </template>
 
 <style>
+.tiptap-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
 .tiptap-content {
     min-height: 120px;
     padding: 0.5rem 0.75rem;
@@ -264,11 +269,13 @@ function isActive(name: string): boolean {
 .tiptap-source {
     display: block;
     width: 100%;
-    min-height: 220px;
+    height: 320px;
+    max-height: 320px;
     padding: 0.75rem;
     border: 0;
     outline: none;
-    resize: vertical;
+    resize: none;
+    overflow-y: auto;
     background: transparent;
     color: var(--foreground);
     font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
