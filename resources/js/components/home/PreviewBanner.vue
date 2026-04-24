@@ -47,7 +47,7 @@ function dismiss() {
 <template>
     <div
         v-if="visible"
-        class="sticky top-0 z-100 flex items-center justify-between gap-4 border-b border-amber-400/60 bg-amber-500/95 px-4 py-2 text-xs font-medium text-amber-950 backdrop-blur supports-backdrop-filter:bg-amber-500/85"
+        class="hs-preview-banner fixed inset-x-0 top-0 flex items-center justify-between gap-4 border-b border-amber-400/60 bg-amber-500/95 px-4 py-2 text-xs font-medium text-amber-950 backdrop-blur supports-backdrop-filter:bg-amber-500/85"
     >
         <div class="flex items-center gap-2">
             <Eye class="size-4" />
@@ -74,3 +74,9 @@ function dismiss() {
         </div>
     </div>
 </template>
+
+<style scoped>
+.hs-preview-banner {
+    z-index: 10001;
+}
+</style>
