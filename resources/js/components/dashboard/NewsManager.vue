@@ -382,7 +382,7 @@ onMounted(fetchNews);
 
     <!-- Create / Edit dialog -->
     <Dialog :open="showForm" @update:open="showForm = $event">
-        <DialogContent class="sm:max-w-2xl">
+        <DialogContent class="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
             <DialogHeader>
                 <DialogTitle>
                     {{ editingItem ? 'Edit News Entry' : 'New News Entry' }}

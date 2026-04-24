@@ -437,7 +437,7 @@ onMounted(fetchReviews);
 
     <!-- Create / Edit dialog -->
     <Dialog :open="showForm" @update:open="showForm = $event">
-        <DialogContent class="sm:max-w-xl">
+        <DialogContent class="max-h-[90vh] overflow-y-auto sm:max-w-xl">
             <DialogHeader>
                 <DialogTitle>
                     {{ editingItem ? 'Edit Review' : 'New Review' }}
