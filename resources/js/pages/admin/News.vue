@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'News',
-        href: '/news',
+        href: '/admin/news',
     },
 ];
 </script>

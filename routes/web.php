@@ -31,7 +31,21 @@ Route::permanentRedirect('/music', '/album');
 Route::permanentRedirect('/music/{slug}', '/album/{slug}')
     ->where('slug', '[a-z0-9\-]+');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Admin area
+|--------------------------------------------------------------------------
+|
+| All authenticated administrative screens live under the /admin prefix so
+| they can be cleanly excluded from search indexing (see robots.txt and
+| the conditional noindex meta in resources/views/app.blade.php). Route
+| names are kept stable (e.g. `dashboard`, `news`) so Wayfinder-generated
+| helpers and existing `route('dashboard')` calls continue to work.
+|
+*/
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+    Route::redirect('/', '/admin/dashboard');
+
     Route::inertia('dashboard', 'admin/Dashboard')->name('dashboard');
     Route::inertia('news', 'admin/News')->name('news');
     Route::inertia('reviews', 'admin/Reviews')->name('reviews');

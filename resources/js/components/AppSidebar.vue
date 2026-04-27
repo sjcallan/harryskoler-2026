@@ -25,37 +25,37 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'News',
-        href: '/news',
+        href: '/admin/news',
         icon: Newspaper,
     },
     {
         title: 'Reviews',
-        href: '/reviews',
+        href: '/admin/reviews',
         icon: Star,
     },
     {
         title: 'Radio Airplay',
-        href: '/radio-airplay',
+        href: '/admin/radio-airplay',
         icon: Radio,
     },
     {
         title: 'Press',
-        href: '/press',
+        href: '/admin/press',
         icon: FileText,
     },
     {
         title: 'Gallery',
-        href: '/gallery',
+        href: '/admin/gallery',
         icon: ImageIcon,
     },
     {
         title: 'Quotes',
-        href: '/quotes',
+        href: '/admin/quotes',
         icon: MessageSquareQuote,
     },
     {
         title: 'Users',
-        href: '/users',
+        href: '/admin/users',
         icon: Users,
     },
 ];

@@ -53,19 +53,19 @@ const loadingRecent = ref(true);
 const loadingStorage = ref(true);
 
 const statCards = [
-    { key: 'news' as keyof Stats, label: 'News', icon: Newspaper, href: '/news' },
-    { key: 'reviews' as keyof Stats, label: 'Reviews', icon: Star, href: '/reviews' },
-    { key: 'radio_airplays' as keyof Stats, label: 'Radio Airplay', icon: Radio, href: '/radio-airplay' },
-    { key: 'press_events' as keyof Stats, label: 'Press Events', icon: FileText, href: '/press' },
-    { key: 'quotes' as keyof Stats, label: 'Quotes', icon: MessageSquareQuote, href: '/quotes' },
-    { key: 'gallery_images' as keyof Stats, label: 'Gallery', icon: ImageIcon, href: '/gallery' },
+    { key: 'news' as keyof Stats, label: 'News', icon: Newspaper, href: '/admin/news' },
+    { key: 'reviews' as keyof Stats, label: 'Reviews', icon: Star, href: '/admin/reviews' },
+    { key: 'radio_airplays' as keyof Stats, label: 'Radio Airplay', icon: Radio, href: '/admin/radio-airplay' },
+    { key: 'press_events' as keyof Stats, label: 'Press Events', icon: FileText, href: '/admin/press' },
+    { key: 'quotes' as keyof Stats, label: 'Quotes', icon: MessageSquareQuote, href: '/admin/quotes' },
+    { key: 'gallery_images' as keyof Stats, label: 'Gallery', icon: ImageIcon, href: '/admin/gallery' },
 ];
 
 const quickActions = [
-    { label: 'Add News', href: '/news', icon: Newspaper },
-    { label: 'Add Review', href: '/reviews', icon: Star },
-    { label: 'Upload Photos', href: '/gallery', icon: ImageIcon },
-    { label: 'Add Press', href: '/press', icon: FileText },
+    { label: 'Add News', href: '/admin/news', icon: Newspaper },
+    { label: 'Add Review', href: '/admin/reviews', icon: Star },
+    { label: 'Upload Photos', href: '/admin/gallery', icon: ImageIcon },
+    { label: 'Add Press', href: '/admin/press', icon: FileText },
 ];
 
 function typeIcon(type: string) {

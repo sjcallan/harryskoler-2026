@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Radio Airplay',
-        href: '/radio-airplay',
+        href: '/admin/radio-airplay',
     },
 ];
 </script>

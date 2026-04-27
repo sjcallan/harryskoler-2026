@@ -6,8 +6,28 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <meta name="description" content="The music of jazz clarinetist and educator Harry Skoler.">
-        <meta name="robots" content="index, follow">
-        <link rel="canonical" href="{{ url()->current() }}">
+        @php
+            // Keep authenticated admin screens and auth flows out of search indexes.
+            $path = ltrim(request()->path(), '/');
+            $isPrivatePath = $path === 'admin'
+                || str_starts_with($path, 'admin/')
+                || str_starts_with($path, 'login')
+                || str_starts_with($path, 'register')
+                || str_starts_with($path, 'password')
+                || str_starts_with($path, 'forgot-password')
+                || str_starts_with($path, 'reset-password')
+                || str_starts_with($path, 'verify-email')
+                || str_starts_with($path, 'confirm-password')
+                || str_starts_with($path, 'two-factor')
+                || str_starts_with($path, 'settings');
+        @endphp
+        @if ($isPrivatePath)
+            <meta name="robots" content="noindex, nofollow">
+            <meta name="googlebot" content="noindex, nofollow">
+        @else
+            <meta name="robots" content="index, follow">
+            <link rel="canonical" href="{{ url()->current() }}">
+        @endif
 
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Harry Skoler">
