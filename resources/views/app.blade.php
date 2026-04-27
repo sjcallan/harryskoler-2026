@@ -5,20 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <meta name="description" content="Harry Skoler — award-winning jazz clarinetist, Berklee College of Music professor, and recording artist. Explore albums, reviews, press, and upcoming events.">
+        <meta name="description" content="The music of jazz clarinetist and educator Harry Skoler.">
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="{{ url()->current() }}">
 
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="Harry Skoler">
-        <meta property="og:title" content="Harry Skoler — Jazz Clarinetist">
-        <meta property="og:description" content="Award-winning jazz clarinetist, Berklee College of Music professor, and recording artist.">
+        <meta property="og:title" content="Harry Skoler — Jazz Musician">
+        <meta property="og:description" content="The music of jazz clarinetist and educator Harry Skoler.">
         <meta property="og:image" content="{{ asset('images/albums/echoes.png') }}">
         <meta property="og:url" content="{{ url()->current() }}">
 
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Harry Skoler — Jazz Clarinetist">
-        <meta name="twitter:description" content="Award-winning jazz clarinetist, Berklee College of Music professor, and recording artist.">
+        <meta name="twitter:title" content="Harry Skoler — Jazz Musician">
+        <meta name="twitter:description" content="The music of jazz clarinetist and educator Harry Skoler.">
         <meta name="twitter:image" content="{{ asset('images/albums/echoes.png') }}">
 
         <script>

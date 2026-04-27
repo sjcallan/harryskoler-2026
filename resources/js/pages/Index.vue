@@ -49,10 +49,10 @@ const { scrollY, activeSection, scrollToSection } = useScrollTracking(navLinks);
 </script>
 
 <template>
-    <Head title="Harry Skoler — Jazz Clarinetist">
-        <meta name="description" content="Harry Skoler — award-winning jazz clarinetist, Berklee College of Music professor. Explore albums including Echoes, Red Brick Hill, and Living In Sound." head-key="description" />
-        <meta property="og:title" content="Harry Skoler — Jazz Clarinetist" head-key="og:title" />
-        <meta property="og:description" content="Award-winning jazz clarinetist, Berklee College of Music professor. Albums, reviews, press, radio airplay, and events." head-key="og:description" />
+    <Head title="Harry Skoler — Jazz Musician">
+        <meta name="description" content="The music of jazz clarinetist and educator Harry Skoler." head-key="description" />
+        <meta property="og:title" content="Harry Skoler — Jazz Musician" head-key="og:title" />
+        <meta property="og:description" content="The music of jazz clarinetist and educator Harry Skoler." head-key="og:description" />
         <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     </Head>
 

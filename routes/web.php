@@ -17,6 +17,20 @@ Route::get('/album/{slug}', function (string $slug) {
     return Inertia::render('Album', ['slug' => $slug]);
 })->where('slug', '[a-z0-9\-]+')->name('album.show');
 
+/*
+|--------------------------------------------------------------------------
+| Legacy /music → /album 301 redirects
+|--------------------------------------------------------------------------
+|
+| Preserves SEO value from the previous site structure where albums lived
+| under /music/{slug}. Both the index and individual album URLs are
+| permanently redirected to their new /album counterparts.
+|
+*/
+Route::permanentRedirect('/music', '/album');
+Route::permanentRedirect('/music/{slug}', '/album/{slug}')
+    ->where('slug', '[a-z0-9\-]+');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'admin/Dashboard')->name('dashboard');
     Route::inertia('news', 'admin/News')->name('news');

@@ -22,7 +22,7 @@ defineProps<{
             </Link>
             <div class="relative z-20 mt-auto">
                 <p class="text-sm leading-relaxed text-[#e8e0d6]/70">
-                    Award-winning clarinetist &amp; recording artist
+                    The music of jazz clarinetist and educator Harry Skoler.
                 </p>
             </div>
         </div>
