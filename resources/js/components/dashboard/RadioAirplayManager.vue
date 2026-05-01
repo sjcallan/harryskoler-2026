@@ -95,27 +95,44 @@ const form = ref({
 });
 const imagePreview = ref<string | null>(null);
 
-const filteredEntries = computed(() => {
-    let result = entries.value;
+const filteredEntries = computed({
+    get() {
+        let result = entries.value;
 
-    if (albumFilter.value && albumFilter.value !== 'all') {
-        result = result.filter((item) => item.album_slug === albumFilter.value);
-    }
+        if (albumFilter.value && albumFilter.value !== 'all') {
+            result = result.filter((item) => item.album_slug === albumFilter.value);
+        }
 
-    if (statusFilter.value !== 'all') {
-        result = result.filter((item) => item.status === statusFilter.value);
-    }
+        if (statusFilter.value !== 'all') {
+            result = result.filter((item) => item.status === statusFilter.value);
+        }
 
-    if (searchQuery.value) {
-        const q = searchQuery.value.toLowerCase();
-        result = result.filter(
-            (item) =>
-                item.chart.toLowerCase().includes(q) ||
-                (item.detail?.toLowerCase().includes(q) ?? false),
-        );
-    }
+        if (searchQuery.value) {
+            const q = searchQuery.value.toLowerCase();
+            result = result.filter(
+                (item) =>
+                    item.chart.toLowerCase().includes(q) ||
+                    (item.detail?.toLowerCase().includes(q) ?? false),
+            );
+        }
 
-    return result;
+        return result;
+    },
+    set(reordered: RadioAirplayItem[]) {
+        const reorderedIds = new Set(reordered.map((item) => item.id));
+        const result: RadioAirplayItem[] = [];
+        let reorderedIdx = 0;
+
+        for (const item of entries.value) {
+            if (reorderedIds.has(item.id)) {
+                result.push(reordered[reorderedIdx++]);
+            } else {
+                result.push(item);
+            }
+        }
+
+        entries.value = result;
+    },
 });
 
 function getCsrfToken(): string {
