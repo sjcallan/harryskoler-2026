@@ -54,7 +54,7 @@ const albums: Album[] = [
             'Johnathan Blake — Drums',
         ],
         description: [],
-        spotifyEmbed: '',
+        spotifyEmbed: 'https://open.spotify.com/embed/album/7qoN7wGCOnfsho65HYKt9x',
         bandcampUrl: 'https://harryskoler1.bandcamp.com/album/echoes',
         appleMusicUrl: 'https://music.apple.com/us/album/echoes/1890977854',
         artwork: 'Illustration and layout by Julian Montague',
@@ -615,7 +615,7 @@ onUnmounted(() => {
                         <div v-if="album.bandcampUrl || album.appleMusicUrl" class="album-links">
                             <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn">
                                 <svg class="bandcamp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg>
-                                {{ album.spotifyEmbed ? 'Buy on Bandcamp' : 'Pre-Order on Bandcamp' }}
+                                {{ album.spotifyEmbed ? 'Buy on Bandcamp' : 'Buy on Bandcamp' }}
                             </a>
                             <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline">
                                 <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -728,10 +728,9 @@ onUnmounted(() => {
                     ></iframe>
                 </div>
                 <div v-else class="coming-soon">
-                    <p class="coming-soon-date">May 1, 2026</p>
-                    <p class="coming-soon-text">Coming Soon</p>
+                    <p class="coming-soon-text">Available Now!</p>
                     <div v-if="album.bandcampUrl || album.appleMusicUrl" class="coming-soon-links">
-                        <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn"><svg class="bandcamp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg> Pre-Order on Bandcamp</a>
+                        <a v-if="album.bandcampUrl" :href="album.bandcampUrl" target="_blank" class="cta-btn"><svg class="bandcamp-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5H0z"/></svg> Buy on Bandcamp</a>
                         <a v-if="album.appleMusicUrl" :href="album.appleMusicUrl" target="_blank" class="cta-btn cta-btn-outline"><svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> Apple Music</a>
                     </div>
                     <p v-if="album.appleMusicUrl && isMacDesktop" class="apple-music-note" style="margin-top:1rem;">Mac users: opens in Music app. To purchase, select iTunes Store inside Music.</p>
