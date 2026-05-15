@@ -35,7 +35,7 @@ const albumFilters = [
 
 const radioCharts = ref<RadioAirplayItem[]>([]);
 const loading = ref(true);
-const activeAlbum = ref<string | null>(props.albumSlug ?? null);
+const activeAlbum = ref<string | null>(props.albumSlug ?? albumFilters[0]?.slug ?? null);
 const lightboxOpen = ref(false);
 const lightboxIndex = ref(0);
 
