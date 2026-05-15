@@ -70,7 +70,7 @@ interface RadioAirplayItem {
 const entries = ref<RadioAirplayItem[]>([]);
 const loading = ref(true);
 const searchQuery = ref('');
-const albumFilter = ref('all');
+const albumFilter = ref('echoes');
 const statusFilter = ref<'all' | ContentStatus>('all');
 const showForm = ref(false);
 const showDeleteConfirm = ref(false);

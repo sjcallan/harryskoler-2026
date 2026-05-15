@@ -17,7 +17,7 @@ class RadioAirplayController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = RadioAirplay::query()->orderBy('sort_order')->orderBy('rank');
+        $query = RadioAirplay::query()->orderBy('created_at', 'desc');
 
         ContentVisibility::apply($query, $request);
 
