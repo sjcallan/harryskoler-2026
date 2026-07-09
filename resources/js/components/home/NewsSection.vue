@@ -10,6 +10,7 @@ interface NewsItem {
     date: string;
     image_url: string | null;
     link: string | null;
+    link_new_window: boolean;
 }
 
 const newsItems = ref<NewsItem[]>([]);
@@ -64,8 +65,8 @@ onMounted(fetchNews);
                 v-for="item in newsItems"
                 :key="item.id"
                 :href="item.link ?? undefined"
-                :target="item.link ? '_blank' : undefined"
-                :rel="item.link ? 'noopener' : undefined"
+                :target="item.link && item.link_new_window ? '_blank' : undefined"
+                :rel="item.link && item.link_new_window ? 'noopener' : undefined"
                 class="news-card reveal"
                 :class="{ 'news-card--linked': item.link }"
             >

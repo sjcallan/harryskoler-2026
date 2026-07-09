@@ -22,7 +22,15 @@ class StoreNewsRequest extends FormRequest
             'body' => ['required', 'string'],
             'date' => ['required', 'date'],
             'image' => ['nullable', 'image', 'max:5120'],
-            'link' => ['nullable', 'url', 'max:255'],
+            'link' => ['nullable', 'string', 'max:255', 'regex:/^(https?:\/\/|mailto:|\/|#).+/i'],
+            'link_new_window' => ['nullable', 'boolean'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'link.regex' => 'The link must be a full URL (https://...) or a relative link starting with /, # or mailto:.',
         ];
     }
 }

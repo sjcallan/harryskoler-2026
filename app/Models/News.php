@@ -18,16 +18,19 @@ class News extends Model
         'date',
         'image',
         'link',
+        'link_new_window',
     ];
 
     protected $attributes = [
         'status' => self::STATUS_DRAFT,
+        'link_new_window' => true,
     ];
 
     protected function casts(): array
     {
         return [
             'date' => 'date',
+            'link_new_window' => 'boolean',
         ];
     }
 

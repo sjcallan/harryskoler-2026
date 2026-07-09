@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { TiptapEditor } from '@/components/ui/tiptap-editor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
@@ -42,6 +43,7 @@ interface NewsItem {
     image: string | null;
     image_url: string | null;
     link: string | null;
+    link_new_window: boolean;
     created_at: string;
     updated_at: string;
 }
@@ -67,6 +69,7 @@ const form = ref({
     body: '',
     date: '',
     link: '',
+    link_new_window: true,
     image: null as File | null,
 });
 
@@ -117,7 +120,7 @@ function flash(message: string, type: 'success' | 'error' = 'success') {
 function openCreateForm() {
     editingItem.value = null;
     errors.value = {};
-    form.value = { status: 'draft', title: '', slug: '', body: '', date: '', link: '', image: null };
+    form.value = { status: 'draft', title: '', slug: '', body: '', date: '', link: '', link_new_window: true, image: null };
     imagePreview.value = null;
     showForm.value = true;
 }
@@ -132,6 +135,7 @@ function openEditForm(item: NewsItem) {
         body: item.body,
         date: item.date.substring(0, 10),
         link: item.link ?? '',
+        link_new_window: item.link_new_window ?? true,
         image: null,
     };
     imagePreview.value = item.image_url;
@@ -163,6 +167,7 @@ async function saveNews() {
     formData.append('body', form.value.body);
     formData.append('date', form.value.date);
     if (form.value.link) formData.append('link', form.value.link);
+    formData.append('link_new_window', form.value.link_new_window ? '1' : '0');
     if (form.value.image) formData.append('image', form.value.image);
 
     const url = editingItem.value
@@ -344,8 +349,8 @@ onMounted(fetchNews);
                                     <a
                                         v-if="item.link"
                                         :href="item.link"
-                                        target="_blank"
-                                        rel="noopener"
+                                        :target="item.link_new_window ? '_blank' : undefined"
+                                        :rel="item.link_new_window ? 'noopener' : undefined"
                                         class="text-primary ml-2 inline-flex items-center gap-0.5 hover:underline"
                                     >
                                         <ExternalLink class="size-3" />
@@ -438,8 +443,27 @@ onMounted(fetchNews);
 
                 <div class="space-y-2">
                     <Label for="news-link">Link (optional)</Label>
-                    <Input id="news-link" v-model="form.link" placeholder="https://" />
+                    <Input id="news-link" v-model="form.link" placeholder="https://example.com or #press" />
+                    <p class="text-muted-foreground text-xs">
+                        Use a full URL (https://…) or a relative link to a section on this site (e.g. #press).
+                    </p>
                     <p v-if="errors.link" class="text-destructive text-xs">{{ errors.link[0] }}</p>
+
+                    <div v-if="form.link" class="flex items-start gap-2 pt-1">
+                        <Checkbox
+                            id="news-link-new-window"
+                            :model-value="form.link_new_window"
+                            @update:model-value="form.link_new_window = $event === true"
+                        />
+                        <div class="grid gap-0.5 leading-none">
+                            <Label for="news-link-new-window" class="cursor-pointer">
+                                Open in a new window
+                            </Label>
+                            <p class="text-muted-foreground text-xs">
+                                Uncheck to open the link in the same window (recommended for links to this site).
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="space-y-2">
