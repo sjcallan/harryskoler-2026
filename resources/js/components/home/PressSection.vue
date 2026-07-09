@@ -145,6 +145,7 @@ onMounted(() => {
                             <span v-if="img.caption" class="press-image-caption">{{ img.caption }}</span>
                         </button>
                     </div>
+                    <p v-if="event.images.length" class="press-image-hint">Click thumbnail to enlarge</p>
                 </div>
             </div>
         </div>
@@ -280,8 +281,9 @@ onMounted(() => {
 }
 
 .press-image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 1rem;
 }
 
@@ -293,7 +295,8 @@ onMounted(() => {
     border: 1px solid rgba(255,255,255,0.06);
     transition: border-color 0.3s;
     padding: 0;
-    display: block;
+    display: inline-flex;
+    flex-direction: column;
     color: inherit;
 }
 
@@ -302,9 +305,9 @@ onMounted(() => {
 }
 
 .press-image-thumb img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+    height: 190px;
+    width: auto;
+    max-width: 100%;
     display: block;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s;
     filter: grayscale(20%);
@@ -338,6 +341,14 @@ onMounted(() => {
     color: rgba(232, 224, 214, 0.5);
     letter-spacing: 0.03em;
     line-height: 1.3;
+}
+
+.press-image-hint {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: rgba(232, 224, 214, 0.4);
+    letter-spacing: 0.02em;
 }
 
 /* Lightbox */
@@ -447,7 +458,8 @@ onMounted(() => {
     background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
-    aspect-ratio: 4 / 3;
+    width: 220px;
+    height: 190px;
 }
 
 .skeleton-line {
@@ -466,8 +478,8 @@ onMounted(() => {
 }
 
 @media (max-width: 900px) {
-    .press-image-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    .press-image-thumb img {
+        height: 150px;
     }
 
     .press-event-header {
@@ -483,8 +495,11 @@ onMounted(() => {
 
 @media (max-width: 600px) {
     .press-image-grid {
-        grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
+    }
+
+    .press-image-thumb img {
+        height: 120px;
     }
 
     .press-lightbox-nav {
