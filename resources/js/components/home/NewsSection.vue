@@ -90,6 +90,28 @@ onMounted(fetchNews);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
+    max-height: 620px;
+    overflow-y: auto;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.news-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.news-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.news-grid::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+}
+
+.news-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.32);
 }
 
 .news-card {

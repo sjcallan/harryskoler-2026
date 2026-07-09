@@ -205,6 +205,28 @@ onMounted(fetchRadioAirplays);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
+    max-height: 620px;
+    overflow-y: auto;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+.radio-charts::-webkit-scrollbar {
+    width: 5px;
+}
+
+.radio-charts::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.radio-charts::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+}
+
+.radio-charts::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.25);
 }
 
 .radio-item {
