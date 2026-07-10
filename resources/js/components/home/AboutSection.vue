@@ -23,7 +23,7 @@ withDefaults(defineProps<{ theme?: string }>(), { theme: 'section-dark' });
                     <a href="https://vandoren.fr/en/artistes-vandoren/skoler-harry/" target="_blank">
                         <img src="/images/logos/vandoren-logo.svg" alt="Vandoren" class="endorsement-logo">
                     </a>
-                    <a href="http://www.buffet-crampon.com/en/artist/harry-skoler/" target="_blank">
+                    <a href="https://www.buffetcrampon.com/en-us/blogs/artists/harry-skoler" target="_blank">
                         <img src="/images/logos/buffet-logo.svg" alt="Buffet Crampon" class="endorsement-logo">
                     </a>
                     <a href="https://www.dansr.com/artists/harry-skoler" target="_blank">

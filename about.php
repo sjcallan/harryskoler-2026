@@ -25,7 +25,7 @@
                 <ul class="clients-grid grid-3 nobottommargin clearfix">
                     <li><a href="https://vandoren.fr/en/artistes-vandoren/skoler-harry/"><img src="/images/logos/vandoren-logo.svg" alt="Vandoren"></a></li>
                     <li><a href="https://www.dansr.com/vandoren/artists/harry-skoler"><img src="/images/logos/dansr.svg" alt="DANSR"></a></li>
-                    <li><a href="http://www.buffet-crampon.com/en/artist/harry-skoler/"><img src="/images/logos/buffet-logo.svg" alt="Buffet Crampon" style="max-height:100px;width:auto"></a></li>
+                    <li><a href="https://www.buffetcrampon.com/en-us/blogs/artists/harry-skoler"><img src="/images/logos/buffet-logo.svg" alt="Buffet Crampon" style="max-height:100px;width:auto"></a></li>
                 </ul>
             </div>
 
