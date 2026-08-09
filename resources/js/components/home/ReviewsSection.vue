@@ -52,6 +52,24 @@ function toggleExpanded(id: number) {
     expandedId.value = expandedId.value === id ? null : id;
 }
 
+function plainText(html: string): string {
+    return html
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function hasFullReview(review: ReviewItem): boolean {
+    if (!review.body) return false;
+    return plainText(review.body) !== plainText(review.excerpt);
+}
+
 async function fetchReviews() {
     try {
         const res = await fetch('/api/reviews');
@@ -113,7 +131,7 @@ onMounted(fetchReviews);
             <div class="review-item" v-for="review in filteredReviews" :key="review.id">
                 <div class="review-content">
                     <div class="review-quote">"{{ review.excerpt }}"</div>
-                    <template v-if="review.body && review.body !== review.excerpt">
+                    <template v-if="hasFullReview(review)">
                         <transition name="review-expand">
                             <div v-if="expandedId === review.id" class="review-full">
                                 <div class="review-body" v-html="review.body"></div>
